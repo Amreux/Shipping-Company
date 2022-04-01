@@ -2,6 +2,6 @@
 using namespace std;
 int main()
 {
-	cout << "ghaith matyz";
+	cout << "fares mtnak";
 	return 0;
 }
