@@ -5,11 +5,14 @@ struct Time {
 	int day;
 };
 
-class Truck
+class Cargo
 {
 	Time PreparationTime;
 	Time LoadUnloadTime;
-	char CargoType;
 	int DeliveryDistance;
 	int Cost;
+
+public:
+	Cargo(Time Prep, Time Load, int DD, int C);
 };
+

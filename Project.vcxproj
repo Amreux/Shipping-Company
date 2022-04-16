@@ -139,15 +139,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Crago.cpp" />
+    <ClCompile Include="CancelEvent.cpp" />
+    <ClCompile Include="Cargo.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NormalCargo.cpp" />
+    <ClCompile Include="NormalTruck.cpp" />
+    <ClCompile Include="PreparationEvent.cpp" />
+    <ClCompile Include="PromoteEvent.cpp" />
+    <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="SpecialCargo.cpp" />
+    <ClCompile Include="SpecialTruck.cpp" />
     <ClCompile Include="Truck.cpp" />
     <ClCompile Include="VIPCargo.cpp" />
+    <ClCompile Include="VIPTruck.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CancelEvent.h" />
     <ClInclude Include="Cargo.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NormalCargo.h" />
+    <ClInclude Include="NormalTruck.h" />
+    <ClInclude Include="PreparationEvent.h" />
+    <ClInclude Include="PromoteEvent.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="SpecialCargo.h" />
+    <ClInclude Include="SpecialTruck.h" />
     <ClInclude Include="Truck.h" />
     <ClInclude Include="VIPCargo.h" />
+    <ClInclude Include="VIPTruck.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

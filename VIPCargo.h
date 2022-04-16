@@ -4,8 +4,7 @@
 
 class VIPCargo:public Cargo
 {
-	int cc;
-	int x;
-
+public:
+	VIPCargo(Time Prep, Time Load, int DD, int C);
 };
 
