@@ -16,6 +16,7 @@
       <Filter>Truck</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="VIPCargo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cargo.h">
@@ -24,5 +25,6 @@
     <ClInclude Include="Truck.h">
       <Filter>Truck</Filter>
     </ClInclude>
+    <ClInclude Include="VIPCargo.h" />
   </ItemGroup>
 </Project>

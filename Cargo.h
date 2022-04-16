@@ -1,9 +1,15 @@
 #pragma once
+
+struct Time {
+	int hour;
+	int day;
+};
+
 class Truck
 {
-	int PreparationTime[2];
-	int LoadUnloadTime[2];
+	Time PreparationTime;
+	Time LoadUnloadTime;
 	char CargoType;
 	int DeliveryDistance;
-	int cost;
+	int Cost;
 };
