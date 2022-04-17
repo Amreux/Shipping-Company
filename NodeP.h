@@ -16,7 +16,7 @@ public:
     }
     NodeP()
     {
-
+        Next = nullptr;
     }
     void SetData(T val)
     {
