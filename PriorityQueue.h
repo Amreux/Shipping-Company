@@ -4,8 +4,8 @@
 template<class T>
 class PriorityQueue
 {
-    Node<T>* Front;
-    Node<T>* Rear;
+    NodeP<T>* Front;
+    NodeP<T>* Rear;
 public:
     PriorityQueue()
     {
@@ -20,7 +20,7 @@ public:
 
     void enqueue(T Val, int Prio)
     {
-        Node<T>* NewNode = new Node<T>;
+        NodeP<T>* NewNode = new NodeP<T>;
         NewNode->SetData(Val);
         NewNode->SetPriority(Prio);
         NewNode->SetNext(NULL);
@@ -30,7 +30,7 @@ public:
             Rear = NewNode;
             return;
         }
-        Node<T>* Temp = Front;
+        NodeP<T>* Temp = Front;
         if (!Temp->GetNext() || Temp->GetPriority() < Prio)
         {
             if (Temp->GetPriority() < Prio)
@@ -80,14 +80,14 @@ public:
             Front = Rear = NULL;
             return;
         }
-        Node<T>* ptr = Front;
+        NodeP<T>* ptr = Front;
         Front = Front->GetNext();
         delete ptr;
     }
 
     void display()
     {
-        Node<T>* ptr = Front;
+        NodeP<T>* ptr = Front;
         int i = 1;
         while (ptr)
         {

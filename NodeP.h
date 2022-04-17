@@ -1,20 +1,20 @@
 #pragma once
 
 template <class T>
-class Node
+class NodeP
 {
     T Data;
     int Priority;
-    Node* Next;
+    NodeP* Next;
 
 public:
-    Node(T val, int pri, Node<T>* N)
+    NodeP(T val, int pri, NodeP<T>* N)
     {
         SetData(val);
         SetPriority(pri);
         SetNext(N);
     }
-    Node()
+    NodeP()
     {
 
     }
@@ -26,7 +26,7 @@ public:
     {
         Priority = val;
     }
-    void SetNext(Node<T>* N)
+    void SetNext(NodeP<T>* N)
     {
         Next = N;
     }
@@ -38,7 +38,7 @@ public:
     {
         return Priority;
     }
-    Node<T>* GetNext()
+    NodeP<T>* GetNext()
     {
         return Next;
     }
