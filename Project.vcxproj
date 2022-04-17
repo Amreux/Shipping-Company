@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="CancelEvent.cpp" />
     <ClCompile Include="Cargo.cpp" />
+    <ClCompile Include="Company.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -158,6 +159,7 @@
   <ItemGroup>
     <ClInclude Include="CancelEvent.h" />
     <ClInclude Include="Cargo.h" />
+    <ClInclude Include="Company.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NormalCargo.h" />

@@ -13,6 +13,9 @@
     <Filter Include="DataStructures">
       <UniqueIdentifier>{c8a73f3a-d80b-4f5f-8c1f-b2330b856c9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Company">
+      <UniqueIdentifier>{d95485c3-0855-4ab4-bbe8-bfd221a9bf94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Truck.cpp">
@@ -58,6 +61,7 @@
     <ClCompile Include="Node.cpp">
       <Filter>DataStructures</Filter>
     </ClCompile>
+    <ClCompile Include="Company.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Truck.h">
@@ -102,5 +106,6 @@
     <ClInclude Include="Node.h">
       <Filter>DataStructures</Filter>
     </ClInclude>
+    <ClInclude Include="Company.h" />
   </ItemGroup>
 </Project>
