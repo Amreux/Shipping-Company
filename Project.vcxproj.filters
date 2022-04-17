@@ -107,5 +107,11 @@
       <Filter>DataStructures</Filter>
     </ClInclude>
     <ClInclude Include="Company.h" />
+    <ClInclude Include="PriorityQueue.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeP.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

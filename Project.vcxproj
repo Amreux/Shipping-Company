@@ -162,9 +162,11 @@
     <ClInclude Include="Company.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeP.h" />
     <ClInclude Include="NormalCargo.h" />
     <ClInclude Include="NormalTruck.h" />
     <ClInclude Include="PreparationEvent.h" />
+    <ClInclude Include="PriorityQueue.h" />
     <ClInclude Include="PromoteEvent.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SpecialCargo.h" />
