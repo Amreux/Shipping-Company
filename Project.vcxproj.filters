@@ -51,9 +51,13 @@
     <ClCompile Include="Cargo.cpp">
       <Filter>Cargo</Filter>
     </ClCompile>
-    <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Queue.cpp">
+      <Filter>DataStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>DataStructures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Truck.h">
@@ -92,7 +96,11 @@
     <ClInclude Include="Cargo.h">
       <Filter>Cargo</Filter>
     </ClInclude>
-    <ClInclude Include="Queue.h" />
-    <ClInclude Include="Node.h" />
+    <ClInclude Include="Queue.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -32,7 +32,6 @@ public:
 	{
 		if (IsEmpty())
 			return false;
-
 		Node<T>* NodeToBeDeleted = Front;
 		if (Front == Rear)
 			Rear = nullptr;
