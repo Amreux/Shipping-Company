@@ -11,5 +11,6 @@ class Cargo
 
 public:
 	Cargo(Time Prep, Time Load, int DD, int C,char CT);
+	char GetCT();
 };
 

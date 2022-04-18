@@ -1,5 +1,6 @@
 #pragma once
 #include"NodeP.h"
+#include<iostream>
 using namespace std;
 
 
@@ -11,8 +12,8 @@ class PriorityQueue
 public:
     PriorityQueue()
     {
-        Front = NULL;
-        Rear = NULL;
+        Front = nullptr;
+        Rear = nullptr;
     }
 
     bool isempty()
@@ -25,7 +26,7 @@ public:
         NodeP<T>* NewNode = new NodeP<T>;
         NewNode->SetData(Val);
         NewNode->SetPriority(Prio);
-        NewNode->SetNext(NULL);
+        NewNode->SetNext(nullptr);
         if (isempty())
         {
             Front = NewNode;
@@ -60,7 +61,7 @@ public:
             {
                 NewNode->SetNext(Temp->GetNext());
                 Temp->SetNext(NewNode);
-                if (NewNode->GetNext() == NULL)
+                if (NewNode->GetNext() == nullptr)
                     Rear = NewNode;
                 return;
             }
@@ -79,7 +80,7 @@ public:
         if (Front == Rear)
         {
             delete Front;
-            Front = Rear = NULL;
+            Front = Rear = nullptr;
             return;
         }
         NodeP<T>* ptr = Front;

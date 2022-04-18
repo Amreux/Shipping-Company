@@ -2,7 +2,7 @@
 
 
 void PreparationEvent::Execute(Cargo* C) {
-	if (C->CargoType == 'N')
+	if (C->GetCT() == 'N')
 	{
 
 	}

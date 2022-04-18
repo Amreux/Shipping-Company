@@ -13,6 +13,9 @@ class Company
 	Queue<SpecialCargo> WaitingSpecialCargos;
 	PriorityQueue<VIPCargo> WaitingVIPCargos;
 	LinkedList<NormalCargo> WaitingNormalCargos;
+	Queue<SpecialCargo> MovingSpecialCargos;
+	Queue<NormalCargo> MovingNormalCargos;
+	Queue<VIPCargo> MovingVIPCargos;
 
 };
 
