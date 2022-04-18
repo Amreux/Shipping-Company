@@ -62,6 +62,7 @@
       <Filter>DataStructures</Filter>
     </ClCompile>
     <ClCompile Include="Company.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Truck.h">
@@ -111,6 +112,13 @@
       <Filter>DataStructures</Filter>
     </ClInclude>
     <ClInclude Include="NodeP.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="Header.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
       <Filter>DataStructures</Filter>
     </ClInclude>
   </ItemGroup>

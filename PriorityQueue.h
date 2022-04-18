@@ -1,5 +1,7 @@
 #pragma once
 #include"NodeP.h"
+using namespace std;
+
 
 template<class T>
 class PriorityQueue

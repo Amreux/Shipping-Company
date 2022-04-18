@@ -143,6 +143,7 @@
     <ClCompile Include="Cargo.cpp" />
     <ClCompile Include="Company.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="NormalCargo.cpp" />
@@ -161,6 +162,8 @@
     <ClInclude Include="Cargo.h" />
     <ClInclude Include="Company.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeP.h" />
     <ClInclude Include="NormalCargo.h" />
@@ -171,6 +174,7 @@
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SpecialCargo.h" />
     <ClInclude Include="SpecialTruck.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Truck.h" />
     <ClInclude Include="VIPCargo.h" />
     <ClInclude Include="VIPTruck.h" />

@@ -5,6 +5,6 @@
 class NormalCargo:public Cargo
 {
 public:
-	NormalCargo(Time Prep, Time Load, int DD, int C);
+	NormalCargo(Time Prep, Time Load, int DD, int C, char CT);
 };
 

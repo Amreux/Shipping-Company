@@ -1,9 +1,5 @@
 #pragma once
-
-struct Time {
-	int hour;
-	int day;
-};
+#include "Time.h"
 
 class Cargo
 {
@@ -11,8 +7,9 @@ class Cargo
 	Time LoadUnloadTime;
 	int DeliveryDistance;
 	int Cost;
+	char CargoType;
 
 public:
-	Cargo(Time Prep, Time Load, int DD, int C);
+	Cargo(Time Prep, Time Load, int DD, int C,char CT);
 };
 

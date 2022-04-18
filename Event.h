@@ -1,15 +1,14 @@
 #pragma once
-
-struct Time {
-	int hour;
-	int day;
-};
+#include "Time.h"
+#include "Company.h"
 
 class Event
 {
 	Time EventTime;
+	Cargo* CargoInfo;
 public:
 
-	virtual void Execute() = 0;
+	virtual void Execute(Cargo* C) = 0;
+
 };
 
