@@ -8,6 +8,11 @@ void PreparationEvent::Execute( Company& Comp) {
 		SpecialCargo SC(EventTime, LoadTime, Distance, Cost);
 		Comp.enqueueWSC(SC);
 	}
+	else if (CargoType == 'V')
+	{
+		VIPCargo V(EventTime, LoadTime, Distance, Cost);
+		Comp.enqueueWVC(V);
+	}
 }
 
 

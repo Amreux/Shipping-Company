@@ -21,7 +21,7 @@ public:
         return !Front;
     }
 
-    void enqueue(T Val, int Prio)
+    void enqueue(T Val, int Prio=0)
     {
         NodeP<T>* NewNode = new NodeP<T>;
         NewNode->SetData(Val);
