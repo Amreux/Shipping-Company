@@ -4,5 +4,8 @@
 
 class CancelEvent:public Event
 {
+	int ID;
+public:
+
 };
 

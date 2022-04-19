@@ -1,7 +1,7 @@
 #include "PreparationEvent.h"
 #include "Company.h"
 
-void PreparationEvent::Execute( Company& Comp) {
+bool PreparationEvent::Execute( Company& Comp) {
 	if (CargoType == 'S')
 	{
 		//assumed that Prep time is event time
@@ -18,6 +18,7 @@ void PreparationEvent::Execute( Company& Comp) {
 		NormalCargo N(EventTime, LoadTime, Distance, Cost, ID);
 		Comp.insertWNC(N);
 	}
+	return true;
 }
 
 

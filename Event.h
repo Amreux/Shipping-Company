@@ -12,7 +12,7 @@ class Event
 	Cargo* CargoInfo;
 public:
 	Event();
-	virtual void Execute(Company &Comp) = 0;
+	virtual bool Execute(Company &Comp) = 0;
 
 };
 
