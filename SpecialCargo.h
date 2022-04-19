@@ -8,7 +8,7 @@ class SpecialCargo:public Cargo
 {
 
 public:
-	SpecialCargo(Time Prep, Time Load, int DD, int C);
+	SpecialCargo(Time Prep, Time Load, int DD, int C,int id);
 	SpecialCargo();
 };
 

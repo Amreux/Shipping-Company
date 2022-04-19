@@ -10,8 +10,9 @@ class PreparationEvent:public Event
 	int Distance;
 	Time LoadTime;
 	int Cost;
+	int ID;
 public:
 	void Execute( Company& Comp);
-	void GetParameters(char CT, Time ET, int D, Time LT, int C);
+	void GetParameters(char CT, Time ET, int D, Time LT, int C,int id);
 };
 
