@@ -20,5 +20,6 @@ public:
 	Company();
 	void enqueueWSC(SpecialCargo SC);
 	void enqueueWVC(VIPCargo VC);
+	void insertWNC(NormalCargo NC);
 };
 
