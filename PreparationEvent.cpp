@@ -13,6 +13,11 @@ void PreparationEvent::Execute( Company& Comp) {
 		VIPCargo V(EventTime, LoadTime, Distance, Cost);
 		Comp.enqueueWVC(V);
 	}
+	else if (CargoType == 'N')
+	{
+		NormalCargo N(EventTime, LoadTime, Distance, Cost);
+		Comp.insertWNC(N);
+	}
 }
 
 

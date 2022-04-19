@@ -14,3 +14,8 @@ void Company::enqueueWVC(VIPCargo VC)
 {
 	WaitingVIPCargos.enqueue(VC);
 }
+
+void Company::insertWNC(NormalCargo NC)
+{
+	WaitingNormalCargos.insert(NC);
+}

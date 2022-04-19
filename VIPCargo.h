@@ -6,5 +6,6 @@ class VIPCargo:public Cargo
 {
 public:
 	VIPCargo(Time Prep, Time Load, int DD, int C);
+	VIPCargo();
 };
 

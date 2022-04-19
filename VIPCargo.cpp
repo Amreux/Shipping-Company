@@ -7,3 +7,9 @@ VIPCargo::VIPCargo(Time Prep, Time Load, int DD, int C)
 
 }
 
+VIPCargo::VIPCargo()
+{
+
+}
+
+
