@@ -21,3 +21,22 @@ char Cargo::GetCT()
 	return CargoType;
 }
 
+int Cargo::GetID()
+{
+	return ID;
+}
+
+int Cargo::GetCost()
+{
+	return Cost;
+}
+
+void Cargo::SetCargoType(char CT)
+{
+	CargoType = CT;
+}
+
+void Cargo::SetCost(int C)
+{
+	Cost = C;
+}

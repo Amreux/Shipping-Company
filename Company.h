@@ -21,5 +21,6 @@ public:
 	void enqueueWSC(SpecialCargo SC);
 	void enqueueWVC(VIPCargo VC);
 	void insertWNC(NormalCargo NC);
+	Node <NormalCargo>* RemoveWNC(int id);
 };
 

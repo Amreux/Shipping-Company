@@ -1,5 +1,6 @@
 #pragma once
 #include "Node.h"
+#include "NormalCargo.h"
 
 template <class T>
 class LinkedList
@@ -32,6 +33,33 @@ public:
 		return true;
 	}
 
+	
+	Node<NormalCargo>* Delete(int id)
+	{
+		Node<NormalCargo>* temp = Head;
+
+		if (IsEmpty())
+			return nullptr;
+		if (temp->GetData().GetID() == id)
+		{
+			Head = temp->GetNext();
+			return temp;
+		}
+		Node<NormalCargo>* NodeToBeDeleted;
+		while (temp->GetNext())
+		{
+			if (temp->GetNext()->GetData().GetID() == id)
+			{
+				NodeToBeDeleted = temp->GetNext();
+				temp->SetNext(NodeToBeDeleted->GetNext());
+				return NodeToBeDeleted;
+			}
+			temp = temp->GetNext();
+		}
+		return nullptr;
+	}
+	
 
 };
+
 

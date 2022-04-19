@@ -13,6 +13,6 @@ class PreparationEvent:public Event
 	int ID;
 public:
 	bool Execute( Company& Comp);
-	void GetParameters(char CT, Time ET, int D, Time LT, int C,int id);
+	void SetParameters(char CT, Time ET, int D, Time LT, int C,int id);
 };
 

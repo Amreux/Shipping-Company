@@ -15,14 +15,14 @@ bool PreparationEvent::Execute( Company& Comp) {
 	}
 	else if (CargoType == 'N')
 	{
-		NormalCargo N(EventTime, LoadTime, Distance, Cost, ID);
+		NormalCargo N(EventTime, LoadTime, Distance, ID, Cost);
 		Comp.insertWNC(N);
 	}
 	return true;
 }
 
 
-void PreparationEvent::GetParameters(char CT, Time ET, int D, Time LT, int C,int id)
+void PreparationEvent::SetParameters(char CT, Time ET, int D, Time LT, int C,int id)
 {
 	CargoType = CT;
 	EventTime = ET;

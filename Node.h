@@ -27,7 +27,7 @@ public:
 	{
 		return Next;
 	}
-	T GetData()
+	T& GetData()
 	{
 		return Data;
 	}

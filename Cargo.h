@@ -13,5 +13,9 @@ public:
 	Cargo(Time Prep, Time Load, int DD, int C,int id,char CT);
 	Cargo();
 	char GetCT();
+	int GetID();
+	int GetCost();
+	void SetCost(int C);
+	void SetCargoType(char CT);
 };
 
