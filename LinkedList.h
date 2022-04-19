@@ -4,7 +4,7 @@
 template <class T>
 class LinkedList
 {
-	Node* Head;
+	Node<T>* Head;
 
 public:
 	LinkedList()
@@ -14,7 +14,7 @@ public:
 
 	bool IsEmpty()
 	{
-		return (Head == NULL);
+		return (Head == nullptr);
 	}
 
 	bool insert(T data)
