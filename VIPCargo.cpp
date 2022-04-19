@@ -6,3 +6,4 @@ VIPCargo::VIPCargo(Time Prep, Time Load, int DD, int C, char CT)
 {
 
 }
+

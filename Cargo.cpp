@@ -10,7 +10,13 @@ Cargo::Cargo(Time Prep, Time Load, int DD, int C,char CT)
 	CargoType = CT;
 }
 
+Cargo::Cargo()
+{
+
+}
+
 char Cargo::GetCT()
 {
 	return CargoType;
 }
+

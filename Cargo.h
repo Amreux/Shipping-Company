@@ -7,10 +7,10 @@ class Cargo
 	Time LoadUnloadTime;
 	int DeliveryDistance;
 	int Cost;
-	char CargoType;
-
+	char CargoType; 
 public:
 	Cargo(Time Prep, Time Load, int DD, int C,char CT);
+	Cargo();
 	char GetCT();
 };
 

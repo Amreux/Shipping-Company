@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Node.h"
+#include <iostream>
+
+using namespace std;
+
 
 template <class T>
 class Queue
@@ -47,5 +51,6 @@ public:
 			return true;
 		return false;
 	}
+	
 };
 

@@ -16,6 +16,9 @@ class Company
 	Queue<SpecialCargo> MovingSpecialCargos;
 	Queue<NormalCargo> MovingNormalCargos;
 	Queue<VIPCargo> MovingVIPCargos;
-
+public:
+	Company();
+	void enqueueWSC(SpecialCargo SC);
+	void Dis();//should be changed
 };
 

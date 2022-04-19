@@ -6,14 +6,14 @@ class Node
 	T Data;
 	Node* Next;
 public:
+	Node()
+	{
+		Next = nullptr;
+	}
 	Node(T val, Node<T>* N) 
 	{
 		SetData(val);
 		SetNext(N);
-	}
-	Node()
-	{
-		Next = nullptr;
 	}
 	void SetData(T val)
 	{
