@@ -19,6 +19,6 @@ class Company
 public:
 	Company();
 	void enqueueWSC(SpecialCargo SC);
-	void Dis();//should be changed
+	void enqueueWVC(VIPCargo VC);
 };
 
