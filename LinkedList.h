@@ -34,7 +34,7 @@ public:
 	}
 
 	
-	Node<NormalCargo>* Delete(int id)
+	NormalCargo* Delete(int id)
 	{
 		Node<NormalCargo>* temp = Head;
 
@@ -43,7 +43,7 @@ public:
 		if (temp->GetData().GetID() == id)
 		{
 			Head = temp->GetNext();
-			return temp;
+			return &(temp->GetData());
 		}
 		Node<NormalCargo>* NodeToBeDeleted;
 		while (temp->GetNext())
@@ -52,7 +52,7 @@ public:
 			{
 				NodeToBeDeleted = temp->GetNext();
 				temp->SetNext(NodeToBeDeleted->GetNext());
-				return NodeToBeDeleted;
+				return &(NodeToBeDeleted->GetData());
 			}
 			temp = temp->GetNext();
 		}

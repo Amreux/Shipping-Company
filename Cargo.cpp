@@ -31,6 +31,21 @@ int Cargo::GetCost()
 	return Cost;
 }
 
+Time Cargo::GetPreparationTime()
+{
+	return PreparationTime;
+}
+
+Time Cargo::GetLoadUnloadTime()
+{
+	return LoadUnloadTime;
+}
+
+int Cargo::GetDeliveryDistance()
+{
+	return DeliveryDistance;
+}
+
 void Cargo::SetCargoType(char CT)
 {
 	CargoType = CT;

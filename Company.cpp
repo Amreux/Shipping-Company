@@ -21,7 +21,7 @@ void Company::insertWNC(NormalCargo NC)
 }
 
 
-Node<NormalCargo>* Company::RemoveWNC(int id)
+NormalCargo* Company::RemoveWNC(int id)
 {
 	return WaitingNormalCargos.Delete(id);
 }

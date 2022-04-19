@@ -15,6 +15,9 @@ public:
 	char GetCT();
 	int GetID();
 	int GetCost();
+	int GetDeliveryDistance();
+	Time GetPreparationTime();
+	Time GetLoadUnloadTime();
 	void SetCost(int C);
 	void SetCargoType(char CT);
 };

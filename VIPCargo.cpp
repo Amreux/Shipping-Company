@@ -12,4 +12,3 @@ VIPCargo::VIPCargo()
 
 }
 
-
