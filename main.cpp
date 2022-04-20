@@ -38,9 +38,6 @@ int main()
 
 
 
-
-
-
 	/*Company C;
 	PreparationEvent PE1;
 	CancelEvent CE1;
@@ -58,7 +55,9 @@ int main()
 	PE1.SetParameters('S', T1, 555, 10, 555, 5);
 	PE1.Execute(C);
 	PE2.SetParameters(2, 200);
-	PE2.Execute(C);*/
+	PE2.Execute(C);
+	CE1.SetParameters(2);
+	CE1.Execute(C);*/
 	/*int x, y;
 	cin >> x;
 	cin.ignore();

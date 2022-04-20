@@ -42,7 +42,7 @@ void UI::LoadFile( Company& C)
 			case 'X':
 			{
 				CancelEvent* CE = new CancelEvent;
-				InputFile >> CargoType >> T.day;
+				InputFile  >> T.day;
 				InputFile.ignore();
 				InputFile >> T.hour >> ID;
 				CE->SetParameters(ID);
