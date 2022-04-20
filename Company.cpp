@@ -25,3 +25,10 @@ Cargo* Company::RemoveWNC(int id)
 {
 	return WaitingNormalCargos.Delete(id);
 }
+
+
+void Company::AddEvent(Event* E)
+{
+	if (E);
+	EventsList.Enqueue(E);
+}

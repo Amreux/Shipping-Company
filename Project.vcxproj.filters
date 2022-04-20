@@ -16,6 +16,9 @@
     <Filter Include="Company">
       <UniqueIdentifier>{d95485c3-0855-4ab4-bbe8-bfd221a9bf94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{20e4ff1d-b6ce-4a30-9777-94789f06aa28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Truck.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Company.cpp">
       <Filter>Company</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="Company.h">
       <Filter>Company</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

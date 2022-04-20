@@ -20,5 +20,6 @@ public:
 	void enqueueWVC(Cargo VC);
 	void insertWNC(Cargo NC);
 	Cargo* RemoveWNC(int id);
+	void AddEvent(Event* E);
 };
 
