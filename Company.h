@@ -14,12 +14,28 @@ class Company
 	Queue<Cargo> MovingSpecialCargos;
 	Queue<Cargo> MovingNormalCargos;
 	Queue<Cargo> MovingVIPCargos;
+	Queue<Cargo> DeliveredNormalCargos;
+	Queue<Cargo> DeliveredVIPCargos;
+	Queue<Cargo> DeliveredSpecialCargos;
 public:
 	Company();
 	void enqueueWSC(Cargo SC);
 	void enqueueWVC(Cargo VC);
 	void insertWNC(Cargo NC);
-	Cargo* RemoveWNC(int id);
 	void AddEvent(Event* E);
+	void EnqueueMSC(Cargo SC);
+	void EnqueueMNC(Cargo NC);
+	void EnqueueMVC(Cargo VC);
+	void EnqueueDSC(Cargo SC);
+	void EnqueueDNC(Cargo NC);
+	void EnqueueDVC(Cargo VC);
+	Cargo* RemoveWNC(int id);
+	bool DequeueWVC(Cargo& VC);
+	bool DequeueWSC(Cargo& SC);
+	bool DequeueEvent(Event*& E);
+	bool DequeueMVC(Cargo& VC);
+	bool DequeueMSC(Cargo& SC);
+	bool DequeueMNC(Cargo& NC);
+	bool AllIsDelivered();
 };
 

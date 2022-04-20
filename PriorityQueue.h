@@ -71,21 +71,17 @@ public:
         Rear = NewNode;
     }
 
-    void dequeue()
+    bool Dequeue(T& data)
     {
-        if (isempty())
-        {
-            return;
-        }
+        if (IsEmpty())
+            return false;
+        NodeP<T>* NodeToBeDeleted = Front;
         if (Front == Rear)
-        {
-            delete Front;
-            Front = Rear = nullptr;
-            return;
-        }
-        NodeP<T>* ptr = Front;
+            Rear = nullptr;
         Front = Front->GetNext();
-        delete ptr;
+        data = NodeToBeDeleted->GetData();
+        delete NodeToBeDeleted;
+        return true;
     }
 
     void display()
