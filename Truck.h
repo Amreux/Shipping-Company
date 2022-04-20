@@ -2,8 +2,8 @@
 
 class Truck 
 {
-	int TruckCapacity;
-	int MaintenanceTime;
-	int Speed;
 	int DeliveryInterval;
+public:
+	Truck(int DI);
+	Truck();
 };

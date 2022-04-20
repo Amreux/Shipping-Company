@@ -4,11 +4,14 @@
 
 bool PromoteEvent::Execute(Company& Comp)
 {
-	NormalCargo* CargoToBePromoted = Comp.RemoveWNC(ID);
+	Cargo* CargoToBePromoted = Comp.RemoveWNC(ID);
+
 	if (CargoToBePromoted)
 	{
-		VIPCargo V(CargoToBePromoted->GetPreparationTime(), CargoToBePromoted->GetLoadUnloadTime(), CargoToBePromoted->GetDeliveryDistance(), CargoToBePromoted->GetCost() + ExtraCost, CargoToBePromoted->GetID());
-		Comp.enqueueWVC(V);
+		CargoToBePromoted->SetCargoType('V');
+
+		CargoToBePromoted->SetCost(CargoToBePromoted->GetCost() + ExtraCost);
+		Comp.enqueueWVC(*CargoToBePromoted);
 		return true;
 	}
 	return false;

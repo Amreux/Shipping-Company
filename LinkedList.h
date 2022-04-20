@@ -1,9 +1,9 @@
 #pragma once
 #include "Node.h"
-#include "NormalCargo.h"
+#include "Cargo.h"
 
 template <class T>
-class LinkedList
+class LinkedList 
 {
 	Node<T>* Head;
 
@@ -33,10 +33,74 @@ public:
 		return true;
 	}
 
-	
-	NormalCargo* Delete(int id)
+	T* Delete(T val)
 	{
-		Node<NormalCargo>* temp = Head;
+		if (!isfound(val))
+		{
+			return;
+		}
+
+		if (Head->GetNext() == nullptr)
+		{
+			Head = nullptr;
+			return;
+		}
+
+		Node<T>* temp = Head;
+
+		while (temp->GetNext() != nullptr)
+		{
+			if (temp->GetData() == val)
+			{
+				temp->GetData() = temp->GetNext()->GetData();
+				temp->GetNext() = temp->GetNext()->GetNext();
+				return;
+			}
+			if (temp->GetNext()->GetNext() == nullptr)
+			{
+				temp->GetNext() = nullptr;
+				break;
+			}
+			temp = temp->GetNext();
+		}
+	}
+};
+
+
+template <>
+class LinkedList <Cargo>
+{
+	Node<Cargo>* Head;
+
+public:
+	LinkedList()
+	{
+		Head = nullptr;
+	}
+
+	bool IsEmpty()
+	{
+		return (Head == nullptr);
+	}
+
+	bool insert(Cargo data)
+	{
+		Node<Cargo>* NewNode = new Node<Cargo>(data, nullptr);
+		if (IsEmpty())
+		{
+			Head = NewNode;
+			return true;
+		}
+		Node<Cargo>* Temp = Head;
+		while (Temp->GetNext())
+			Temp = Temp->GetNext();
+		Temp->SetNext(NewNode);
+		return true;
+	}
+
+	Cargo* Delete(int id)
+	{
+		Node<Cargo>* temp = Head;
 
 		if (IsEmpty())
 			return nullptr;
@@ -45,7 +109,7 @@ public:
 			Head = temp->GetNext();
 			return &(temp->GetData());
 		}
-		Node<NormalCargo>* NodeToBeDeleted;
+		Node<Cargo>* NodeToBeDeleted;
 		while (temp->GetNext())
 		{
 			if (temp->GetNext()->GetData().GetID() == id)
@@ -58,8 +122,5 @@ public:
 		}
 		return nullptr;
 	}
-	
-
 };
-
 

@@ -5,23 +5,23 @@ Company::Company()
 
 }
 
-void Company::enqueueWSC(SpecialCargo SC)
+void Company::enqueueWSC(Cargo SC)
 {
 	WaitingSpecialCargos.Enqueue(SC);
 }
 
-void Company::enqueueWVC(VIPCargo VC)
+void Company::enqueueWVC(Cargo VC)
 {
 	WaitingVIPCargos.enqueue(VC);
 }
 
-void Company::insertWNC(NormalCargo NC)
+void Company::insertWNC(Cargo NC)
 {
 	WaitingNormalCargos.insert(NC);
 }
 
 
-NormalCargo* Company::RemoveWNC(int id)
+Cargo* Company::RemoveWNC(int id)
 {
 	return WaitingNormalCargos.Delete(id);
 }

@@ -5,7 +5,7 @@ using namespace std;
 
 bool CancelEvent::Execute(Company& Comp)
 {
-	NormalCargo* CargoToBeDeleted = Comp.RemoveWNC(ID);
+	Cargo* CargoToBeDeleted = Comp.RemoveWNC(ID);
 	if (CargoToBeDeleted)
 	{
 		delete CargoToBeDeleted;

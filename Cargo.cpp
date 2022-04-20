@@ -1,7 +1,7 @@
 #include "Cargo.h"
 
 
-Cargo::Cargo(Time Prep, Time Load, int DD, int C,int id,char CT)
+Cargo::Cargo(Time Prep, int Load, int DD, int C,int id,char CT)
 {
 	PreparationTime = Prep;
 	LoadUnloadTime = Load;
@@ -36,7 +36,7 @@ Time Cargo::GetPreparationTime()
 	return PreparationTime;
 }
 
-Time Cargo::GetLoadUnloadTime()
+int Cargo::GetLoadUnloadTime()
 {
 	return LoadUnloadTime;
 }

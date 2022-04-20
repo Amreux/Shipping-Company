@@ -3,24 +3,22 @@
 #include "Queue.h"
 #include "PriorityQueue.h"
 #include "LinkedList.h"
-#include "SpecialCargo.h"
-#include "VIPCargo.h"
-#include "NormalCargo.h"
+#include "Cargo.h"
 
 class Company
 {
 	Queue < Event* > EventsList;
-	Queue<SpecialCargo> WaitingSpecialCargos;
-	PriorityQueue<VIPCargo> WaitingVIPCargos;
-	LinkedList<NormalCargo> WaitingNormalCargos;
-	Queue<SpecialCargo> MovingSpecialCargos;
-	Queue<NormalCargo> MovingNormalCargos;
-	Queue<VIPCargo> MovingVIPCargos;
+	Queue<Cargo> WaitingSpecialCargos;
+	PriorityQueue<Cargo> WaitingVIPCargos;
+	LinkedList<Cargo> WaitingNormalCargos;
+	Queue<Cargo> MovingSpecialCargos;
+	Queue<Cargo> MovingNormalCargos;
+	Queue<Cargo> MovingVIPCargos;
 public:
 	Company();
-	void enqueueWSC(SpecialCargo SC);
-	void enqueueWVC(VIPCargo VC);
-	void insertWNC(NormalCargo NC);
-	NormalCargo* RemoveWNC(int id);
+	void enqueueWSC(Cargo SC);
+	void enqueueWVC(Cargo VC);
+	void insertWNC(Cargo NC);
+	Cargo* RemoveWNC(int id);
 };
 
