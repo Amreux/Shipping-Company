@@ -93,8 +93,13 @@ bool Company::DequeueMNC(Cargo& NC)
 	return MovingNormalCargos.Dequeue(NC);
 }
 
+bool Company::RemoveFirstWNC(Cargo& NC)
+{
+	return WaitingNormalCargos.RemoveFirst(NC);
+}
+
 bool Company::AllIsDelivered()
 {
-	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && WaitingVIPCargos.isempty()) && (MovingNormalCargos.IsEmpty() && MovingSpecialCargos.IsEmpty() && MovingVIPCargos.IsEmpty());
+	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && WaitingVIPCargos.IsEmpty()) && (MovingNormalCargos.IsEmpty() && MovingSpecialCargos.IsEmpty() && MovingVIPCargos.IsEmpty());
 }
 

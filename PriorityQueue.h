@@ -16,7 +16,7 @@ public:
         Rear = nullptr;
     }
 
-    bool isempty()
+    bool IsEmpty()
     {
         return !Front;
     }
@@ -27,7 +27,7 @@ public:
         NewNode->SetData(Val);
         NewNode->SetPriority(Prio);
         NewNode->SetNext(nullptr);
-        if (isempty())
+        if (IsEmpty())
         {
             Front = NewNode;
             Rear = NewNode;

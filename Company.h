@@ -36,6 +36,7 @@ public:
 	bool DequeueMVC(Cargo& VC);
 	bool DequeueMSC(Cargo& SC);
 	bool DequeueMNC(Cargo& NC);
+	bool RemoveFirstWNC(Cargo& NC);
 	bool AllIsDelivered();
 };
 

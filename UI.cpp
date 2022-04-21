@@ -84,15 +84,32 @@ void UI::Simulate(Company& C)
 			C.DequeueEvent(CurrentEvent);
 		}
 		
-		
-		
-		
+		Cargo Temp1;
+		bool Test1;
+		Test1 = C.DequeueWSC(Temp1);
+		if (Test1)
+			C.EnqueueMSC(Temp1);
+		Test1 = C.DequeueWVC(Temp1);
+		if (Test1)
+			C.EnqueueMVC(Temp1);
+		Test1 = C.RemoveFirstWNC(Temp1);
+		if (Test1)
+			C.EnqueueMNC(Temp1);
+
 		if (DeliveryPeriod % 5 == 0)
 		{
-
+			Cargo Temp2;
+			bool Test2;
+			Test2 = C.DequeueMSC(Temp2);
+			if (Test2)
+				C.EnqueueDSC(Temp2);
+			Test2 = C.DequeueMVC(Temp2);
+			if (Test2)
+				C.EnqueueDVC(Temp2);
+			Test2 = C.DequeueMNC(Temp2);
+			if (Test2)
+				C.EnqueueDNC(Temp2);
 		}
-		
-		
 		
 		hour++;
 		if (hour == 24)
@@ -100,6 +117,5 @@ void UI::Simulate(Company& C)
 			hour = 0;
 			day++;
 		}
-
 	}
 }

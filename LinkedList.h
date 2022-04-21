@@ -64,6 +64,18 @@ public:
 			temp = temp->GetNext();
 		}
 	}
+
+	bool RemoveFirst(T& Data)
+	{
+		if (IsEmpty())
+			return false;
+
+		Node<T>* NodeToBeDeleted = Head;
+		Data = NodeToBeDeleted->GetData();
+		Head = Head->GetNext();
+		delete NodeToBeDeleted;
+		return true;
+	}
 };
 
 
@@ -121,6 +133,18 @@ public:
 			temp = temp->GetNext();
 		}
 		return nullptr;
+	}
+
+	bool RemoveFirst(Cargo& Data)
+	{
+		if (IsEmpty())
+			return false;
+
+		Node<Cargo>* NodeToBeDeleted = Head;
+		Data = NodeToBeDeleted->GetData();
+		Head = Head->GetNext();
+		delete NodeToBeDeleted;
+		return true;
 	}
 };
 
