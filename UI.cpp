@@ -63,17 +63,13 @@ void UI::LoadFile( Company& C)
 			}
 
 	}
-
-
-
-
 }
 
 void UI::Simulate(Company& C)
 {
 	int hour = 0;
 	int day = 0;
-	int DeliveryPeriod = 0;
+	int DeliveryPeriod = 1;
 	LoadFile(C);
 	Event* CurrentEvent = nullptr;
 	while (CurrentEvent || !C.AllIsDelivered())
@@ -110,7 +106,7 @@ void UI::Simulate(Company& C)
 			if (Test2)
 				C.EnqueueDNC(Temp2);
 		}
-		
+		DeliveryPeriod++;
 		hour++;
 		if (hour == 24)
 		{

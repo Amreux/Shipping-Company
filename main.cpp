@@ -12,8 +12,7 @@ int main()
 {
 	UI Interface;
 	Company C;
-	Interface.LoadFile(C);
-
+	Interface.Simulate(C);
 	
 
 
