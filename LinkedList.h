@@ -76,6 +76,28 @@ public:
 		delete NodeToBeDeleted;
 		return true;
 	}
+
+	int GetCount()
+	{
+		int Counter = 0;
+		Node<T>* Temp = Head;
+		while (Temp)
+		{
+			Counter++;
+			Temp = Temp->GetNext();
+		}
+		return Counter;
+	}
+
+	void Print()
+	{
+		Node<T>* Temp = Head;
+		while (Temp)
+		{
+			cout << Temp->GetData();
+			Temp = Temp->GetNext();
+		}
+	}
 };
 
 
@@ -145,6 +167,33 @@ public:
 		Head = Head->GetNext();
 		delete NodeToBeDeleted;
 		return true;
+	}
+
+	int GetCount()
+	{
+		int Counter = 0;
+		Node<Cargo>* Temp = Head;
+		while (Temp)
+		{
+			Counter++;
+			Temp = Temp->GetNext();
+		}
+		return Counter;
+	}
+
+	void Print()
+	{
+		Node<Cargo>* Temp = Head;
+		while (Temp)
+		{
+			if (!Temp->GetNext())
+			{
+				cout << Temp->GetData().GetID();
+				return;
+			}
+			cout << Temp->GetData().GetID() << ",";
+			Temp = Temp->GetNext();
+		}
 	}
 };
 

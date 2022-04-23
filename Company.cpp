@@ -103,3 +103,53 @@ bool Company::AllIsDelivered()
 	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && WaitingVIPCargos.IsEmpty()) && (MovingNormalCargos.IsEmpty() && MovingSpecialCargos.IsEmpty() && MovingVIPCargos.IsEmpty());
 }
 
+void Company::PrintWNC()
+{
+	WaitingNormalCargos.Print();
+}
+void Company::PrintWSC()
+{
+	WaitingSpecialCargos.Print();
+}
+void Company::PrintWVC()
+{
+	WaitingVIPCargos.Print();
+}
+void Company::PrintMNC()
+{
+	MovingNormalCargos.Print();
+}
+void Company::PrintMSC()
+{
+	MovingSpecialCargos.Print();
+}
+void Company::PrintMVC()
+{
+	MovingVIPCargos.Print();
+}
+void Company::PrintDNC()
+{
+	DeliveredNormalCargos.Print();
+}
+void Company::PrintDSC()
+{
+	DeliveredSpecialCargos.Print();
+}
+void Company::PrintDVC()
+{
+	DeliveredVIPCargos.Print();
+}
+
+int Company::WaitingCount()
+{
+	return WaitingNormalCargos.GetCount() + WaitingSpecialCargos.GetCount() + WaitingVIPCargos.GetCount();
+}
+
+int Company::MovingCount()
+{
+	return MovingNormalCargos.GetCount() + MovingSpecialCargos.GetCount() + MovingVIPCargos.GetCount();
+}
+int Company::DeliveredCount()
+{
+	return DeliveredNormalCargos.GetCount() + DeliveredSpecialCargos.GetCount() + DeliveredVIPCargos.GetCount();
+}

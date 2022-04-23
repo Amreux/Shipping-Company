@@ -37,6 +37,18 @@ public:
 	bool DequeueMSC(Cargo& SC);
 	bool DequeueMNC(Cargo& NC);
 	bool RemoveFirstWNC(Cargo& NC);
+	void PrintWNC();
+	void PrintWSC();
+	void PrintWVC();
+	void PrintMNC();
+	void PrintMSC();
+	void PrintMVC(); 
+	void PrintDNC();
+	void PrintDSC();
+	void PrintDVC();
+	int WaitingCount();
+	int MovingCount();
+	int DeliveredCount();
 	bool AllIsDelivered();
 };
 
