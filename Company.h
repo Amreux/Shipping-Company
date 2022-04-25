@@ -1,9 +1,13 @@
 #pragma once
 #include "Event.h"
+#include "CancelEvent.h"
+#include "PreparationEvent.h"
+#include "PromoteEvent.h"
 #include "Queue.h"
 #include "PriorityQueue.h"
 #include "LinkedList.h"
 #include "Cargo.h"
+#include <fstream>
 
 class Company
 {
@@ -11,9 +15,9 @@ class Company
 	Queue<Cargo> WaitingSpecialCargos;
 	PriorityQueue<Cargo> WaitingVIPCargos;
 	LinkedList<Cargo> WaitingNormalCargos;
-	Queue<Cargo> MovingSpecialCargos;
-	Queue<Cargo> MovingNormalCargos;
-	Queue<Cargo> MovingVIPCargos;
+	PriorityQueue<Cargo> MovingSpecialCargos;
+	PriorityQueue<Cargo> MovingNormalCargos;
+	PriorityQueue<Cargo> MovingVIPCargos;
 	Queue<Cargo> DeliveredNormalCargos;
 	Queue<Cargo> DeliveredVIPCargos;
 	Queue<Cargo> DeliveredSpecialCargos;
@@ -50,5 +54,6 @@ public:
 	int MovingCount();
 	int DeliveredCount();
 	bool AllIsDelivered();
+	void LoadFile(string Input);
 };
 

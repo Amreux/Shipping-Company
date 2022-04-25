@@ -35,17 +35,17 @@ void Company::AddEvent(Event* E)
 
 void Company::EnqueueMSC(Cargo SC)
 {
-	MovingSpecialCargos.Enqueue(SC);
+	MovingSpecialCargos.enqueue(SC);
 }
 
 void Company::EnqueueMNC(Cargo NC)
 {
-	MovingNormalCargos.Enqueue(NC);
+	MovingNormalCargos.enqueue(NC);
 }
 
 void Company::EnqueueMVC(Cargo VC)
 {
-	MovingVIPCargos.Enqueue(VC);
+	MovingVIPCargos.enqueue(VC);
 }
 
 void Company::EnqueueDSC(Cargo SC)
@@ -152,4 +152,60 @@ int Company::MovingCount()
 int Company::DeliveredCount()
 {
 	return DeliveredNormalCargos.GetCount() + DeliveredSpecialCargos.GetCount() + DeliveredVIPCargos.GetCount();
+}
+
+void Company::LoadFile( string Input)
+{
+	ifstream InputFile("Input.txt");
+	if (!InputFile.is_open())
+	{
+		cout << "Could not open the file..." << endl;
+		return;
+	}
+	ofstream OutputFile("Output.txt");
+	OutputFile << "Done";
+	int No_Events;
+	InputFile >> No_Events;
+	char EventType, CargoType;
+	Time T;
+	int ID, Distance, LoadTime, Cost, ExtraCost;
+	for (int i = 0; i < No_Events; i++)
+	{
+		InputFile >> EventType;
+		switch (EventType)
+		{
+		case 'R':
+		{
+			PreparationEvent* RE = new PreparationEvent;
+			InputFile >> CargoType >> T.day;
+			InputFile.ignore();
+			InputFile >> T.hour >> ID >> Distance >> LoadTime >> Cost;
+			RE->SetParameters(CargoType, T, Distance, LoadTime, Cost, ID);
+			RE->SetEventTime(T);
+			AddEvent(RE);
+			break;
+		}
+		case 'X':
+		{
+			CancelEvent* CE = new CancelEvent;
+			InputFile >> T.day;
+			InputFile.ignore();
+			InputFile >> T.hour >> ID;
+			CE->SetParameters(ID);
+			CE->SetEventTime(T);
+			AddEvent(CE);
+			break;
+		}
+		case 'P':
+		{
+			PromoteEvent* PE = new PromoteEvent;
+			InputFile >> T.day;
+			InputFile.ignore();
+			InputFile >> T.hour >> ID >> ExtraCost;
+			PE->SetParameters(ID, ExtraCost);
+			PE->SetEventTime(T);
+			AddEvent(PE);
+		}
+		}
+	}
 }
