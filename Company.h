@@ -22,7 +22,10 @@ class Company
 	Queue<Cargo> DeliveredVIPCargos;
 	Queue<Cargo> DeliveredSpecialCargos;
 public:
+	//      constructor
 	Company();
+
+	//------------------------------------//
 	void enqueueWSC(Cargo SC);
 	void enqueueWVC(Cargo VC);
 	void insertWNC(Cargo NC);
