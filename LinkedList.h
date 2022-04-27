@@ -24,7 +24,7 @@ public:
 		if (IsEmpty())
 		{
 			Head = NewNode;
-		return true;
+			return true;
 		}
 		Node<T>* Temp = Head;
 		while (Temp->GetNext())
