@@ -156,54 +156,94 @@ int Company::DeliveredCount()
 
 void Company::LoadFile( string Input)
 {
+
+	//opening the input file to read from
+
 	ifstream InputFile("Input.txt");
+
+
+	//checking whether the file is opened/found 
+
 	if (!InputFile.is_open())
 	{
 		cout << "Could not open the file..." << endl;
 		return;
 	}
+
+	//opening the output file
+
 	ofstream OutputFile("Output.txt");
 	OutputFile << "Done";
 	int No_Events;
+
+
+	//reading the number of events from input file
 	InputFile >> No_Events;
+
+
+	//variables for diffrent events
 	char EventType, CargoType;
 	Time T;
 	int ID, Distance, LoadTime, Cost, ExtraCost;
+
+
 	for (int i = 0; i < No_Events; i++)
 	{
 		InputFile >> EventType;
+
+		//switch case to check wich EVENT will be executed
+
 		switch (EventType)
 		{
 		case 'R':
 		{
+			//allocating a new  event
+
 			PreparationEvent* RE = new PreparationEvent;
+
+			//reading event variables
 			InputFile >> CargoType >> T.day;
 			InputFile.ignore();
 			InputFile >> T.hour >> ID >> Distance >> LoadTime >> Cost;
 			RE->SetParameters(CargoType, T, Distance, LoadTime, Cost, ID);
 			RE->SetEventTime(T);
+
+			//adding the event to the Event queue
 			AddEvent(RE);
+
 			break;
 		}
 		case 'X':
 		{
+
+			//allocating a new event
 			CancelEvent* CE = new CancelEvent;
+
+
+			//reading event variables
 			InputFile >> T.day;
 			InputFile.ignore();
 			InputFile >> T.hour >> ID;
 			CE->SetParameters(ID);
 			CE->SetEventTime(T);
+
+			//adding the event to the Event queue
 			AddEvent(CE);
 			break;
 		}
 		case 'P':
 		{
+			//allocating a new event
 			PromoteEvent* PE = new PromoteEvent;
+
+			//reading event variables
 			InputFile >> T.day;
 			InputFile.ignore();
 			InputFile >> T.hour >> ID >> ExtraCost;
 			PE->SetParameters(ID, ExtraCost);
 			PE->SetEventTime(T);
+
+			//adding the event to the Event queue
 			AddEvent(PE);
 		}
 		}
