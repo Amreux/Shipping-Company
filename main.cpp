@@ -12,5 +12,7 @@ int main()
 {
 	UI Interface;
 	Company C;
-	Interface.Simulate(C, 1,"");
+	int Type;
+	cin >> Type;
+	Interface.Simulate(C, Type,"");
 }

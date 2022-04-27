@@ -76,6 +76,7 @@ public:
 	}
 };
 
+//      class specializtion to specify a copy for function Print using data and id for cargos only
 template <>
 class Queue <Cargo>
 {
@@ -134,6 +135,7 @@ public:
 		return Counter;
 	}
 
+	//     fuction Print to Print according to the wanted format
 	void Print()
 	{
 		Node<Cargo>* Temp = Front;

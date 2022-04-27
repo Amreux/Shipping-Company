@@ -100,7 +100,7 @@ public:
 	}
 };
 
-
+//      class specializtion to specify a copy for function delete using id for cargos only
 template <>
 class LinkedList <Cargo>
 {
@@ -132,6 +132,7 @@ public:
 		return true;
 	}
 
+	//     Function Delete(id) to delete node associated with this id
 	Cargo* Delete(int id)
 	{
 		Node<Cargo>* temp = Head;
@@ -181,6 +182,7 @@ public:
 		return Counter;
 	}
 
+	//     fuction Print to Print according to the wanted format
 	void Print()
 	{
 		Node<Cargo>* Temp = Head;

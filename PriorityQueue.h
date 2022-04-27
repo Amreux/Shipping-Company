@@ -22,6 +22,7 @@ public:
         return !Front;
     }
 
+    //     Function enqueue that enqueue with respect to Priority
     void enqueue(T Val, int Prio=0)
     {
         NodeP<T>* NewNode = new NodeP<T>;
@@ -108,6 +109,7 @@ public:
     }
 };
 
+//      class specializtion to specify a copy for function enqueue for cargos only
 template<>
 class PriorityQueue <Cargo>
 {
@@ -125,6 +127,7 @@ public:
         return !Front;
     }
 
+    //     Function enqueue that enqueue with respect to Priority
     void enqueue(Cargo Val, int Prio = 0)
     {
         NodeP<Cargo>* NewNode = new NodeP<Cargo>;
@@ -200,6 +203,7 @@ public:
         return Counter;
     }
 
+    //     fuction Print to Print according to the wanted format
     void Print()
     {
         NodeP<Cargo>* Temp = Front;

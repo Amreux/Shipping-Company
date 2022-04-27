@@ -1,6 +1,8 @@
 #pragma once
 
-class Time {
+//    Class Time to Store Day and Hour of the EventTime and PreparationTime
+class Time 
+{
 public:
 	int hour;
 	int day;

@@ -18,6 +18,8 @@ void UI::Simulate(Company& C,int Type, string Input)
 {
 	int hour = 0;
 	int day = 0;
+	//    Variable that ensures that after each 5 Steps the functions dequeue a cargo from each waiting list and enqueue it
+	//    in each delivered list 
 	int DeliveryPeriod = 0;
 	C.LoadFile("");
 	Event* CurrentEvent = nullptr;
@@ -25,11 +27,15 @@ void UI::Simulate(Company& C,int Type, string Input)
 	while (CurrentEvent || !C.AllIsDelivered())
 	{
 		system("cls");
-		if (Type == 1 || Type == 2)
+		//     Type1---> Interactive Mode 
+		//     Type2---> Step-By-STep Mode
+		if (Type == 1 || Type == 2) 
 		{
 			cout << "Current Time(Day:Hour) :" << day << ":" << hour << endl;
 			Display(C);
 		}
+
+		//      AT each hour the Function asks if there is an Event that should be excuted in this time
 		while ( CurrentEvent && CurrentEvent->GetEventTime().day == day && CurrentEvent->GetEventTime().hour == hour)
 		{
 			CurrentEvent->Execute(C);
@@ -37,6 +43,8 @@ void UI::Simulate(Company& C,int Type, string Input)
 				CurrentEvent = nullptr;
 		}
 
+		//      After each 5 Steps the functions dequeue a cargo from each waiting list and enqueue it
+		//      in each delivered list
 		if (DeliveryPeriod % 5 == 0)
 		{
 			Cargo Temp2;
@@ -58,11 +66,16 @@ void UI::Simulate(Company& C,int Type, string Input)
 			hour = 0;
 			day++;
 		}
+
+		//       In Interactive Mode :Console waits for an Input from the User  
 		if (Type == 1)
 			cin.get();
+
+		//       In Step-By-STep Mode Mode :Function waits a minute then it clears the console screen  
 		if (Type == 2)
 			Sleep(1000);
 	}
+
 	system("cls");
 	if (Type == 1 || Type == 2)
 	{
