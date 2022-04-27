@@ -36,18 +36,6 @@ void UI::Simulate(Company& C,int Type, string Input)
 			if (!C.DequeueEvent(CurrentEvent))
 				CurrentEvent = nullptr;
 		}
-		
-		/*Cargo Temp1;
-		bool Test1;
-		Test1 = C.DequeueWSC(Temp1);
-		if (Test1)
-			C.EnqueueMSC(Temp1);
-		Test1 = C.DequeueWVC(Temp1);
-		if (Test1)
-			C.EnqueueMVC(Temp1);
-		Test1 = C.RemoveFirstWNC(Temp1);
-		if (Test1)
-			C.EnqueueMNC(Temp1);*/
 
 		if (DeliveryPeriod % 5 == 0)
 		{

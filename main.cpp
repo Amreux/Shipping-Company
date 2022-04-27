@@ -12,5 +12,5 @@ int main()
 {
 	UI Interface;
 	Company C;
-	Interface.Simulate(C, 2,"");
+	Interface.Simulate(C, 1,"");
 }
