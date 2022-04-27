@@ -12,8 +12,12 @@ class Cargo
 	char CargoType;
 	int ID;
 public:
-	//     Constructors
+	//     CONSTRUCTORS
+
+
+
 	Cargo(Time Prep, int Load, int DD, int C,int id,char CT);
+
 
 	Cargo();
 
@@ -21,20 +25,36 @@ public:
 	
 
 
-	//      Getters
+	//      GETTERS
+	
+
+
 	// fuction to return cargo type
+
+
+
 	char GetCT();  
 
 	// fuction to return cargo ID
+
+
+
 	int GetID();
 
 	// fuction to return cargo cost
+
+
+
 	int GetCost();
 
 	// fuction to return cargo DeliveryDistance
+
+
 	int GetDeliveryDistance();
 
 	// fuction to return cargo PreparationTime
+
+
 	Time GetPreparationTime();
 
 	// fuction to return cargo LoadUnloadTime
@@ -44,11 +64,23 @@ public:
 
 
 
-	//     Setters
+	//     SETTERS
+	
+
+
 	// fuction to set cargo cost
+
+
 	void SetCost(int C);
 
+
 	// fuction to set CargoType
+
+
+
 	void SetCargoType(char CT);
+
+
+
 };
 

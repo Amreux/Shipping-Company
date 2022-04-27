@@ -6,9 +6,35 @@ class Event
 {
 	Time EventTime;
 public:
+	//      CONSTRUCTORS
+
 	Event();
+
+	//-----------------------------------------------------//
+
+	//      PURE VIRTUAL EXECUTE FUNCTION OVERLOADED IN EACH CLASS
+
 	virtual bool Execute(Company &Comp) = 0;
-	Time GetEventTime();
+
+	//-----------------------------------------------------//
+
+
+	//      GETTERS
+
+	
+	//function to return Event Time
+
+    Time GetEventTime();
+	
+
+	//      SETTERS
+
+	
+	//function to set Event Time
+
+
 	void SetEventTime(Time ET);
+
+
 };
 
