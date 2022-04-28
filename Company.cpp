@@ -20,6 +20,10 @@ void Company::insertWNC(Cargo NC)
 	WaitingNormalCargos.insert(NC);
 }
 
+void Company::insertFirstWNC(Cargo NC)
+{
+	WaitingNormalCargos.InsertFirst(NC);
+}
 
 Cargo* Company::RemoveWNC(int id)
 {
@@ -174,12 +178,12 @@ void Company::LoadFile( string Input)
 
 	ofstream OutputFile("Output.txt");
 	OutputFile << "Done";
-	int No_Events;
+	int AP,No_Events;
 
 
 	//reading the number of events from input file
-	InputFile >> No_Events;
-
+	InputFile >>AP>> No_Events;
+	SetAutoPromotion(AP);
 
 	//variables for diffrent events
 	char EventType, CargoType;
@@ -249,3 +253,36 @@ void Company::LoadFile( string Input)
 		}
 	}
 }
+
+int Company::GetAutoPromotion()
+{
+	return AutoPromotion;
+}
+
+void Company::SetAutoPromotion(int AP)
+{
+	AutoPromotion = AP;
+}
+
+void Company::AutoPromote(int time)
+{
+	Cargo Temp;
+	while (RemoveFirstWNC(Temp))
+	{
+		int PrepHours;
+		int AutoP = GetAutoPromotion();
+		Time PrepTime = Temp.GetPreparationTime();
+		PrepHours = PrepTime.day * 24 + PrepTime.hour;
+		if (time - PrepHours >= AutoP)
+		{
+			Temp.SetCargoType('V');
+			enqueueWVC(Temp);
+		}
+		else
+		{
+			insertFirstWNC(Temp);
+			break;
+		}
+	}
+}
+

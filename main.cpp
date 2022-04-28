@@ -14,8 +14,8 @@ int main()
 	Company C;
 
 	int Type;
-	//     Type1---> Interactive Mode 
-	//     Type2---> Step-By-STep Mode
+	//    Type1---> Interactive Mode 
+	//    Type2---> Step-By-STep Mode
 	cin >> Type;
 
 	cin.get();

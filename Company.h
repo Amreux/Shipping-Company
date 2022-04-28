@@ -11,6 +11,7 @@
 
 class Company
 {
+	int AutoPromotion;
 	Queue < Event* > EventsList;
 	Queue<Cargo> WaitingSpecialCargos;
 	PriorityQueue<Cargo> WaitingVIPCargos;
@@ -41,6 +42,10 @@ public:
 	// function to insert a cargo into Waiting Normal List
 
 	void insertWNC(Cargo NC);
+
+	// function to insert a cargo in the beginning of the Waiting Normal List
+
+	void insertFirstWNC(Cargo NC);
 
 	// function to enqueue a cargo into Events Queue
 
@@ -107,7 +112,6 @@ public:
 
 
 	bool DequeueEvent(Event*& E);
-
 
 
 	// function to Dequeue a cargo from Moving VIP Cargos
@@ -241,6 +245,16 @@ public:
 
 	bool AllIsDelivered();
 
+
+	//function to Get AutoPromotion
+
+	int GetAutoPromotion();
+
+	//function to Set AutoPromotion
+	void SetAutoPromotion(int AP);
+
+	//function to Autopromote
+	void AutoPromote(int time);
 
 	//-----------------------------------------------------//
 

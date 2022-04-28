@@ -26,15 +26,6 @@ void UI::Simulate(Company& C,int Type, string Input)
 	C.DequeueEvent(CurrentEvent);
 	while (CurrentEvent || !C.AllIsDelivered())
 	{
-		system("cls");
-		//     Type1---> Interactive Mode 
-		//     Type2---> Step-By-STep Mode
-		if (Type == 1 || Type == 2) 
-		{
-			cout << "Current Time(Day:Hour) :" << day << ":" << hour << endl;
-			Display(C);
-		}
-
 		//      AT each hour the Function asks if there is an Event that should be excuted in this time
 		while ( CurrentEvent && CurrentEvent->GetEventTime().day == day && CurrentEvent->GetEventTime().hour == hour)
 		{
@@ -59,6 +50,37 @@ void UI::Simulate(Company& C,int Type, string Input)
 			if (Test2)
 				C.EnqueueDNC(Temp2);
 		}
+
+		C.AutoPromote(DeliveryPeriod);
+		/*Cargo Temp;
+		while (C.RemoveFirstWNC(Temp))
+		{
+			int PrepHours;
+			int AutoP = C.GetAutoPromotion();
+			Time PrepTime = Temp.GetPreparationTime();
+			PrepHours = PrepTime.day * 24 + PrepTime.hour;
+			if (DeliveryPeriod - PrepHours >= AutoP)
+			{
+				Temp.SetCargoType('V');
+				C.enqueueWVC(Temp);
+			}
+			else
+			{
+				C.insertFirstWNC(Temp);
+				break;
+			}
+		}*/
+
+		
+		system("cls");
+		//     Type1---> Interactive Mode 
+		//     Type2---> Step-By-STep Mode
+		if (Type == 1 || Type == 2)
+		{
+			cout << "Current Time(Day:Hour) :" << day << ":" << hour << endl;
+			Display(C);
+		}
+
 		DeliveryPeriod++;
 		hour++;
 		if (hour == 24)

@@ -33,6 +33,21 @@ public:
 		return true;
 	}
 
+	bool InsertFirst(T data)
+	{
+		Node<T>* NewNode = new Node<T>(data, nullptr);
+		if (IsEmpty())
+		{
+			Head = NewNode;
+		}
+		else
+		{
+			NewNode->SetNext(Head);
+			Head = NewNode;
+		}
+		return true;
+	}
+
 	T* Delete(T val)
 	{
 		if (!isfound(val))
@@ -129,6 +144,21 @@ public:
 		while (Temp->GetNext())
 			Temp = Temp->GetNext();
 		Temp->SetNext(NewNode);
+		return true;
+	}
+
+	bool InsertFirst(Cargo data)
+	{
+		Node<Cargo>* NewNode = new Node<Cargo>(data, nullptr);
+		if (IsEmpty())
+		{
+			Head = NewNode;
+		}
+		else
+		{
+			NewNode->SetNext(Head);
+			Head = NewNode;
+		}
 		return true;
 	}
 
