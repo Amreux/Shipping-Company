@@ -36,7 +36,7 @@ void UI::Simulate(Company& C,int Type, string Input)
 
 		//      After each 5 Steps the functions dequeue a cargo from each waiting list and enqueue it
 		//      in each delivered list
-		if (DeliveryPeriod % 5 == 0)
+		/*if (DeliveryPeriod % 5 == 0)
 		{
 			Cargo Temp2;
 			bool Test2;
@@ -49,7 +49,7 @@ void UI::Simulate(Company& C,int Type, string Input)
 			Test2 = C.RemoveFirstWNC(Temp2);
 			if (Test2)
 				C.EnqueueDNC(Temp2);
-		}
+		}*/
 
 		C.AutoPromote(DeliveryPeriod);
 		/*Cargo Temp;
@@ -127,10 +127,10 @@ void UI::Display(Company& C)
 	cout << "-------------------------------------------------------" << endl;
 
 	cout << C.DeliveredCount() << "  Delivered Cargos: [";
-	C.PrintDNC();
-	cout << "] (";
-	C.PrintDSC();
+	C.PrintDC();
+	cout << "] " << endl;
+	/*C.PrintDSC();
 	cout << ") {";
 	C.PrintDVC();
-	cout << "}" << endl;
+	cout << "}" << endl;*/
 }

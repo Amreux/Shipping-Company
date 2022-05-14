@@ -117,9 +117,9 @@ public:
 
 //      class specializtion to specify a copy for function delete using id for cargos only
 template <>
-class LinkedList <Cargo>
+class LinkedList <Cargo*>
 {
-	Node<Cargo>* Head;
+	Node<Cargo*>* Head;
 
 public:
 	LinkedList()
@@ -132,24 +132,24 @@ public:
 		return (Head == nullptr);
 	}
 
-	bool insert(Cargo data)
+	bool insert(Cargo* data)
 	{
-		Node<Cargo>* NewNode = new Node<Cargo>(data, nullptr);
+		Node<Cargo*>* NewNode = new Node<Cargo*>(data, nullptr);
 		if (IsEmpty())
 		{
 			Head = NewNode;
 			return true;
 		}
-		Node<Cargo>* Temp = Head;
+		Node<Cargo*>* Temp = Head;
 		while (Temp->GetNext())
 			Temp = Temp->GetNext();
 		Temp->SetNext(NewNode);
 		return true;
 	}
 
-	bool InsertFirst(Cargo data)
+	bool InsertFirst(Cargo* data)
 	{
-		Node<Cargo>* NewNode = new Node<Cargo>(data, nullptr);
+		Node<Cargo*>* NewNode = new Node<Cargo*>(data, nullptr);
 		if (IsEmpty())
 		{
 			Head = NewNode;
@@ -165,35 +165,35 @@ public:
 	//     Function Delete(id) to delete node associated with this id
 	Cargo* Delete(int id)
 	{
-		Node<Cargo>* temp = Head;
+		Node<Cargo*>* temp = Head;
 
 		if (IsEmpty())
 			return nullptr;
-		if (temp->GetData().GetID() == id)
+		if (temp->GetData()->GetID() == id)
 		{
 			Head = temp->GetNext();
-			return &(temp->GetData());
+			return (temp->GetData());
 		}
-		Node<Cargo>* NodeToBeDeleted;
+		Node<Cargo*>* NodeToBeDeleted;
 		while (temp->GetNext())
 		{
-			if (temp->GetNext()->GetData().GetID() == id)
+			if (temp->GetNext()->GetData()->GetID() == id)
 			{
 				NodeToBeDeleted = temp->GetNext();
 				temp->SetNext(NodeToBeDeleted->GetNext());
-				return &(NodeToBeDeleted->GetData());
+				return (NodeToBeDeleted->GetData());
 			}
 			temp = temp->GetNext();
 		}
 		return nullptr;
 	}
 
-	bool RemoveFirst(Cargo& Data)
+	bool RemoveFirst(Cargo*& Data)
 	{
 		if (IsEmpty())
 			return false;
 
-		Node<Cargo>* NodeToBeDeleted = Head;
+		Node<Cargo*>* NodeToBeDeleted = Head;
 		Data = NodeToBeDeleted->GetData();
 		Head = Head->GetNext();
 		delete NodeToBeDeleted;
@@ -203,7 +203,7 @@ public:
 	int GetCount()
 	{
 		int Counter = 0;
-		Node<Cargo>* Temp = Head;
+		Node<Cargo*>* Temp = Head;
 		while (Temp)
 		{
 			Counter++;
@@ -215,15 +215,15 @@ public:
 	//     fuction Print to Print according to the wanted format
 	void Print()
 	{
-		Node<Cargo>* Temp = Head;
+		Node<Cargo*>* Temp = Head;
 		while (Temp)
 		{
 			if (!Temp->GetNext())
 			{
-				cout << Temp->GetData().GetID();
+				cout << Temp->GetData()->GetID();
 				return;
 			}
-			cout << Temp->GetData().GetID() << ",";
+			cout << Temp->GetData()->GetID() << ",";
 			Temp = Temp->GetNext();
 		}
 	}

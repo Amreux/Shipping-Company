@@ -111,10 +111,10 @@ public:
 
 //      class specializtion to specify a copy for function enqueue for cargos only
 template<>
-class PriorityQueue <Cargo>
+class PriorityQueue <Cargo*>
 {
-    NodeP<Cargo>* Front;
-    NodeP<Cargo>* Rear;
+    NodeP<Cargo*>* Front;
+    NodeP<Cargo*>* Rear;
 public:
     PriorityQueue()
     {
@@ -128,9 +128,9 @@ public:
     }
 
     //     Function enqueue that enqueue with respect to Priority
-    void enqueue(Cargo Val, int Prio = 0)
+    void enqueue(Cargo* Val, int Prio = 0)
     {
-        NodeP<Cargo>* NewNode = new NodeP<Cargo>;
+        NodeP<Cargo*>* NewNode = new NodeP<Cargo*>;
         NewNode->SetData(Val);
         NewNode->SetPriority(Prio);
         NewNode->SetNext(nullptr);
@@ -140,7 +140,7 @@ public:
             Rear = NewNode;
             return;
         }
-        NodeP<Cargo>* Temp = Front;
+        NodeP<Cargo*>* Temp = Front;
         if (!Temp->GetNext() || Temp->GetPriority() < Prio)
         {
             if (Temp->GetPriority() < Prio)
@@ -178,11 +178,11 @@ public:
         Rear = NewNode;
     }
 
-    bool Dequeue(Cargo& data)
+    bool Dequeue(Cargo*& data)
     {
         if (IsEmpty())
             return false;
-        NodeP<Cargo>* NodeToBeDeleted = Front;
+        NodeP<Cargo*>* NodeToBeDeleted = Front;
         if (Front == Rear)
             Rear = nullptr;
         Front = Front->GetNext();
@@ -194,7 +194,7 @@ public:
     int GetCount()
     {
         int Counter = 0;
-        NodeP<Cargo>* Temp = Front;
+        NodeP<Cargo*>* Temp = Front;
         while (Temp)
         {
             Counter++;
@@ -206,15 +206,15 @@ public:
     //     fuction Print to Print according to the wanted format
     void Print()
     {
-        NodeP<Cargo>* Temp = Front;
+        NodeP<Cargo*>* Temp = Front;
         while (Temp)
         {
             if (!Temp->GetNext())
             {
-                cout << Temp->GetData().GetID();
+                cout << Temp->GetData()->GetID();
                 return;
             }
-            cout << Temp->GetData().GetID() << ",";
+            cout << Temp->GetData()->GetID() << ",";
             Temp = Temp->GetNext();
         }
     }

@@ -13,15 +13,15 @@ class Company
 {
 	int AutoPromotion;
 	Queue < Event* > EventsList;
-	Queue<Cargo> WaitingSpecialCargos;
-	PriorityQueue<Cargo> WaitingVIPCargos;
-	LinkedList<Cargo> WaitingNormalCargos;
-	PriorityQueue<Cargo> MovingSpecialCargos;
-	PriorityQueue<Cargo> MovingNormalCargos;
-	PriorityQueue<Cargo> MovingVIPCargos;
-	Queue<Cargo> DeliveredNormalCargos;
-	Queue<Cargo> DeliveredVIPCargos;
-	Queue<Cargo> DeliveredSpecialCargos;
+	Queue<Cargo*> WaitingSpecialCargos;
+	PriorityQueue<Cargo*> WaitingVIPCargos;
+	LinkedList<Cargo*> WaitingNormalCargos;
+	/*PriorityQueue<Cargo*> MovingSpecialCargos;
+	PriorityQueue<Cargo*> MovingNormalCargos;
+	PriorityQueue<Cargo*> MovingVIPCargos;*/
+	Queue<Cargo*> DeliveredCargos;
+	/*Queue<Cargo> DeliveredVIPCargos;
+	Queue<Cargo> DeliveredSpecialCargos;*/
 public:
 	//      CONSTRUCTORS
 	
@@ -33,19 +33,19 @@ public:
 	
 	// function to enqueue a cargo into Waiting Special Queue
 	
-	void enqueueWSC(Cargo SC);
+	void enqueueWSC(Cargo* SC);
 
 	// function to enqueue a cargo into Waiting VIP Queue
 
-	void enqueueWVC(Cargo VC);
+	void enqueueWVC(Cargo* VC);
 
 	// function to insert a cargo into Waiting Normal List
 
-	void insertWNC(Cargo NC);
+	void insertWNC(Cargo* NC);
 
 	// function to insert a cargo in the beginning of the Waiting Normal List
 
-	void insertFirstWNC(Cargo NC);
+	void insertFirstWNC(Cargo* NC);
 
 	// function to enqueue a cargo into Events Queue
 
@@ -54,35 +54,35 @@ public:
 
 	// function to enqueue a cargo into Moving Special Queue
 
-	void EnqueueMSC(Cargo SC);
+	void EnqueueMSC(Cargo* SC);
 
 
 	// function to enqueue a cargo into Moving Normal Queue
 
-	void EnqueueMNC(Cargo NC);
+	void EnqueueMNC(Cargo* NC);
 
 
 	// function to enqueue a cargo into Moving VIP Queue
 
 
-	void EnqueueMVC(Cargo VC);
+	void EnqueueMVC(Cargo* VC);
 
 
 	// function to enqueue a cargo into Delivered Special queue
 
-	void EnqueueDSC(Cargo SC);
+	void EnqueueDC(Cargo* SC);
 
 
-	// function to enqueue a cargo into Delivered Normal Queue
+	//// function to enqueue a cargo into Delivered Normal Queue
 
 
-	void EnqueueDNC(Cargo NC);
+	//void EnqueueDNC(Cargo NC);
 
 
-	// function to enqueue a cargo into Delivered VIP Queue
+	//// function to enqueue a cargo into Delivered VIP Queue
 
 
-	void EnqueueDVC(Cargo VC);
+	//void EnqueueDVC(Cargo VC);
 
 
 	//-----------------------------------------------------//
@@ -100,12 +100,12 @@ public:
 	// function to Dequeue a cargo from Waiting VIP Cargos
 
 	
-	bool DequeueWVC(Cargo& VC);
+	bool DequeueWVC(Cargo*& VC);
 
 	// function to Dequeue a cargo from Waiting Special Cargos
 
 
-	bool DequeueWSC(Cargo& SC);
+	bool DequeueWSC(Cargo*& SC);
 
 
 	// function to Dequeue a cargo from Events Queue
@@ -117,25 +117,25 @@ public:
 	// function to Dequeue a cargo from Moving VIP Cargos
 
 
-	bool DequeueMVC(Cargo& VC);
+	bool DequeueMVC(Cargo*& VC);
 
 
 	// function to Dequeue a cargo from Moving Special Cargos
 
 
-	bool DequeueMSC(Cargo& SC);
+	bool DequeueMSC(Cargo*& SC);
 
 
 	// function to Dequeue a cargo from Waiting VIP Cargos
 
 
-	bool DequeueMNC(Cargo& NC);
+	bool DequeueMNC(Cargo*& NC);
 
 
 	// function to Remove First cargo from Waiting Normal Cargos List
 
 
-	bool RemoveFirstWNC(Cargo& NC);
+	bool RemoveFirstWNC(Cargo*& NC);
 
 
 	//-----------------------------------------------------//
@@ -189,23 +189,23 @@ public:
 
 
 
-	void PrintDNC();
+	void PrintDC();
 
 
 
-	// function to print Delivered Special Cargos Queue
+	//// function to print Delivered Special Cargos Queue
 
 
 
-	void PrintDSC();
+	//void PrintDSC();
 
 
 
-	// function to print Delivered VIP Cargos Queue
+	//// function to print Delivered VIP Cargos Queue
 
 
 
-	void PrintDVC();
+	//void PrintDVC();
 
 
 

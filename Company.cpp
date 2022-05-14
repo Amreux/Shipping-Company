@@ -5,22 +5,22 @@ Company::Company()
 
 }
 
-void Company::enqueueWSC(Cargo SC)
+void Company::enqueueWSC(Cargo* SC)
 {
 	WaitingSpecialCargos.Enqueue(SC);
 }
 
-void Company::enqueueWVC(Cargo VC)
+void Company::enqueueWVC(Cargo* VC)
 {
 	WaitingVIPCargos.enqueue(VC);
 }
 
-void Company::insertWNC(Cargo NC)
+void Company::insertWNC(Cargo* NC)
 {
 	WaitingNormalCargos.insert(NC);
 }
 
-void Company::insertFirstWNC(Cargo NC)
+void Company::insertFirstWNC(Cargo* NC)
 {
 	WaitingNormalCargos.InsertFirst(NC);
 }
@@ -37,34 +37,24 @@ void Company::AddEvent(Event* E)
 		EventsList.Enqueue(E);
 }
 
-void Company::EnqueueMSC(Cargo SC)
+void Company::EnqueueMSC(Cargo* SC)
 {
 	MovingSpecialCargos.enqueue(SC);
 }
 
-void Company::EnqueueMNC(Cargo NC)
+void Company::EnqueueMNC(Cargo* NC)
 {
 	MovingNormalCargos.enqueue(NC);
 }
 
-void Company::EnqueueMVC(Cargo VC)
+void Company::EnqueueMVC(Cargo* VC)
 {
 	MovingVIPCargos.enqueue(VC);
 }
 
-void Company::EnqueueDSC(Cargo SC)
+void Company::EnqueueDC(Cargo* SC)
 {
-	DeliveredSpecialCargos.Enqueue(SC);
-}
-
-void Company::EnqueueDNC(Cargo NC)
-{
-	DeliveredNormalCargos.Enqueue(NC);
-}
-
-void Company::EnqueueDVC(Cargo VC)
-{
-	DeliveredVIPCargos.Enqueue(VC);
+	DeliveredCargos.Enqueue(SC);
 }
 
 bool Company::DequeueEvent(Event*& E)
@@ -72,32 +62,32 @@ bool Company::DequeueEvent(Event*& E)
 	return EventsList.Dequeue(E);
 }
 
-bool Company::DequeueWVC(Cargo& VC)
+bool Company::DequeueWVC(Cargo*& VC)
 {
 	return WaitingVIPCargos.Dequeue(VC);
 }
 
-bool Company::DequeueWSC(Cargo& SC)
+bool Company::DequeueWSC(Cargo*& SC)
 {
 	return WaitingSpecialCargos.Dequeue(SC);
 }
 
-bool Company::DequeueMSC(Cargo& SC)
+bool Company::DequeueMSC(Cargo*& SC)
 {
 	return MovingSpecialCargos.Dequeue(SC);
 }
 
-bool Company::DequeueMVC(Cargo& VC)
+bool Company::DequeueMVC(Cargo*& VC)
 {
 	return MovingVIPCargos.Dequeue(VC);
 }
 
-bool Company::DequeueMNC(Cargo& NC)
+bool Company::DequeueMNC(Cargo*& NC)
 {
 	return MovingNormalCargos.Dequeue(NC);
 }
 
-bool Company::RemoveFirstWNC(Cargo& NC)
+bool Company::RemoveFirstWNC(Cargo*& NC)
 {
 	return WaitingNormalCargos.RemoveFirst(NC);
 }
@@ -131,17 +121,9 @@ void Company::PrintMVC()
 {
 	MovingVIPCargos.Print();
 }
-void Company::PrintDNC()
+void Company::PrintDC()
 {
-	DeliveredNormalCargos.Print();
-}
-void Company::PrintDSC()
-{
-	DeliveredSpecialCargos.Print();
-}
-void Company::PrintDVC()
-{
-	DeliveredVIPCargos.Print();
+	DeliveredCargos.Print();
 }
 
 int Company::WaitingCount()
@@ -155,7 +137,7 @@ int Company::MovingCount()
 }
 int Company::DeliveredCount()
 {
-	return DeliveredNormalCargos.GetCount() + DeliveredSpecialCargos.GetCount() + DeliveredVIPCargos.GetCount();
+	return DeliveredCargos.GetCount() ;
 }
 
 void Company::LoadFile( string Input)
@@ -266,16 +248,16 @@ void Company::SetAutoPromotion(int AP)
 
 void Company::AutoPromote(int time)
 {
-	Cargo Temp;
+	Cargo* Temp;
 	while (RemoveFirstWNC(Temp))
 	{
 		int PrepHours;
 		int AutoP = GetAutoPromotion();
-		Time PrepTime = Temp.GetPreparationTime();
+		Time PrepTime = Temp->GetPreparationTime();
 		PrepHours = PrepTime.day * 24 + PrepTime.hour;
 		if (time - PrepHours >= AutoP)
 		{
-			Temp.SetCargoType('V');
+			Temp->SetCargoType('V');
 			enqueueWVC(Temp);
 		}
 		else

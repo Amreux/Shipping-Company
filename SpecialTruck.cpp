@@ -8,6 +8,11 @@ SpecialTruck::SpecialTruck(int DI) :Truck(DI)
 
 }
 
+SpecialTruck::SpecialTruck()
+{
+
+}
+
 void SpecialTruck:: SetProperties(int TC, int S)
 {
 	TruckCapacity = TC;

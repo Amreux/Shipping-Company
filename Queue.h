@@ -78,19 +78,19 @@ public:
 
 //      class specializtion to specify a copy for function Print using data and id for cargos only
 template <>
-class Queue <Cargo>
+class Queue <Cargo*>
 {
-	Node<Cargo>* Rear;
-	Node<Cargo>* Front;
+	Node<Cargo*>* Rear;
+	Node<Cargo*>* Front;
 public:
 	Queue()
 	{
 		Rear = nullptr;
 		Front = nullptr;
 	}
-	bool Enqueue(Cargo data)
+	bool Enqueue(Cargo* data)
 	{
-		Node<Cargo>* NewNode = new Node<Cargo>(data, nullptr);
+		Node<Cargo*>* NewNode = new Node<Cargo*>(data, nullptr);
 		if (IsEmpty())
 		{
 			Front = NewNode;
@@ -103,11 +103,11 @@ public:
 		return true;
 	}
 
-	bool Dequeue(Cargo& data)
+	bool Dequeue(Cargo*& data)
 	{
 		if (IsEmpty())
 			return false;
-		Node<Cargo>* NodeToBeDeleted = Front;
+		Node<Cargo*>* NodeToBeDeleted = Front;
 		if (Front == Rear)
 			Rear = nullptr;
 		Front = Front->GetNext();
@@ -126,7 +126,7 @@ public:
 	int GetCount()
 	{
 		int Counter = 0;
-		Node<Cargo>* Temp = Front;
+		Node<Cargo*>* Temp = Front;
 		while (Temp)
 		{
 			Counter++;
@@ -138,15 +138,15 @@ public:
 	//     fuction Print to Print according to the wanted format
 	void Print()
 	{
-		Node<Cargo>* Temp = Front;
+		Node<Cargo*>* Temp = Front;
 		while (Temp)
 		{
 			if (!Temp->GetNext())
 			{
-				cout << Temp->GetData().GetID();
+				cout << Temp->GetData()->GetID();
 				return;
 			}
-			cout << Temp->GetData().GetID() << ",";
+			cout << Temp->GetData()->GetID() << ",";
 			Temp = Temp->GetNext();
 		}
 	}

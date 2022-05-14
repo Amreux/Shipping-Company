@@ -21,7 +21,7 @@ bool PromoteEvent::Execute(Company& Comp)
 		
 		//adding the cargo into the VIP list
 
-		Comp.enqueueWVC(*CargoToBePromoted);
+		Comp.enqueueWVC(CargoToBePromoted);
 
 		return true;
 	}

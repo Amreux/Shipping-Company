@@ -8,7 +8,7 @@ bool PreparationEvent::Execute( Company& Comp) {
 	{
 		//allocating a cargo 
 		//assumed that Prep time is event time
-		Cargo SC(EventTime, LoadTime, Distance, Cost, ID,'S');
+		Cargo* SC = new Cargo(EventTime, LoadTime, Distance, Cost, ID, 'S');
 		//enqueuing the cargo into the waiting special queue
 		Comp.enqueueWSC(SC);
 	}
@@ -16,7 +16,7 @@ bool PreparationEvent::Execute( Company& Comp) {
 	{
 		//allocating a cargo 
 		//assumed that Prep time is event time
-		Cargo V(EventTime, LoadTime, Distance, Cost, ID,'V');
+		Cargo* V = new Cargo(EventTime, LoadTime, Distance, Cost, ID, 'V');
 		//enqueuing the cargo into the waiting vip queue
 		Comp.enqueueWVC(V);
 	}
@@ -24,7 +24,7 @@ bool PreparationEvent::Execute( Company& Comp) {
 	{
 		//allocating a cargo 
 		//assumed that Prep time is event time
-		Cargo N(EventTime, LoadTime, Distance, Cost, ID,'N');
+		Cargo* N = new Cargo(EventTime, LoadTime, Distance, Cost, ID, 'N');
 		//enqueuing the cargo into the waiting normal list
 		Comp.insertWNC(N);
 	}
