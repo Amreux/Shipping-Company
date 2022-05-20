@@ -13,6 +13,11 @@ SpecialTruck::SpecialTruck()
 
 }
 
+int SpecialTruck::GetTruckCapacity()
+{
+	return TruckCapacity;
+}
+
 void SpecialTruck:: SetProperties(int TC, int S)
 {
 	TruckCapacity = TC;

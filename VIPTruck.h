@@ -8,10 +8,11 @@ class VIPTruck:public Truck
 	static int TruckCapacity;
 	static int Speed;
 	static int CheckUpTime;
-	PriorityQueue <Cargo*> CargosQueue;
+	//PriorityQueue <Cargo*> CargosQueue;
 public:
 	VIPTruck();
 	VIPTruck(int DI);
+	static int GetTruckCapacity();
 	//static void SetProperties(int TC, int S);
 };
 

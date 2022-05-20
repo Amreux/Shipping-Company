@@ -7,6 +7,10 @@
 #include "PriorityQueue.h"
 #include "LinkedList.h"
 #include "Cargo.h"
+#include "Truck.h"
+#include "NormalTruck.h"
+#include "VIPTruck.h"
+#include "SpecialTruck.h"
 #include <fstream>
 
 class Company
@@ -22,6 +26,11 @@ class Company
 	Queue<Cargo*> DeliveredCargos;
 	/*Queue<Cargo> DeliveredVIPCargos;
 	Queue<Cargo> DeliveredSpecialCargos;*/
+	Queue<NormalTruck*> EmptyNormalTrucks;
+	Queue<SpecialTruck*> EmptySpecialTrucks;
+	Queue<VIPTruck*> EmptyVIPTrucks;
+
+	Queue<Truck*> LoadingTrucks;
 public:
 	//      CONSTRUCTORS
 	
@@ -259,5 +268,7 @@ public:
 	//-----------------------------------------------------//
 
 
+	Truck* LoadVIPCargos();
+	
 };
 

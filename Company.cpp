@@ -268,3 +268,47 @@ void Company::AutoPromote(int time)
 	}
 }
 
+
+
+
+Truck* Company::LoadVIPCargos()
+{
+	if (!EmptyVIPTrucks.IsEmpty() && VIPTruck::GetTruckCapacity() >= WaitingVIPCargos.GetCount())
+	{
+		VIPTruck* LoadingTruck;
+		EmptyVIPTrucks.Dequeue(LoadingTruck);
+		Cargo* TempCargo;
+		for (int i = 0; i < VIPTruck::GetTruckCapacity(); i++)
+		{
+			WaitingVIPCargos.Dequeue(TempCargo);
+			LoadingTruck->LoadCargo(TempCargo);
+		}
+		return LoadingTruck;
+	}
+	else if (!EmptyNormalTrucks.IsEmpty() && NormalTruck::GetTruckCapacity() >= WaitingVIPCargos.GetCount())
+	{
+		NormalTruck* LoadingTruck;
+		EmptyNormalTrucks.Dequeue(LoadingTruck);
+		Cargo* TempCargo;
+		for (int i = 0; i < NormalTruck::GetTruckCapacity(); i++)
+		{
+			WaitingVIPCargos.Dequeue(TempCargo);
+			LoadingTruck->LoadCargo(TempCargo);
+		}
+		return LoadingTruck;
+
+	}
+	else if (!EmptySpecialTrucks.IsEmpty() && SpecialTruck::GetTruckCapacity() >= WaitingVIPCargos.GetCount())
+	{
+		SpecialTruck* LoadingTruck;
+		EmptySpecialTrucks.Dequeue(LoadingTruck);
+		Cargo* TempCargo;
+		for (int i = 0; i < SpecialTruck::GetTruckCapacity(); i++)
+		{
+			WaitingSpecialCargos.Dequeue(TempCargo);
+			LoadingTruck->LoadCargo(TempCargo);
+		}
+		return LoadingTruck;
+	}
+	return nullptr;
+}

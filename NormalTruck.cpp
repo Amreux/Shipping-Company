@@ -14,6 +14,11 @@ NormalTruck::NormalTruck(int DI)
 	DeliveryInterval = DI;
 }
 
+int NormalTruck::GetTruckCapacity()
+{
+	return TruckCapacity;
+}
+
 //void NormalTruck::SetProperties(int TC, int S)
 //{
 //	TruckCapacity = TC;

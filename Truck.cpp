@@ -10,3 +10,7 @@ Truck::Truck()
 	DeliveryInterval = 0;
 }
 
+void Truck::LoadCargo(Cargo* C)
+{
+	CargosQueue.enqueue(C);
+}
