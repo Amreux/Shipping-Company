@@ -37,20 +37,20 @@ void Company::AddEvent(Event* E)
 		EventsList.Enqueue(E);
 }
 
-void Company::EnqueueMSC(Cargo* SC)
-{
-	MovingSpecialCargos.enqueue(SC);
-}
-
-void Company::EnqueueMNC(Cargo* NC)
-{
-	MovingNormalCargos.enqueue(NC);
-}
-
-void Company::EnqueueMVC(Cargo* VC)
-{
-	MovingVIPCargos.enqueue(VC);
-}
+//void Company::EnqueueMSC(Cargo* SC)
+//{
+//	MovingSpecialCargos.enqueue(SC);
+//}
+//
+//void Company::EnqueueMNC(Cargo* NC)
+//{
+//	MovingNormalCargos.enqueue(NC);
+//}
+//
+//void Company::EnqueueMVC(Cargo* VC)
+//{
+//	MovingVIPCargos.enqueue(VC);
+//}
 
 void Company::EnqueueDC(Cargo* SC)
 {
@@ -72,30 +72,30 @@ bool Company::DequeueWSC(Cargo*& SC)
 	return WaitingSpecialCargos.Dequeue(SC);
 }
 
-bool Company::DequeueMSC(Cargo*& SC)
-{
-	return MovingSpecialCargos.Dequeue(SC);
-}
-
-bool Company::DequeueMVC(Cargo*& VC)
-{
-	return MovingVIPCargos.Dequeue(VC);
-}
-
-bool Company::DequeueMNC(Cargo*& NC)
-{
-	return MovingNormalCargos.Dequeue(NC);
-}
+//bool Company::DequeueMSC(Cargo*& SC)
+//{
+//	return MovingSpecialCargos.Dequeue(SC);
+//}
+//
+//bool Company::DequeueMVC(Cargo*& VC)
+//{
+//	return MovingVIPCargos.Dequeue(VC);
+//}
+//
+//bool Company::DequeueMNC(Cargo*& NC)
+//{
+//	return MovingNormalCargos.Dequeue(NC);
+//}
 
 bool Company::RemoveFirstWNC(Cargo*& NC)
 {
 	return WaitingNormalCargos.RemoveFirst(NC);
 }
 
-bool Company::AllIsDelivered()
-{
-	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && WaitingVIPCargos.IsEmpty()) && (MovingNormalCargos.IsEmpty() && MovingSpecialCargos.IsEmpty() && MovingVIPCargos.IsEmpty());
-}
+//bool Company::AllIsDelivered()
+//{
+//	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && WaitingVIPCargos.IsEmpty()) && (MovingNormalCargos.IsEmpty() && MovingSpecialCargos.IsEmpty() && MovingVIPCargos.IsEmpty());
+//}
 
 void Company::PrintWNC()
 {
@@ -109,18 +109,18 @@ void Company::PrintWVC()
 {
 	WaitingVIPCargos.Print();
 }
-void Company::PrintMNC()
-{
-	MovingNormalCargos.Print();
-}
-void Company::PrintMSC()
-{
-	MovingSpecialCargos.Print();
-}
-void Company::PrintMVC()
-{
-	MovingVIPCargos.Print();
-}
+//void Company::PrintMNC()
+//{
+//	MovingNormalCargos.Print();
+//}
+//void Company::PrintMSC()
+//{
+//	MovingSpecialCargos.Print();
+//}
+//void Company::PrintMVC()
+//{
+//	MovingVIPCargos.Print();
+//}
 void Company::PrintDC()
 {
 	DeliveredCargos.Print();
@@ -131,10 +131,10 @@ int Company::WaitingCount()
 	return WaitingNormalCargos.GetCount() + WaitingSpecialCargos.GetCount() + WaitingVIPCargos.GetCount();
 }
 
-int Company::MovingCount()
-{
-	return MovingNormalCargos.GetCount() + MovingSpecialCargos.GetCount() + MovingVIPCargos.GetCount();
-}
+//int Company::MovingCount()
+//{
+//	return MovingNormalCargos.GetCount() + MovingSpecialCargos.GetCount() + MovingVIPCargos.GetCount();
+//}
 int Company::DeliveredCount()
 {
 	return DeliveredCargos.GetCount() ;

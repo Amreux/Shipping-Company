@@ -19,5 +19,5 @@ int main()
 	cin >> Type;
 
 	cin.get();
-	Interface.Simulate(C, Type,"");
+	/*Interface.Simulate(C, Type,"");*/
 }

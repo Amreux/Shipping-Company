@@ -89,7 +89,7 @@ public:
     int GetCount()
     {
         int Counter = 0;
-        Node<T>* Temp = Front;
+        NodeP<T>* Temp = Front;
         while (Temp)
         {
             Counter++;
@@ -100,7 +100,7 @@ public:
 
     void Print()
     {
-        Node<T>* Temp = Front;
+        NodeP<T>* Temp = Front;
         while (Temp)
         {
             cout << Temp->GetData();
