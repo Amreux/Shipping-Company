@@ -271,9 +271,9 @@ void Company::AutoPromote(int time)
 
 
 
-Truck* Company::LoadVIPCargos()
+void Company::LoadVIPCargos()
 {
-	if (!EmptyVIPTrucks.IsEmpty() && VIPTruck::GetTruckCapacity() >= WaitingVIPCargos.GetCount())
+	if (!EmptyVIPTrucks.IsEmpty() && VIPTruck::GetTruckCapacity() <= WaitingVIPCargos.GetCount())
 	{
 		VIPTruck* LoadingTruck;
 		EmptyVIPTrucks.Dequeue(LoadingTruck);
@@ -283,9 +283,8 @@ Truck* Company::LoadVIPCargos()
 			WaitingVIPCargos.Dequeue(TempCargo);
 			LoadingTruck->LoadCargo(TempCargo);
 		}
-		return LoadingTruck;
 	}
-	else if (!EmptyNormalTrucks.IsEmpty() && NormalTruck::GetTruckCapacity() >= WaitingVIPCargos.GetCount())
+	else if (!EmptyNormalTrucks.IsEmpty() && NormalTruck::GetTruckCapacity() <= WaitingVIPCargos.GetCount())
 	{
 		NormalTruck* LoadingTruck;
 		EmptyNormalTrucks.Dequeue(LoadingTruck);
@@ -295,10 +294,25 @@ Truck* Company::LoadVIPCargos()
 			WaitingVIPCargos.Dequeue(TempCargo);
 			LoadingTruck->LoadCargo(TempCargo);
 		}
-		return LoadingTruck;
 
 	}
-	else if (!EmptySpecialTrucks.IsEmpty() && SpecialTruck::GetTruckCapacity() >= WaitingVIPCargos.GetCount())
+	else if (!EmptySpecialTrucks.IsEmpty() && SpecialTruck::GetTruckCapacity() <= WaitingVIPCargos.GetCount())
+	{
+		SpecialTruck* LoadingTruck;
+		EmptySpecialTrucks.Dequeue(LoadingTruck);
+		Cargo* TempCargo;
+		for (int i = 0; i < SpecialTruck::GetTruckCapacity(); i++)
+		{
+			WaitingVIPCargos.Dequeue(TempCargo);
+			LoadingTruck->LoadCargo(TempCargo);
+		}
+	}
+}
+
+
+void Company::LoadSpecialCargos()
+{
+	if (!EmptySpecialTrucks.IsEmpty() && SpecialTruck::GetTruckCapacity() <= WaitingSpecialCargos.GetCount())
 	{
 		SpecialTruck* LoadingTruck;
 		EmptySpecialTrucks.Dequeue(LoadingTruck);
@@ -308,7 +322,33 @@ Truck* Company::LoadVIPCargos()
 			WaitingSpecialCargos.Dequeue(TempCargo);
 			LoadingTruck->LoadCargo(TempCargo);
 		}
-		return LoadingTruck;
 	}
-	return nullptr;
+}
+
+
+void Company::LoadNormalCargos()
+{
+	if (!EmptyNormalTrucks.IsEmpty() && NormalTruck::GetTruckCapacity() <= WaitingNormalCargos.GetCount())
+	{
+		NormalTruck* LoadingTruck;
+		EmptyNormalTrucks.Dequeue(LoadingTruck);
+		Cargo* TempCargo;
+		for (int i = 0; i < NormalTruck::GetTruckCapacity(); i++)
+		{
+			WaitingNormalCargos.RemoveFirst(TempCargo);
+			LoadingTruck->LoadCargo(TempCargo);
+		}
+	}
+	else if (!EmptyVIPTrucks.IsEmpty() && VIPTruck::GetTruckCapacity() <= WaitingNormalCargos.GetCount())
+	{
+		VIPTruck* LoadingTruck;
+		EmptyVIPTrucks.Dequeue(LoadingTruck);
+		Cargo* TempCargo;
+		for (int i = 0; i < VIPTruck::GetTruckCapacity(); i++)
+		{
+			WaitingNormalCargos.RemoveFirst(TempCargo);
+			LoadingTruck->LoadCargo(TempCargo);
+		}
+	}
+
 }

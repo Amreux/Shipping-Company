@@ -29,7 +29,6 @@ class Company
 	Queue<NormalTruck*> EmptyNormalTrucks;
 	Queue<SpecialTruck*> EmptySpecialTrucks;
 	Queue<VIPTruck*> EmptyVIPTrucks;
-
 	Queue<Truck*> LoadingTrucks;
 public:
 	//      CONSTRUCTORS
@@ -268,7 +267,10 @@ public:
 	//-----------------------------------------------------//
 
 
-	Truck* LoadVIPCargos();
+	void LoadVIPCargos();
+	void LoadSpecialCargos();
+	void LoadNormalCargos();
+
 	
 };
 
