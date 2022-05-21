@@ -13,7 +13,8 @@ Truck::Truck()
 
 void Truck::LoadCargo(Cargo* C)
 {
-	CargosQueue.enqueue(C);
+	int Prio = C->CalcPrio();
+	CargosQueue.enqueue(C,Prio);
 }
 
 void Truck::SetMovingTime(Time T)

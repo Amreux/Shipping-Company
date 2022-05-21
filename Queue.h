@@ -36,7 +36,10 @@ public:
 	bool Dequeue(T& data)
 	{
 		if (IsEmpty())
+		{
+			//T = NULL;
 			return false;
+		}
 		Node<T>* NodeToBeDeleted = Front;
 		if (Front == Rear)
 			Rear = nullptr;

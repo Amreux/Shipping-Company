@@ -15,7 +15,7 @@ protected:
 public:
 	Truck(int DI);
 	Truck();
-	void LoadCargo(Cargo* C);
+	void LoadCargo(Cargo* C); 
 	void SetMovingTime(Time T);
 	Time GetMovingTime();
 	bool PeekCargosQueue(Cargo*& C);
@@ -31,6 +31,7 @@ public:
 	bool IsEmpty();
 	virtual void SetEndOfCheckUp(Time EOCU) = 0;
 	int GetEndOfCheckUp();
+	//int CalcDI();
 	//virtual void DeliverCargos(Time Current) = 0;
 
 };

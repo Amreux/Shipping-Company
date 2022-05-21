@@ -275,6 +275,7 @@ public:
 	//-----------------------------------------------------//
 
 
+
 	void LoadVIPCargos();
 	
 	void DeliverCargos(Time Current);
@@ -283,6 +284,15 @@ public:
 
 	void MoveToCheckUp(Time Current);
 
-	void MoveCheckUoToAvail(Time Current);
+	void MoveCheckUpToAvail(Time Current);
+
+	void enmoving(Truck* t)
+	{
+		MovingTrucks.enqueue(t);
+	}
+
+
+
+
 };
 

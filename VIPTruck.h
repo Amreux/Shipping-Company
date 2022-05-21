@@ -13,7 +13,7 @@ public:
 	VIPTruck(int DI);
 	static void SetStaticMembers(int TC, int S, int CUD);
 	static int GetTruckCapacity();
-	static int GetSpeed();
+	int GetSpeed();
 	static int GetCheckUpDuration();
 	void SetEndOfCheckUp(Time EOCU);
 };

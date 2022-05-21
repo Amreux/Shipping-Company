@@ -9,7 +9,7 @@ NormalTruck::NormalTruck()
 
 }
 
-NormalTruck::NormalTruck(int DI)
+NormalTruck::NormalTruck(int DI)  //uidch
 {
 	DeliveryInterval = DI;
 }

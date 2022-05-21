@@ -382,7 +382,8 @@ void Company::MoveToCheckUp(Time Current) // checkup el awl fel sim
 	}
 }
 
-void Company::MoveCheckUoToAvail(Time Current)
+
+void Company::MoveCheckUpToAvail(Time Current)
 {
 	NormalTruck* TempTruck1;
 	int CurrentHours = Current.hour + Current.day * 24;
@@ -391,6 +392,7 @@ void Company::MoveCheckUoToAvail(Time Current)
 	{
 		NormalCheckUpTrucks.Dequeue(TempTruck1);
 		EmptyNormalTrucks.Enqueue(TempTruck1);
+		NormalCheckUpTrucks.Peek(TempTruck1);
 	}
 
 	SpecialTruck* TempTruck2;
@@ -399,6 +401,7 @@ void Company::MoveCheckUoToAvail(Time Current)
 	{
 		SpecialCheckUpTrucks.Dequeue(TempTruck2);
 		EmptySpecialTrucks.Enqueue(TempTruck2);
+		SpecialCheckUpTrucks.Peek(TempTruck2);
 	}
 
 	VIPTruck* TempTruck3;
@@ -407,5 +410,6 @@ void Company::MoveCheckUoToAvail(Time Current)
 	{
 		VIPCheckUpTrucks.Dequeue(TempTruck3);
 		EmptyVIPTrucks.Enqueue(TempTruck3);
+		VIPCheckUpTrucks.Peek(TempTruck3);
 	}
 }
