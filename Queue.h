@@ -46,6 +46,18 @@ public:
 		return true;
 	}
 
+	bool Peek(T& C)
+	{
+		if (IsEmpty())
+		{
+			C = nullptr;
+			return false;
+		}
+
+		C = Front->GetData();
+		return true;
+	}
+
 	bool IsEmpty()
 	{
 		if(!Front)
@@ -113,6 +125,18 @@ public:
 		Front = Front->GetNext();
 		data = NodeToBeDeleted->GetData();
 		delete NodeToBeDeleted;
+		return true;
+	}
+
+	bool Peek(Cargo*& C)
+	{
+		if (IsEmpty())
+		{
+			C = nullptr;
+			return false;
+		}
+
+		C = Front->GetData();
 		return true;
 	}
 

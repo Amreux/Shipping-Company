@@ -2,6 +2,7 @@
 
 int SpecialTruck::TruckCapacity = 0;
 int SpecialTruck::Speed = 0;
+int SpecialTruck::CheckUpDuration = 0;
 
 SpecialTruck::SpecialTruck(int DI) :Truck(DI)
 {
@@ -13,13 +14,28 @@ SpecialTruck::SpecialTruck()
 
 }
 
+void SpecialTruck::SetStaticMembers(int TC, int S, int CUD)
+{
+	TruckCapacity = TC;
+	Speed = S;
+	CheckUpDuration = CUD;
+}
+
 int SpecialTruck::GetTruckCapacity()
 {
 	return TruckCapacity;
 }
 
-void SpecialTruck:: SetProperties(int TC, int S)
+int SpecialTruck::GetSpeed()
 {
-	TruckCapacity = TC;
-	Speed = S;
+	return Speed;
+}
+int SpecialTruck::GetCheckUpDuration()
+{
+	return CheckUpDuration;
+}
+
+void SpecialTruck::SetEndOfCheckUp(Time EOCU)
+{
+	EndOfCheckUp = EOCU.hour + EOCU.day * 24 + CheckUpDuration;
 }

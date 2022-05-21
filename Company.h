@@ -9,8 +9,8 @@
 #include "Cargo.h"
 #include "Truck.h"
 #include "NormalTruck.h"
-#include "VIPTruck.h"
 #include "SpecialTruck.h"
+#include "VIPTruck.h"
 #include <fstream>
 
 class Company
@@ -20,8 +20,8 @@ class Company
 	Queue<Cargo*> WaitingSpecialCargos;
 	PriorityQueue<Cargo*> WaitingVIPCargos;
 	LinkedList<Cargo*> WaitingNormalCargos;
-	/*PriorityQueue<Cargo*> MovingSpecialCargos;
-	PriorityQueue<Cargo*> MovingNormalCargos;
+	PriorityQueue<Truck*> MovingTrucks;
+	/*PriorityQueue<Cargo*> MovingNormalCargos;
 	PriorityQueue<Cargo*> MovingVIPCargos;*/
 	Queue<Cargo*> DeliveredCargos;
 	/*Queue<Cargo> DeliveredVIPCargos;
@@ -29,8 +29,13 @@ class Company
 	Queue<NormalTruck*> EmptyNormalTrucks;
 	Queue<SpecialTruck*> EmptySpecialTrucks;
 	Queue<VIPTruck*> EmptyVIPTrucks;
-
 	Queue<Truck*> LoadingTrucks;
+	Queue<NormalTruck*> NormalCheckUpTrucks;
+	Queue<SpecialTruck*> SpecialCheckUpTrucks;
+	Queue<VIPTruck*> VIPCheckUpTrucks;
+
+
+
 public:
 	//      CONSTRUCTORS
 	
@@ -46,7 +51,7 @@ public:
 
 	// function to enqueue a cargo into Waiting VIP Queue
 
-	void enqueueWVC(Cargo* VC);
+	void enqueueWVC(Cargo* VC,int Priority);
 
 	// function to insert a cargo into Waiting Normal List
 
@@ -92,6 +97,8 @@ public:
 
 
 	//void EnqueueDVC(Cargo VC);
+	
+	void EnqueueMT(Truck* MT);
 
 
 	//-----------------------------------------------------//
@@ -126,13 +133,13 @@ public:
 	// function to Dequeue a cargo from Moving VIP Cargos
 
 
-	bool DequeueMVC(Cargo*& VC);
+	//bool DequeueMVC(Cargo*& VC);
 
 
 	// function to Dequeue a cargo from Moving Special Cargos
 
 
-	bool DequeueMSC(Cargo*& SC);
+	//bool DequeueMSC(Cargo*& SC);
 
 
 	// function to Dequeue a cargo from Waiting VIP Cargos
@@ -268,7 +275,14 @@ public:
 	//-----------------------------------------------------//
 
 
-	Truck* LoadVIPCargos();
+	void LoadVIPCargos();
 	
+	void DeliverCargos(Time Current);
+
+	void MoveToAvail();
+
+	void MoveToCheckUp(Time Current);
+
+	void MoveCheckUoToAvail(Time Current);
 };
 

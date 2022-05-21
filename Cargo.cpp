@@ -55,3 +55,8 @@ void Cargo::SetCost(int C)
 {
 	Cost = C;
 }
+
+int Cargo::CalcPrio()
+{
+	return (1000 / DeliveryDistance);
+}

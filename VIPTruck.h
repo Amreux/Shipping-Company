@@ -7,12 +7,14 @@ class VIPTruck:public Truck
 {
 	static int TruckCapacity;
 	static int Speed;
-	static int CheckUpTime;
-	//PriorityQueue <Cargo*> CargosQueue;
+	static int CheckUpDuration;
 public:
 	VIPTruck();
 	VIPTruck(int DI);
+	static void SetStaticMembers(int TC, int S, int CUD);
 	static int GetTruckCapacity();
-	//static void SetProperties(int TC, int S);
+	static int GetSpeed();
+	static int GetCheckUpDuration();
+	void SetEndOfCheckUp(Time EOCU);
 };
 
