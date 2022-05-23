@@ -263,7 +263,7 @@ public:
 
 	//function to check whether all CARGOS are delivered or not
 
-	bool AllIsDelivered();
+	//bool AllIsDelivered();
 
 
 	//function to Get AutoPromotion

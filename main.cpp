@@ -12,8 +12,7 @@ int main()
 {
 	UI Interface;
 	Company C;
-	C.LoadFile("Input.txt");
-
+	Interface.Simulate(C, 1, "Input.txt");
 	//int Type;
 	//    Type1---> Interactive Mode 
 	//    Type2---> Step-By-STep Mode
@@ -54,4 +53,5 @@ int main()
 	//C.MoveToCheckUp(T3);
 	//C.MoveCheckUpToAvail(T4);
 	//C.MoveCheckUpToAvail(T5);
+	
 }

@@ -41,11 +41,6 @@ bool Truck::DequeueCargo(Cargo*& C)
 	return CargosQueue.Dequeue(C);
 }
 
-void Truck::SetDeliveryInterval(int DI) // hat7sb fel load
-{
-	DeliveryInterval = DI;
-}
-
 int Truck::GetDeliveryInterval()
 {
 	return DeliveryInterval;

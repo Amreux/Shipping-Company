@@ -12,6 +12,7 @@ public:
 	NormalTruck();
 	NormalTruck(int DI);
 	static void SetStaticMembers(int TC,int S,int CUD);
+	void SetDeliveryInterval();
 	static int GetTruckCapacity();
 	int GetSpeed();
 	static int GetCheckUpDuration();

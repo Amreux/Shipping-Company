@@ -12,10 +12,11 @@ public:
 	VIPTruck();
 	VIPTruck(int DI);
 	static void SetStaticMembers(int TC, int S, int CUD);
+	void SetDeliveryInterval();
 	static int GetTruckCapacity();
 	int GetSpeed();
 	static int GetCheckUpDuration();
 	void SetEndOfCheckUp(Time EOCU);
-	bool IsFull()
+	bool IsFull();
 };
 

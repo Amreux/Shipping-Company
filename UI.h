@@ -11,6 +11,6 @@ public:
 	void Simulate(Company& C,int Type, string Input);
 
 	//     Function Display that Print The Cargos Lists data according to the desired format
-	void Display(Company & C);
+	//void Display(Company & C);
 };
 

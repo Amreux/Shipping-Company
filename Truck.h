@@ -21,7 +21,7 @@ public:
 	bool PeekCargosQueue(Cargo*& C);
 	bool DequeueCargo(Cargo*& C);
 	virtual int GetSpeed() = 0;
-	void SetDeliveryInterval(int DI);
+	virtual void SetDeliveryInterval() = 0;
 	int GetDeliveryInterval();
 	int CalcPrio();
 	void SetTotalJourneys(int TJ);
@@ -34,4 +34,6 @@ public:
 	//int CalcDI();
 	//virtual void DeliverCargos(Time Current) = 0;
 	virtual bool IsFull() = 0;
+	
+
 };
