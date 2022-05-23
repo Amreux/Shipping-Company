@@ -33,8 +33,10 @@ class Company
 	Queue<NormalTruck*> NormalCheckUpTrucks;
 	Queue<SpecialTruck*> SpecialCheckUpTrucks;
 	Queue<VIPTruck*> VIPCheckUpTrucks;
-
-
+	Truck* NormalLoadingTruck;
+	Truck* SpecialLoadingTruck;
+	Truck* VIPLoadingTruck;
+	int MaxW;
 
 public:
 	//      CONSTRUCTORS
@@ -242,8 +244,10 @@ public:
 	//function to return count of all Waiting Cargos
 
 
-	int WaitingCount();
-	
+	int WaitingNormalCount();
+	int WaitingSpecialCount();
+	int WaitingVIPCount();
+
 	
 	//function to return count of all Moving Cargos
 
@@ -276,7 +280,7 @@ public:
 
 
 
-	void LoadVIPCargos();
+	void LoadCargos(int& NLT, int& SLT, int& VLT);
 	
 	void DeliverCargos(Time Current);
 
@@ -286,13 +290,24 @@ public:
 
 	void MoveCheckUpToAvail(Time Current);
 
-	void enmoving(Truck* t)
+	void enmoving(Truck* t)  // testing
 	{
 		MovingTrucks.enqueue(t);
 	}
 
+	void SetNormalLoadingTruck(Truck* Nptr);
+	
+	void SetVIPLoadingTruck(Truck* Vptr);
 
+	void SetSpecialLoadingTruck(Truck* Sptr);
 
+	Truck* GetNormalLoadingTruck();
+
+	Truck* GetVIPLoadingTruck();
+
+	Truck* GetSpecialLoadingTruck();
+
+	void HandleMaxW(int Day,int Hour);
 
 };
 

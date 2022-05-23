@@ -17,7 +17,7 @@ bool PreparationEvent::Execute( Company& Comp) {
 		//allocating a cargo 
 		//assumed that Prep time is event time
 		Cargo* V = new Cargo(EventTime, LoadTime, Distance, Cost, ID, 'V');
-		int Priority = 10000*((Cost) /(pow(Distance, 2) *(EventTime.day*24+ EventTime.hour)));
+		int Priority = 10000*((Cost) / (Distance *(EventTime.day*24.0+ EventTime.hour)));
 		//enqueuing the cargo into the waiting vip queue
 		Comp.enqueueWVC(V, Priority);
 	}

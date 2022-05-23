@@ -6,7 +6,7 @@ class Truck
 {
 protected:
 	int DeliveryInterval;
-	char TruckType;
+	char TruckType;  // zbala
 	PriorityQueue <Cargo*> CargosQueue;
 	Time MovingTime;
 	int TotalJourneys;
@@ -33,5 +33,5 @@ public:
 	int GetEndOfCheckUp();
 	//int CalcDI();
 	//virtual void DeliverCargos(Time Current) = 0;
-
+	virtual bool IsFull() = 0;
 };

@@ -4,11 +4,15 @@ int Truck::J = 0;
 Truck::Truck(int DI)
 {
 	DeliveryInterval = DI;
+	TotalJourneys = 0;
+	EndOfCheckUp = 0;
 }
 
 Truck::Truck()
 {
 	DeliveryInterval = 0;
+	TotalJourneys = 0;
+	EndOfCheckUp = 0;
 }
 
 void Truck::LoadCargo(Cargo* C)
@@ -37,7 +41,7 @@ bool Truck::DequeueCargo(Cargo*& C)
 	return CargosQueue.Dequeue(C);
 }
 
-void Truck::SetDeliveryInterval(int DI) // load
+void Truck::SetDeliveryInterval(int DI) // hat7sb fel load
 {
 	DeliveryInterval = DI;
 }

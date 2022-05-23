@@ -16,5 +16,6 @@ public:
 	int GetSpeed();
 	static int GetCheckUpDuration();
 	void SetEndOfCheckUp(Time EOCU);
+	bool IsFull();
 };
 

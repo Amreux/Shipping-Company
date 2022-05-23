@@ -40,3 +40,8 @@ void VIPTruck::SetEndOfCheckUp(Time EOCU)
 {
 	EndOfCheckUp = EOCU.hour + EOCU.day * 24 + CheckUpDuration;
 }
+
+bool VIPTruck::IsFull()
+{
+	return (CargosQueue.GetCount() == TruckCapacity);
+}

@@ -39,3 +39,8 @@ void SpecialTruck::SetEndOfCheckUp(Time EOCU)
 {
 	EndOfCheckUp = EOCU.hour + EOCU.day * 24 + CheckUpDuration;
 }
+
+bool SpecialTruck::IsFull()
+{
+	return (CargosQueue.GetCount() == TruckCapacity);
+}
