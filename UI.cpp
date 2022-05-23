@@ -51,7 +51,8 @@ void UI::Simulate(Company& C, int Type, string Input)
 
 
 		NLT--;
-		
+		SLT--;
+		VLT--;
 
 
 
