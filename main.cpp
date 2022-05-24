@@ -12,7 +12,7 @@ int main()
 {
 	UI Interface;
 	Company C;
-	Interface.Simulate(C, 1, "Input.txt");
+	C.Simulate(1, "Input.txt");
 	//int Type;
 	//    Type1---> Interactive Mode 
 	//    Type2---> Step-By-STep Mode

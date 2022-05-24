@@ -11,12 +11,15 @@
 #include "NormalTruck.h"
 #include "SpecialTruck.h"
 #include "VIPTruck.h"
+#include"UI.h"
 #include <fstream>
+#include<string>
 
 class Company
 {
 	int AutoPromotion;
 	int MaxW;
+	int NumberOfAutoPromotions;
 	Queue < Event* > EventsList;
 	Queue<Cargo*> WaitingSpecialCargos;
 	PriorityQueue<Cargo*> WaitingVIPCargos;
@@ -33,8 +36,6 @@ class Company
 	Truck* NormalLoadingTruck;
 	Truck* SpecialLoadingTruck;
 	Truck* VIPLoadingTruck;
-	Truck* NormalEmergencyTruck;
-	Truck* SpecialEmergencyTruck;
 
 public:
 	//      CONSTRUCTORS
@@ -46,6 +47,8 @@ public:
 	//      ENQUEUING/INSERTING FUNCTIONS
 	
 	// function to enqueue a cargo into Waiting Special Queue
+
+	void Simulate(int Type, string InputFile);
 	
 	void enqueueWSC(Cargo* SC);
 
@@ -130,6 +133,18 @@ public:
 	bool DequeueEvent(Event*& E);
 
 
+	// function to Dequeue a cargo from Moving VIP Cargos
+
+
+	//bool DequeueMVC(Cargo*& VC);
+
+
+	// function to Dequeue a cargo from Moving Special Cargos
+
+
+	//bool DequeueMSC(Cargo*& SC);
+
+
 	// function to Dequeue a cargo from Waiting VIP Cargos
 
 
@@ -196,6 +211,23 @@ public:
 	void PrintDC();
 
 
+
+	//// function to print Delivered Special Cargos Queue
+
+
+
+	//void PrintDSC();
+
+
+
+	//// function to print Delivered VIP Cargos Queue
+
+
+
+	//void PrintDVC();
+
+
+
 	//-----------------------------------------------------//
 
 
@@ -230,6 +262,11 @@ public:
 	int DeliveredCount();
 
 
+	//function to check whether all CARGOS are delivered or not
+
+	//bool AllIsDelivered();
+
+
 	//function to Get AutoPromotion
 
 	int GetAutoPromotion();
@@ -238,13 +275,13 @@ public:
 	void SetAutoPromotion(int AP);
 
 	//function to Autopromote
-	void AutoPromote(int time);
+	void AutoPromote(Time CurrentTime);
 
 	//-----------------------------------------------------//
 
 
 
-	void LoadCargos(int& NLT, int& SLT, int& VLT, Time Current);
+	void LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime);
 	
 	void DeliverCargos(Time Current);
 
@@ -271,7 +308,23 @@ public:
 
 	Truck* GetSpecialLoadingTruck();
 
-	void HandleMaxW(int ENLT, int ESLT, Time Current);
+	void HandleMaxW(int& NLT, int& SLT, Time CurrentTime);
 
+	void ExecuteEvents(Event*& CurrentEvent,Time CurrentTime);
+
+	int GetLoadingTruckCount();
+	int GetEmptyTruckCount();
+	void PrintENT();
+	void PrintEST();
+	void PrintEVT();
+	void PrintMovingTrucks();
+	int GetMovingCargoCount();
+	int GetCheckupCount();
+	void PrintNCT();
+	void PrintSCT();
+	void PrintVCT();
+	void AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT);
+	void GenerateOutputFile();
+	
 };
 

@@ -1,12 +1,12 @@
 #pragma once
 #include "Node.h"
 #include "Cargo.h"
+#include"Truck.h"
 
 template <class T>
-class LinkedList 
+class LinkedList
 {
 	Node<T>* Head;
-
 public:
 	LinkedList()
 	{
@@ -47,8 +47,12 @@ public:
 		}
 		return true;
 	}
+	T PeekFront()
+	{
+		return Head;
+	}
 
-	T* Delete(T val)
+	T  Delete(T val)
 	{
 		if (!isfound(val))
 		{
@@ -79,6 +83,8 @@ public:
 			temp = temp->GetNext();
 		}
 	}
+
+	
 
 	bool RemoveFirst(T& Data)
 	{
@@ -114,6 +120,8 @@ public:
 		}
 	}
 };
+
+
 
 //      class specializtion to specify a copy for function delete using id for cargos only
 template <>

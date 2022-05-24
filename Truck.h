@@ -1,18 +1,20 @@
 #pragma once
 #include "Cargo.h"
+#include"Queue.h"
 #include "PriorityQueue.h"
 
 class Truck 
 {
 protected:
 	int DeliveryInterval;
-	char TruckType;  // zbala
 	PriorityQueue <Cargo*> CargosQueue;
 	Time MovingTime;
 	int TotalJourneys;
 	static int J;
 	int EndOfCheckUp;
-	int TruckActiveTime;
+	bool EmergencyFlag;
+	int TID;
+	static int TruckCount;
 public:
 	Truck(int DI);
 	Truck();
@@ -32,9 +34,12 @@ public:
 	bool IsEmpty();
 	virtual void SetEndOfCheckUp(Time EOCU) = 0;
 	int GetEndOfCheckUp();
-	//int CalcDI();
-	//virtual void DeliverCargos(Time Current) = 0;
 	virtual bool IsFull() = 0;
-	
-
+	void SetEFlag(bool F);
+	bool GetEFlag();
+	int GetTID();
+	void PrintTruckCargos();
+	void PrintID();
+	int GetCargoCount();
+	void SetCWT();
 };
