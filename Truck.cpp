@@ -6,6 +6,7 @@ Truck::Truck(int DI)
 	DeliveryInterval = DI;
 	TotalJourneys = 0;
 	EndOfCheckUp = 0;
+	TruckActiveTime = 0;
 }
 
 Truck::Truck()
@@ -13,6 +14,7 @@ Truck::Truck()
 	DeliveryInterval = 0;
 	TotalJourneys = 0;
 	EndOfCheckUp = 0;
+	TruckActiveTime = 0;
 }
 
 void Truck::LoadCargo(Cargo* C)
@@ -50,7 +52,7 @@ int Truck::CalcPrio()
 {
 	int MTHours = MovingTime.hour + MovingTime.day * 24;
 	int Prio = MTHours + DeliveryInterval;
-	return 1000 / Prio;
+	return 10000 / Prio;
 }
 
 void Truck::SetTotalJourneys(int TJ)

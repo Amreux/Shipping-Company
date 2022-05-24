@@ -12,6 +12,7 @@ protected:
 	int TotalJourneys;
 	static int J;
 	int EndOfCheckUp;
+	int TruckActiveTime;
 public:
 	Truck(int DI);
 	Truck();

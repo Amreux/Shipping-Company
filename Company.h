@@ -16,16 +16,13 @@
 class Company
 {
 	int AutoPromotion;
+	int MaxW;
 	Queue < Event* > EventsList;
 	Queue<Cargo*> WaitingSpecialCargos;
 	PriorityQueue<Cargo*> WaitingVIPCargos;
 	LinkedList<Cargo*> WaitingNormalCargos;
 	PriorityQueue<Truck*> MovingTrucks;
-	/*PriorityQueue<Cargo*> MovingNormalCargos;
-	PriorityQueue<Cargo*> MovingVIPCargos;*/
 	Queue<Cargo*> DeliveredCargos;
-	/*Queue<Cargo> DeliveredVIPCargos;
-	Queue<Cargo> DeliveredSpecialCargos;*/
 	Queue<NormalTruck*> EmptyNormalTrucks;
 	Queue<SpecialTruck*> EmptySpecialTrucks;
 	Queue<VIPTruck*> EmptyVIPTrucks;
@@ -36,7 +33,8 @@ class Company
 	Truck* NormalLoadingTruck;
 	Truck* SpecialLoadingTruck;
 	Truck* VIPLoadingTruck;
-	int MaxW;
+	Truck* NormalEmergencyTruck;
+	Truck* SpecialEmergencyTruck;
 
 public:
 	//      CONSTRUCTORS
@@ -132,18 +130,6 @@ public:
 	bool DequeueEvent(Event*& E);
 
 
-	// function to Dequeue a cargo from Moving VIP Cargos
-
-
-	//bool DequeueMVC(Cargo*& VC);
-
-
-	// function to Dequeue a cargo from Moving Special Cargos
-
-
-	//bool DequeueMSC(Cargo*& SC);
-
-
 	// function to Dequeue a cargo from Waiting VIP Cargos
 
 
@@ -210,23 +196,6 @@ public:
 	void PrintDC();
 
 
-
-	//// function to print Delivered Special Cargos Queue
-
-
-
-	//void PrintDSC();
-
-
-
-	//// function to print Delivered VIP Cargos Queue
-
-
-
-	//void PrintDVC();
-
-
-
 	//-----------------------------------------------------//
 
 
@@ -261,11 +230,6 @@ public:
 	int DeliveredCount();
 
 
-	//function to check whether all CARGOS are delivered or not
-
-	//bool AllIsDelivered();
-
-
 	//function to Get AutoPromotion
 
 	int GetAutoPromotion();
@@ -280,7 +244,7 @@ public:
 
 
 
-	void LoadCargos(int& NLT, int& SLT, int& VLT);
+	void LoadCargos(int& NLT, int& SLT, int& VLT, Time Current);
 	
 	void DeliverCargos(Time Current);
 
@@ -307,7 +271,7 @@ public:
 
 	Truck* GetSpecialLoadingTruck();
 
-	void HandleMaxW(int Day,int Hour);
+	void HandleMaxW(int ENLT, int ESLT, Time Current);
 
 };
 

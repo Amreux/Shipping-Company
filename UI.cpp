@@ -23,7 +23,7 @@ void UI::Simulate(Company& C, int Type, string Input)
 	C.SetSpecialLoadingTruck(nullptr);
 	C.SetVIPLoadingTruck(nullptr);
 
-	int NLT = -1, SLT = -1, VLT = -1;
+	int NLT = -1, SLT = -1, VLT = -1, ENLT = -1, ESLT = -1;
 
 	C.LoadFile(Input);
 	Event* CurrentEvent = nullptr;
@@ -37,7 +37,7 @@ void UI::Simulate(Company& C, int Type, string Input)
 			if (!C.DequeueEvent(CurrentEvent))
 				CurrentEvent = nullptr;
 		}
-		C.LoadCargos(NLT, SLT, VLT);
+		C.LoadCargos(NLT, SLT, VLT,Time(hour,day));
 
 
 
@@ -53,7 +53,8 @@ void UI::Simulate(Company& C, int Type, string Input)
 		NLT--;
 		SLT--;
 		VLT--;
-
+		ENLT--;
+		ESLT--;
 
 
 
