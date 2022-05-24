@@ -1,4 +1,5 @@
 #include "Company.h"
+#include <iomanip>
 
 Company::Company()
 {
@@ -197,10 +198,6 @@ void Company::LoadFile( string Input)
 		return;
 	}
 
-	//opening the output file
-
-	ofstream OutputFile("Output.txt");
-	OutputFile << "Done";
 	int NumN, NumS, NumVIP;
 	int NSpeed, SpSpeed, VIPSpeed;
 	int NCap, SCap, VIPCap;
@@ -387,6 +384,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 		VIPLoadingTruck->LoadCargo(VC);
 		if (VIPLoadingTruck->IsFull())
 		{
+			VIPLoadingTruck->SetTDC(VIPLoadingTruck->GetCargoCount() + VIPLoadingTruck->GetTDC());
 			VIPLoadingTruck->SetDeliveryInterval();
 			VIPLoadingTruck->SetMovingTime(CurrentTime);
 			VIPLoadingTruck->SetCWT();
@@ -422,6 +420,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 		SpecialLoadingTruck->LoadCargo(SC);
 		if (SpecialLoadingTruck->IsFull() || SpecialLoadingTruck->GetEFlag())
 		{
+			SpecialLoadingTruck->SetTDC(SpecialLoadingTruck->GetCargoCount() + SpecialLoadingTruck->GetTDC());
 			SpecialLoadingTruck->SetDeliveryInterval();
 			SpecialLoadingTruck->SetMovingTime(CurrentTime);
 			SpecialLoadingTruck->SetCWT();
@@ -467,6 +466,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 		NormalLoadingTruck->LoadCargo(NC);
 		if (NormalLoadingTruck->IsFull() || NormalLoadingTruck->GetEFlag())
 		{
+			NormalLoadingTruck->SetTDC(NormalLoadingTruck->GetCargoCount() + NormalLoadingTruck->GetTDC());
 			NormalLoadingTruck->SetDeliveryInterval();
 			NormalLoadingTruck->SetMovingTime(CurrentTime);
 			NormalLoadingTruck->SetCWT();
@@ -746,12 +746,12 @@ void Company::Simulate(int Type, string InputFile)
 
 	int NAP = 0;
 
-	//The truck needs time to come back
+	//The truck needs time to come back//////////////
 
 	LoadFile(InputFile);
 	Event* CurrentEvent = nullptr;
 	DequeueEvent(CurrentEvent);
-	while (true)
+	while (!AllIsDelivered()||CurrentEvent)
 	{
 
 		ExecuteEvents(CurrentEvent, Time(hour, day));
@@ -779,7 +779,7 @@ void Company::Simulate(int Type, string InputFile)
 
 
 	} 
-	Interface.DisplayT3(*this,Type);
+	Interface.DisplayT3(*this, Type, Time(hour,day));
 }
 
 void Company::AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT)
@@ -796,12 +796,108 @@ void Company::AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT)
 	VLT--;
 
 }
-void Company::GenerateOutputFile()
+
+void Company::GenerateOutputFile(Time EndSimTime)
 {
 
 
+	ofstream OutputFile("Output.txt");
 
+	//checking whether the file is opened/found 
+	if (!OutputFile.is_open())
+	{
+		cout << "Could not open the file..." << endl;
+		return;
+	}
 
+	OutputFile << "CDT    ID   PT     WT    TID" << endl;
 
+	int NumNC = 0, NumSC = 0, NumVC = 0;
+	int TotalWaitHours = 0;
+	int TotalActiveHours = 0;
+	int NumOfDeliveredCargos = DeliveredCargos.GetCount();
+	Cargo* DeliveredCargo;
+	
+	for (int i = 0; i < NumOfDeliveredCargos; i++)
+	{
+		DeliveredCargos.Dequeue(DeliveredCargo);
+
+		OutputFile << DeliveredCargo->GetCDT().day << ":" <<setw(2)<<setfill('0')<< DeliveredCargo->GetCDT().hour << "   " << DeliveredCargo->GetID() << "   ";
+		OutputFile << DeliveredCargo->GetPreparationTime().day << ":" <<setw(2) << setfill('0')<< DeliveredCargo->GetPreparationTime().hour << "   ";
+		OutputFile << DeliveredCargo->GetWT().day << ":" << setw(2) << setfill('0') << DeliveredCargo->GetWT().hour << "   ";
+		OutputFile << DeliveredCargo->GetTID() << endl;
+
+		TotalWaitHours += DeliveredCargo->GetWT().day * 24 + DeliveredCargo->GetWT().hour;
+
+		if (DeliveredCargo->GetCT() == 'N')
+			NumNC++;
+		else if (DeliveredCargo->GetCT() == 'S')
+			NumSC++;
+		else
+			NumVC++;
+	}
+	OutputFile << "…………………………………………………………………………" << endl;
+
+	OutputFile << "Cargos: " << NumOfDeliveredCargos << " [N: " << NumNC << ", S: " << NumSC << ", V: " << NumVC << "]" << endl;
+	OutputFile << "Cargo Avg Wait = " << (TotalWaitHours / NumOfDeliveredCargos) / 24 << ":" << (TotalWaitHours / NumOfDeliveredCargos) % 24 << endl;
+	OutputFile << "Auto-promoted Cargos: " << 100 * NumberOfAutoPromotions / (NumberOfAutoPromotions + NumNC) << "%" << endl;
+
+	OutputFile << "Trucks: " << EmptyNormalTrucks.GetCount() + EmptySpecialTrucks.GetCount() + EmptyVIPTrucks.GetCount() << " [N: " << EmptyNormalTrucks.GetCount();
+	OutputFile << ",S: " << EmptySpecialTrucks.GetCount() << ", V: " << EmptyVIPTrucks.GetCount() << "]" << endl;
+
+	NormalTruck* TempNTruck;
+	SpecialTruck* TempSTruck;
+	VIPTruck* TempVTruck;
+	int NumNT = EmptyNormalTrucks.GetCount();
+	int NumST = EmptySpecialTrucks.GetCount();
+	int NumVT = EmptyVIPTrucks.GetCount();
+
+	int TDC;
+	int TotalJourneys;
+	int TruckCap=NormalTruck::GetTruckCapacity();
+
+	float TruckUtilization = 0;
+	for (int i = 0; i < NumNT; i++)
+	{
+		EmptyNormalTrucks.Dequeue(TempNTruck);
+		TotalActiveHours += TempNTruck->GetActiveTime();
+		TDC = TempNTruck->GetTDC();
+		TotalJourneys = TempNTruck->GetTotalJourneys();
+		if(!(TDC==0|| TotalJourneys==0))
+			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TotalActiveHours / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
+	}
+
+	TruckCap = SpecialTruck::GetTruckCapacity();
+	for (int i = 0; i < NumST; i++)
+	{
+		EmptySpecialTrucks.Dequeue(TempSTruck);
+		TotalActiveHours += TempSTruck->GetActiveTime();
+		TDC = TempSTruck->GetTDC();
+		TotalJourneys = TempSTruck->GetTotalJourneys();
+		if (!(TDC == 0 || TotalJourneys == 0))
+			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TotalActiveHours / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
+	}
+
+	TruckCap = VIPTruck::GetTruckCapacity();
+	for (int i = 0; i < NumVT; i++)
+	{
+		EmptyVIPTrucks.Dequeue(TempVTruck);
+		TotalActiveHours += TempVTruck->GetActiveTime();
+		TDC = TempVTruck->GetTDC();
+		TotalJourneys = TempVTruck->GetTotalJourneys();
+		if (!(TDC == 0 || TotalJourneys == 0))
+			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TotalActiveHours / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
+	}
+
+	OutputFile << "Avg Active time = " << (100*TotalActiveHours / (EndSimTime.day * 24 -24 + EndSimTime.hour)) << "%" << endl;
+
+	if ((NumNT + NumST + NumVT) == 0)
+		OutputFile << "Avg utilization = 0%" << endl;
+	else
+		OutputFile << "Avg utilization = "<< int(100* TruckUtilization /(NumNT + NumST + NumVT)) <<"%" << endl;
 }
 
+bool Company::AllIsDelivered()
+{
+	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty());
+}

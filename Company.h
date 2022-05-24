@@ -324,7 +324,7 @@ public:
 	void PrintSCT();
 	void PrintVCT();
 	void AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT);
-	void GenerateOutputFile();
-	
+	void GenerateOutputFile(Time EndSimTime);
+	bool AllIsDelivered();
 };
 

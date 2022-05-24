@@ -74,3 +74,18 @@ void Cargo::SetWT(Time Wait)
 {
 	WT = Wait;
 }
+
+Time Cargo::GetCDT()
+{
+	return CDT;
+}
+
+Time Cargo::GetWT()
+{
+	return WT;
+}
+
+int Cargo::GetTID()
+{
+	return TID;
+}

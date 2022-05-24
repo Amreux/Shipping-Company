@@ -1,9 +1,8 @@
 #pragma once
 #include "Cargo.h"
-#include"Queue.h"
 #include "PriorityQueue.h"
 
-class Truck 
+class Truck
 {
 protected:
 	int DeliveryInterval;
@@ -15,10 +14,12 @@ protected:
 	bool EmergencyFlag;
 	int TID;
 	static int TruckCount;
+	int TruckActiveTime;
+	int TDC;
 public:
 	Truck(int DI);
 	Truck();
-	void LoadCargo(Cargo* C); 
+	void LoadCargo(Cargo* C);
 	void SetMovingTime(Time T);
 	Time GetMovingTime();
 	bool PeekCargosQueue(Cargo*& C);
@@ -42,4 +43,7 @@ public:
 	void PrintID();
 	int GetCargoCount();
 	void SetCWT();
+	int GetActiveTime();
+	void SetTDC(int tdc);
+	int GetTDC();
 };

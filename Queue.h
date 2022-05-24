@@ -3,9 +3,11 @@
 #include "Node.h"
 #include <iostream>
 #include "Cargo.h"
+#include"Truck.h"
 #include"NormalTruck.h"
-#include"VIPTruck.h"
 #include"SpecialTruck.h"
+#include"VIPTruck.h"
+
 using namespace std;
 
 

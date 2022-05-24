@@ -108,11 +108,11 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 	}
 }
 
-void  UI::DisplayT3(Company& C,int Type)
+void  UI::DisplayT3(Company& C,int Type,Time EndSimTime)
 {
 	if (Type == 3)
 	{
-		GenerateOutputFile(C);
+		C.GenerateOutputFile(EndSimTime);
 		cout << "Silent Mode " << endl;
 		cout << "Simulation Starts..." << endl;
 		cout << "Simulation ends, Output file created" << endl;

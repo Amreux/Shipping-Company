@@ -85,12 +85,14 @@ public:
 	int CalcPrio();
 
 	void SetCDT(Time Current);
+	Time GetCDT();
 
 	void SetTID(int tid);
-
+	int GetTID();
 
 	void SetWT(Time Wait);
 
+	Time GetWT();
 
 };
 
