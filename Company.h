@@ -11,21 +11,21 @@
 #include "NormalTruck.h"
 #include "SpecialTruck.h"
 #include "VIPTruck.h"
+#include"UI.h"
 #include <fstream>
+#include<string>
 
 class Company
 {
 	int AutoPromotion;
+	int MaxW;
+	int NumberOfAutoPromotions;
 	Queue < Event* > EventsList;
 	Queue<Cargo*> WaitingSpecialCargos;
 	PriorityQueue<Cargo*> WaitingVIPCargos;
 	LinkedList<Cargo*> WaitingNormalCargos;
 	PriorityQueue<Truck*> MovingTrucks;
-	/*PriorityQueue<Cargo*> MovingNormalCargos;
-	PriorityQueue<Cargo*> MovingVIPCargos;*/
 	Queue<Cargo*> DeliveredCargos;
-	/*Queue<Cargo> DeliveredVIPCargos;
-	Queue<Cargo> DeliveredSpecialCargos;*/
 	Queue<NormalTruck*> EmptyNormalTrucks;
 	Queue<SpecialTruck*> EmptySpecialTrucks;
 	Queue<VIPTruck*> EmptyVIPTrucks;
@@ -36,7 +36,6 @@ class Company
 	Truck* NormalLoadingTruck;
 	Truck* SpecialLoadingTruck;
 	Truck* VIPLoadingTruck;
-	int MaxW;
 
 public:
 	//      CONSTRUCTORS
@@ -48,6 +47,8 @@ public:
 	//      ENQUEUING/INSERTING FUNCTIONS
 	
 	// function to enqueue a cargo into Waiting Special Queue
+
+	void Simulate(int Type, string InputFile);
 	
 	void enqueueWSC(Cargo* SC);
 
@@ -274,13 +275,13 @@ public:
 	void SetAutoPromotion(int AP);
 
 	//function to Autopromote
-	void AutoPromote(int time);
+	void AutoPromote(Time CurrentTime);
 
 	//-----------------------------------------------------//
 
 
 
-	void LoadCargos(int& NLT, int& SLT, int& VLT);
+	void LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime);
 	
 	void DeliverCargos(Time Current);
 
@@ -307,7 +308,23 @@ public:
 
 	Truck* GetSpecialLoadingTruck();
 
-	void HandleMaxW(int Day,int Hour);
+	void HandleMaxW(int& NLT, int& SLT, Time CurrentTime);
 
+	void ExecuteEvents(Event*& CurrentEvent,Time CurrentTime);
+
+	int GetLoadingTruckCount();
+	int GetEmptyTruckCount();
+	void PrintENT();
+	void PrintEST();
+	void PrintEVT();
+	void PrintMovingTrucks();
+	int GetMovingCargoCount();
+	int GetCheckupCount();
+	void PrintNCT();
+	void PrintSCT();
+	void PrintVCT();
+	void AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT);
+	void GenerateOutputFile();
+	
 };
 

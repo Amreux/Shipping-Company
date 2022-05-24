@@ -7,6 +7,9 @@ class Cargo
 	int LoadUnloadTime;
 	int DeliveryDistance;
 	int Cost;
+	Time CDT;
+	int TID; 
+	Time WT; 
 	//Instead of using polymorphism , and since the only difference between cargos is the cargo type 
 	//we decided to add data member to indicate the type
 	char CargoType;
@@ -17,7 +20,6 @@ public:
 
 
 	Cargo(Time Prep, int Load, int DD, int C,int id,char CT);
-
 
 	Cargo();
 
@@ -77,10 +79,18 @@ public:
 	// fuction to set CargoType
 
 
-
+	
 	void SetCargoType(char CT);
 
 	int CalcPrio();
+
+	void SetCDT(Time Current);
+
+	void SetTID(int tid);
+
+
+	void SetWT(Time Wait);
+
 
 };
 

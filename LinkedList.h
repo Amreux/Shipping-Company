@@ -84,20 +84,7 @@ public:
 		}
 	}
 
-	T GetItemAt(int index)
-	{
-		Node<T>* curr = Head;
-		for (int i = 0; i < index; i++)
-			curr = curr->GetNext();
-		return curr->GetData();
-	}
-	void SetItemAt(int index,T data)
-	{
-		Node<T>* curr = Head;
-		for (int i = 0; i < index; i++)
-			curr = curr->GetNext();
-		curr->SetData(Data);
-	}
+	
 
 	bool RemoveFirst(T& Data)
 	{
@@ -132,19 +119,8 @@ public:
 			Temp = Temp->GetNext();
 		}
 	}
-	T RemoveItemAt(int index);
 };
-Truck* LinkedList<Truck*>::RemoveItemAt(int index)
-{
-	Node<Truck*>* curr = Head;
-	for (int i = 0; i < index; i++)
-	{
-		curr = curr->GetNext();
-	}
-	Node<Truck*>* Temp = curr;
-	curr->SetData(nullptr);
-	return Temp->GetData();
-}
+
 
 
 //      class specializtion to specify a copy for function delete using id for cargos only
