@@ -16,6 +16,8 @@ void UI::GenerateOutputFile(Company& C)
 
 void UI::Simulate(Company& C,int Type, string Input)
 {
+
+	enum Type { Normal,VIP,Special };
 	//int hour = 0;
 	//int day = 0;
 	////    Variable that ensures that after each 5 Steps the functions dequeue a cargo from each waiting list and enqueue it

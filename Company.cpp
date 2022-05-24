@@ -350,5 +350,28 @@ void Company::LoadNormalCargos()
 			LoadingTruck->LoadCargo(TempCargo);
 		}
 	}
-
+}
+void Company::SetNormalLoadingTruck(Truck* Nptr)
+{
+	NormalLoadingTruck = Nptr;
+}
+void Company::SetVIPLoadingTruck(Truck* Vptr)
+{
+	VIPLoadingTruck = Vptr;
+}
+void Company::SetSpecialLoadingTruck(Truck* Sptr)
+{
+	SpecialLoadingTruck = Sptr;
+}
+Truck* Company::GetNormalLoadingTruck()
+{
+	return NormalLoadingTruck;
+}
+Truck* Company::GetVIPLoadingTruck()
+{
+	return VIPLoadingTruck;
+}
+Truck* Company::GetSpecialLoadingTruck()
+{
+	return SpecialLoadingTruck;
 }

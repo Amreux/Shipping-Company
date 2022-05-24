@@ -16,6 +16,9 @@
 class Company
 {
 	int AutoPromotion;
+	Truck* NormalLoadingTruck;
+	Truck* VIPLoadingTruck;
+	Truck* SpecialLoadingTruck;
 	Queue < Event* > EventsList;
 	Queue<Cargo*> WaitingSpecialCargos;
 	PriorityQueue<Cargo*> WaitingVIPCargos;
@@ -29,7 +32,7 @@ class Company
 	Queue<NormalTruck*> EmptyNormalTrucks;
 	Queue<SpecialTruck*> EmptySpecialTrucks;
 	Queue<VIPTruck*> EmptyVIPTrucks;
-	Queue<Truck*> LoadingTrucks;
+	LinkedList<Truck*> LoadingTrucks;
 public:
 	//      CONSTRUCTORS
 	
@@ -265,6 +268,15 @@ public:
 	void AutoPromote(int time);
 
 	//-----------------------------------------------------//
+	
+	void SetNormalLoadingTruck(Truck*);
+	void SetVIPLoadingTruck(Truck*);
+	void SetSpecialLoadingTruck(Truck*);
+	Truck* GetNormalLoadingTruck();
+	Truck* GetVIPLoadingTruck();
+	Truck* GetSpecialLoadingTruck();
+
+
 
 
 	void LoadVIPCargos();
