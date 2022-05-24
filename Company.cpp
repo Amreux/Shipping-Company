@@ -10,9 +10,9 @@ void Company::enqueueWSC(Cargo* SC)
 	WaitingSpecialCargos.Enqueue(SC);
 }
 
-void Company::enqueueWVC(Cargo* VC)
+void Company::enqueueWVC(Cargo* VC, int Priority)
 {
-	WaitingVIPCargos.enqueue(VC);
+	WaitingVIPCargos.enqueue(VC, Priority);
 }
 
 void Company::insertWNC(Cargo* NC)
@@ -57,6 +57,12 @@ void Company::EnqueueDC(Cargo* SC)
 	DeliveredCargos.Enqueue(SC);
 }
 
+void Company::EnqueueMT(Truck* MT) //////////
+{
+	MovingTrucks.enqueue(MT);
+}
+
+
 bool Company::DequeueEvent(Event*& E)
 {
 	return EventsList.Dequeue(E);
@@ -70,6 +76,31 @@ bool Company::DequeueWVC(Cargo*& VC)
 bool Company::DequeueWSC(Cargo*& SC)
 {
 	return WaitingSpecialCargos.Dequeue(SC);
+}
+
+void Company::SetNormalLoadingTruck(Truck* Nptr)
+{
+	NormalLoadingTruck = Nptr;
+}
+void Company::SetVIPLoadingTruck(Truck* Vptr)
+{
+	VIPLoadingTruck = Vptr;
+}
+void Company::SetSpecialLoadingTruck(Truck* Sptr)
+{
+	SpecialLoadingTruck = Sptr;
+}
+Truck* Company::GetNormalLoadingTruck()
+{
+	return NormalLoadingTruck;
+}
+Truck* Company::GetVIPLoadingTruck()
+{
+	return VIPLoadingTruck;
+}
+Truck* Company::GetSpecialLoadingTruck()
+{
+	return SpecialLoadingTruck;
 }
 
 //bool Company::DequeueMSC(Cargo*& SC)
@@ -126,9 +157,19 @@ void Company::PrintDC()
 	DeliveredCargos.Print();
 }
 
-int Company::WaitingCount()
+int Company::WaitingNormalCount()
 {
-	return WaitingNormalCargos.GetCount() + WaitingSpecialCargos.GetCount() + WaitingVIPCargos.GetCount();
+	return WaitingNormalCargos.GetCount();
+}
+
+int Company::WaitingSpecialCount()
+{
+	return WaitingSpecialCargos.GetCount();
+}
+
+int Company::WaitingVIPCount()
+{
+	return WaitingVIPCargos.GetCount();
 }
 
 //int Company::MovingCount()
@@ -160,11 +201,44 @@ void Company::LoadFile( string Input)
 
 	ofstream OutputFile("Output.txt");
 	OutputFile << "Done";
+	int NumN, NumS, NumVIP;
+	int NSpeed, SpSpeed, VIPSpeed;
+	int NCap, SCap, VIPCap;
+	int j;
+	int CN, CS, CV;
 	int AP,No_Events;
 
+	InputFile >> NumN >> NumS >> NumVIP;
+	InputFile >> NSpeed >> SpSpeed >> VIPSpeed;
+	InputFile >> NCap >> SCap >> VIPCap;
+	InputFile >> j >> CN >> CS >> CV;
+	Truck::SetJ(j);
+	NormalTruck::SetStaticMembers(NCap, NSpeed, CN);
+	SpecialTruck::SetStaticMembers(SCap, SpSpeed, CS);
+	VIPTruck::SetStaticMembers(VIPCap, VIPSpeed, CV);
+
+	for (int i = 0; i < NumN; i++)
+	{
+		NormalTruck* NT = new NormalTruck;
+		EmptyNormalTrucks.Enqueue(NT);
+	}
+
+	for (int i = 0; i < NumS; i++)
+	{
+		SpecialTruck* ST = new SpecialTruck;
+		EmptySpecialTrucks.Enqueue(ST);
+	}
+	
+	for (int i = 0; i < NumVIP; i++)
+	{
+		VIPTruck* NVIP = new VIPTruck;
+		EmptyVIPTrucks.Enqueue(NVIP);
+	}
 
 	//reading the number of events from input file
-	InputFile >>AP>> No_Events;
+
+	InputFile >> AP >> MaxW >> No_Events;
+
 	SetAutoPromotion(AP);
 
 	//variables for diffrent events
@@ -258,7 +332,7 @@ void Company::AutoPromote(int time)
 		if (time - PrepHours >= AutoP)
 		{
 			Temp->SetCargoType('V');
-			enqueueWVC(Temp);
+			enqueueWVC(Temp, Temp->CalcPrio());
 		}
 		else
 		{
@@ -268,110 +342,248 @@ void Company::AutoPromote(int time)
 	}
 }
 
-
-
-
-void Company::LoadVIPCargos()
+void Company::LoadCargos(int& NLT, int& SLT, int& VLT)
 {
-	if (!EmptyVIPTrucks.IsEmpty() && VIPTruck::GetTruckCapacity() <= WaitingVIPCargos.GetCount())
+	if (!VIPLoadingTruck)
 	{
-		VIPTruck* LoadingTruck;
-		EmptyVIPTrucks.Dequeue(LoadingTruck);
-		Cargo* TempCargo;
-		for (int i = 0; i < VIPTruck::GetTruckCapacity(); i++)
+		if (!EmptyVIPTrucks.IsEmpty() && (WaitingVIPCount() >= VIPTruck::GetTruckCapacity()))
 		{
-			WaitingVIPCargos.Dequeue(TempCargo);
-			LoadingTruck->LoadCargo(TempCargo);
-		}
-	}
-	else if (!EmptyNormalTrucks.IsEmpty() && NormalTruck::GetTruckCapacity() <= WaitingVIPCargos.GetCount())
-	{
-		NormalTruck* LoadingTruck;
-		EmptyNormalTrucks.Dequeue(LoadingTruck);
-		Cargo* TempCargo;
-		for (int i = 0; i < NormalTruck::GetTruckCapacity(); i++)
-		{
-			WaitingVIPCargos.Dequeue(TempCargo);
-			LoadingTruck->LoadCargo(TempCargo);
+			VIPTruck* VT;
+			EmptyVIPTrucks.Dequeue(VT);
+			VIPLoadingTruck = VT;
+			Cargo* VC;
+			WaitingVIPCargos.Peek(VC);
+			VLT = VC->GetLoadUnloadTime();
 		}
 
-	}
-	else if (!EmptySpecialTrucks.IsEmpty() && SpecialTruck::GetTruckCapacity() <= WaitingVIPCargos.GetCount())
-	{
-		SpecialTruck* LoadingTruck;
-		EmptySpecialTrucks.Dequeue(LoadingTruck);
-		Cargo* TempCargo;
-		for (int i = 0; i < SpecialTruck::GetTruckCapacity(); i++)
+		else if (!EmptyNormalTrucks.IsEmpty() && (WaitingVIPCount() >= NormalTruck::GetTruckCapacity()))
 		{
-			WaitingVIPCargos.Dequeue(TempCargo);
-			LoadingTruck->LoadCargo(TempCargo);
+			NormalTruck* NT;
+			EmptyNormalTrucks.Dequeue(NT);
+			VIPLoadingTruck = NT;
+			Cargo* VC;
+			WaitingVIPCargos.Peek(VC);
+			VLT = VC->GetLoadUnloadTime();
+		}
+
+		else if (!EmptySpecialTrucks.IsEmpty() && (WaitingVIPCount() >= SpecialTruck::GetTruckCapacity()))
+		{
+			SpecialTruck* ST;
+			EmptySpecialTrucks.Dequeue(ST);
+			VIPLoadingTruck = ST;
+			Cargo* VC;
+			WaitingVIPCargos.Peek(VC);
+			VLT = VC->GetLoadUnloadTime();
+		}
+	}
+
+	if (VLT == 0)
+	{
+		Cargo* VC;
+		WaitingVIPCargos.Dequeue(VC);
+		VIPLoadingTruck->LoadCargo(VC);
+		if (VIPLoadingTruck->IsFull())
+		{
+			VIPLoadingTruck->SetDeliveryInterval();
+			MovingTrucks.enqueue(VIPLoadingTruck, VIPLoadingTruck->CalcPrio());
+			VLT = -1;
+			VIPLoadingTruck = nullptr;
+		}
+		else if (WaitingVIPCargos.Peek(VC))
+		{
+			VLT = VC->GetLoadUnloadTime();
+		}
+	}
+
+	// ------------------------------------------- //
+
+	if (!SpecialLoadingTruck)
+	{
+		if (!EmptySpecialTrucks.IsEmpty() && (WaitingSpecialCount() >= SpecialTruck::GetTruckCapacity()))
+		{
+			SpecialTruck* ST;
+			EmptySpecialTrucks.Dequeue(ST);
+			SpecialLoadingTruck = ST;
+			Cargo* SC;
+			WaitingSpecialCargos.Peek(SC);
+			SLT = SC->GetLoadUnloadTime();
+		}
+	}
+
+	if (SLT == 0)
+	{
+		Cargo* SC;
+		WaitingSpecialCargos.Dequeue(SC);
+		SpecialLoadingTruck->LoadCargo(SC);
+		if (SpecialLoadingTruck->IsFull())
+		{
+			SpecialLoadingTruck->SetDeliveryInterval();
+			MovingTrucks.enqueue(SpecialLoadingTruck, SpecialLoadingTruck->CalcPrio());
+			SLT = -1;
+			SpecialLoadingTruck = nullptr;
+		}
+		else if (WaitingSpecialCargos.Peek(SC))    
+		{
+			SLT = SC->GetLoadUnloadTime();
+		}
+	}
+
+	// -------------------------------------------------- //
+
+	if (!NormalLoadingTruck)
+	{
+		if (!EmptyNormalTrucks.IsEmpty() && (WaitingNormalCount() >= NormalTruck::GetTruckCapacity()))
+		{
+			NormalTruck* NT;
+			EmptyNormalTrucks.Dequeue(NT);
+			NormalLoadingTruck = NT;
+			Cargo* NC;
+			WaitingNormalCargos.RemoveFirst(NC);
+			NLT = NC->GetLoadUnloadTime();
+			WaitingNormalCargos.InsertFirst(NC);
+		}
+		else if(!EmptyVIPTrucks.IsEmpty() && (WaitingNormalCount() >= VIPTruck::GetTruckCapacity()))
+		{
+			VIPTruck* VT;
+			EmptyVIPTrucks.Dequeue(VT);
+			NormalLoadingTruck = VT;
+			Cargo* NC;
+			WaitingNormalCargos.RemoveFirst(NC);
+			NLT = NC->GetLoadUnloadTime();
+			WaitingNormalCargos.InsertFirst(NC);
+		}
+	}
+	
+	if (NLT == 0)
+	{
+		Cargo* NC;
+		WaitingNormalCargos.RemoveFirst(NC);
+		NormalLoadingTruck->LoadCargo(NC);
+		if (NormalLoadingTruck->IsFull())
+		{
+			NormalLoadingTruck->SetDeliveryInterval();
+			MovingTrucks.enqueue(NormalLoadingTruck, NormalLoadingTruck->CalcPrio());
+			NLT = -1;
+			NormalLoadingTruck = nullptr;
+		}
+		else if (WaitingNormalCargos.RemoveFirst(NC))    
+		{
+			NLT = NC->GetLoadUnloadTime();
+			WaitingNormalCargos.InsertFirst(NC);
 		}
 	}
 }
 
-
-void Company::LoadSpecialCargos()
+void Company::DeliverCargos(Time Current)
 {
-	if (!EmptySpecialTrucks.IsEmpty() && SpecialTruck::GetTruckCapacity() <= WaitingSpecialCargos.GetCount())
+	int count = MovingTrucks.GetCount();
+	for (int i = 0; i < count; i++)
 	{
-		SpecialTruck* LoadingTruck;
-		EmptySpecialTrucks.Dequeue(LoadingTruck);
-		Cargo* TempCargo;
-		for (int i = 0; i < SpecialTruck::GetTruckCapacity(); i++)
+		Truck* TempTruck;
+		MovingTrucks.Dequeue(TempTruck);
+		int CurrPrio = TempTruck->CalcPrio();
+		Cargo* TempCargo ;
+		TempTruck->PeekCargosQueue(TempCargo);
+		Time MT = TempTruck->GetMovingTime();
+		int MTHours = MT.hour + MT.day * 24;
+		int CurrentHours = Current.hour + Current.day * 24;
+		int CDT = MTHours + TempCargo->GetDeliveryDistance() / TempTruck->GetSpeed() + TempCargo->GetLoadUnloadTime();
+		if (CurrentHours == CDT)
 		{
-			WaitingSpecialCargos.Dequeue(TempCargo);
-			LoadingTruck->LoadCargo(TempCargo);
+			Cargo* TempCargo2;
+			TempTruck->DequeueCargo(TempCargo2);
+			DeliveredCargos.Enqueue(TempCargo2);
+			Time NewMT;
+			NewMT.day = (MTHours+ TempCargo->GetLoadUnloadTime()) / 24;
+			NewMT.hour = (MTHours + TempCargo->GetLoadUnloadTime()) % 24;
+			TempTruck->SetMovingTime(NewMT);
 		}
+		MovingTrucks.enqueue(TempTruck, CurrPrio);
 	}
 }
 
+void Company::MoveToAvail()
+{
+	Truck* TempTruck;
+	MovingTrucks.Peek(TempTruck);
+	while (TempTruck && TempTruck->IsEmpty())
+	{
+		MovingTrucks.Dequeue(TempTruck);
+		if (dynamic_cast<NormalTruck*>(TempTruck))
+			EmptyNormalTrucks.Enqueue((NormalTruck*)TempTruck);
+		if (dynamic_cast<SpecialTruck*>(TempTruck))
+			EmptySpecialTrucks.Enqueue((SpecialTruck*)TempTruck);
+		if (dynamic_cast<VIPTruck*>(TempTruck))
+			EmptyVIPTrucks.Enqueue((VIPTruck*)TempTruck);
+		MovingTrucks.Peek(TempTruck);
+	}
+}
 
-void Company::LoadNormalCargos()
+void Company::MoveToCheckUp(Time Current) // checkup el awl fel sim
 {
-	if (!EmptyNormalTrucks.IsEmpty() && NormalTruck::GetTruckCapacity() <= WaitingNormalCargos.GetCount())
-	{
-		NormalTruck* LoadingTruck;
-		EmptyNormalTrucks.Dequeue(LoadingTruck);
-		Cargo* TempCargo;
-		for (int i = 0; i < NormalTruck::GetTruckCapacity(); i++)
+	Truck* TempTruck;
+	MovingTrucks.Peek(TempTruck);
+	while (TempTruck && TempTruck->IsEmpty())
+	{ 
+		MovingTrucks.Dequeue(TempTruck);
+		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ()==0)  ///////// tot in load
 		{
-			WaitingNormalCargos.RemoveFirst(TempCargo);
-			LoadingTruck->LoadCargo(TempCargo);
+			TempTruck->SetEndOfCheckUp(Current);
+			if (dynamic_cast<NormalTruck*>(TempTruck))
+				NormalCheckUpTrucks.Enqueue((NormalTruck*)TempTruck);
+			if (dynamic_cast<SpecialTruck*>(TempTruck))
+				SpecialCheckUpTrucks.Enqueue((SpecialTruck*)TempTruck);
+			if (dynamic_cast<VIPTruck*>(TempTruck))
+				VIPCheckUpTrucks.Enqueue((VIPTruck*)TempTruck);
 		}
-	}
-	else if (!EmptyVIPTrucks.IsEmpty() && VIPTruck::GetTruckCapacity() <= WaitingNormalCargos.GetCount())
-	{
-		VIPTruck* LoadingTruck;
-		EmptyVIPTrucks.Dequeue(LoadingTruck);
-		Cargo* TempCargo;
-		for (int i = 0; i < VIPTruck::GetTruckCapacity(); i++)
-		{
-			WaitingNormalCargos.RemoveFirst(TempCargo);
-			LoadingTruck->LoadCargo(TempCargo);
-		}
+		MovingTrucks.Peek(TempTruck);
 	}
 }
-void Company::SetNormalLoadingTruck(Truck* Nptr)
+
+void Company::MoveCheckUpToAvail(Time Current)
 {
-	NormalLoadingTruck = Nptr;
+	NormalTruck* TempTruck1;
+	int CurrentHours = Current.hour + Current.day * 24;
+	NormalCheckUpTrucks.Peek(TempTruck1);
+	while (TempTruck1 && (CurrentHours == TempTruck1->GetEndOfCheckUp()))
+	{
+		NormalCheckUpTrucks.Dequeue(TempTruck1);
+		EmptyNormalTrucks.Enqueue(TempTruck1);
+		NormalCheckUpTrucks.Peek(TempTruck1);
+	}
+
+	SpecialTruck* TempTruck2;
+	SpecialCheckUpTrucks.Peek(TempTruck2);
+	while (TempTruck2 && (CurrentHours == TempTruck2->GetEndOfCheckUp()))
+	{
+		SpecialCheckUpTrucks.Dequeue(TempTruck2);
+		EmptySpecialTrucks.Enqueue(TempTruck2);
+		SpecialCheckUpTrucks.Peek(TempTruck2);
+	}
+
+	VIPTruck* TempTruck3;
+	VIPCheckUpTrucks.Peek(TempTruck3);
+	while (TempTruck3 && (CurrentHours == TempTruck3->GetEndOfCheckUp()))
+	{
+		VIPCheckUpTrucks.Dequeue(TempTruck3);
+		EmptyVIPTrucks.Enqueue(TempTruck3);
+		VIPCheckUpTrucks.Peek(TempTruck3);
+	}
 }
-void Company::SetVIPLoadingTruck(Truck* Vptr)
+
+void Company::HandleMaxW(int Day, int Hour)
 {
-	VIPLoadingTruck = Vptr;
-}
-void Company::SetSpecialLoadingTruck(Truck* Sptr)
-{
-	SpecialLoadingTruck = Sptr;
-}
-Truck* Company::GetNormalLoadingTruck()
-{
-	return NormalLoadingTruck;
-}
-Truck* Company::GetVIPLoadingTruck()
-{
-	return VIPLoadingTruck;
-}
-Truck* Company::GetSpecialLoadingTruck()
-{
-	return SpecialLoadingTruck;
+	int CurrentHours = Day * 24 + Hour;
+	Cargo* NormCargo;
+	WaitingNormalCargos.RemoveFirst(NormCargo);
+	Time NCPrepTime= NormCargo->GetPreparationTime();
+	int PrepHours = NCPrepTime.day * 24 + NCPrepTime.hour;
+	/*if (CurrentHours - PrepHours >= MaxW)
+	{
+		if (!EmptyNormalTrucks.IsEmpty())
+		{
+
+		}
+	}*/
+
 }

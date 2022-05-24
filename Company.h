@@ -9,22 +9,19 @@
 #include "Cargo.h"
 #include "Truck.h"
 #include "NormalTruck.h"
-#include "VIPTruck.h"
 #include "SpecialTruck.h"
+#include "VIPTruck.h"
 #include <fstream>
 
 class Company
 {
 	int AutoPromotion;
-	Truck* NormalLoadingTruck;
-	Truck* VIPLoadingTruck;
-	Truck* SpecialLoadingTruck;
 	Queue < Event* > EventsList;
 	Queue<Cargo*> WaitingSpecialCargos;
 	PriorityQueue<Cargo*> WaitingVIPCargos;
 	LinkedList<Cargo*> WaitingNormalCargos;
-	/*PriorityQueue<Cargo*> MovingSpecialCargos;
-	PriorityQueue<Cargo*> MovingNormalCargos;
+	PriorityQueue<Truck*> MovingTrucks;
+	/*PriorityQueue<Cargo*> MovingNormalCargos;
 	PriorityQueue<Cargo*> MovingVIPCargos;*/
 	Queue<Cargo*> DeliveredCargos;
 	/*Queue<Cargo> DeliveredVIPCargos;
@@ -32,7 +29,15 @@ class Company
 	Queue<NormalTruck*> EmptyNormalTrucks;
 	Queue<SpecialTruck*> EmptySpecialTrucks;
 	Queue<VIPTruck*> EmptyVIPTrucks;
-	LinkedList<Truck*> LoadingTrucks;
+	Queue<Truck*> LoadingTrucks;
+	Queue<NormalTruck*> NormalCheckUpTrucks;
+	Queue<SpecialTruck*> SpecialCheckUpTrucks;
+	Queue<VIPTruck*> VIPCheckUpTrucks;
+	Truck* NormalLoadingTruck;
+	Truck* SpecialLoadingTruck;
+	Truck* VIPLoadingTruck;
+	int MaxW;
+
 public:
 	//      CONSTRUCTORS
 	
@@ -48,7 +53,7 @@ public:
 
 	// function to enqueue a cargo into Waiting VIP Queue
 
-	void enqueueWVC(Cargo* VC);
+	void enqueueWVC(Cargo* VC,int Priority);
 
 	// function to insert a cargo into Waiting Normal List
 
@@ -94,6 +99,8 @@ public:
 
 
 	//void EnqueueDVC(Cargo VC);
+	
+	void EnqueueMT(Truck* MT);
 
 
 	//-----------------------------------------------------//
@@ -128,13 +135,13 @@ public:
 	// function to Dequeue a cargo from Moving VIP Cargos
 
 
-	bool DequeueMVC(Cargo*& VC);
+	//bool DequeueMVC(Cargo*& VC);
 
 
 	// function to Dequeue a cargo from Moving Special Cargos
 
 
-	bool DequeueMSC(Cargo*& SC);
+	//bool DequeueMSC(Cargo*& SC);
 
 
 	// function to Dequeue a cargo from Waiting VIP Cargos
@@ -237,8 +244,10 @@ public:
 	//function to return count of all Waiting Cargos
 
 
-	int WaitingCount();
-	
+	int WaitingNormalCount();
+	int WaitingSpecialCount();
+	int WaitingVIPCount();
+
 	
 	//function to return count of all Moving Cargos
 
@@ -254,7 +263,7 @@ public:
 
 	//function to check whether all CARGOS are delivered or not
 
-	bool AllIsDelivered();
+	//bool AllIsDelivered();
 
 
 	//function to Get AutoPromotion
@@ -268,21 +277,37 @@ public:
 	void AutoPromote(int time);
 
 	//-----------------------------------------------------//
+
+
+
+	void LoadCargos(int& NLT, int& SLT, int& VLT);
 	
-	void SetNormalLoadingTruck(Truck*);
-	void SetVIPLoadingTruck(Truck*);
-	void SetSpecialLoadingTruck(Truck*);
+	void DeliverCargos(Time Current);
+
+	void MoveToAvail();
+
+	void MoveToCheckUp(Time Current);
+
+	void MoveCheckUpToAvail(Time Current);
+
+	void enmoving(Truck* t)  // testing
+	{
+		MovingTrucks.enqueue(t);
+	}
+
+	void SetNormalLoadingTruck(Truck* Nptr);
+	
+	void SetVIPLoadingTruck(Truck* Vptr);
+
+	void SetSpecialLoadingTruck(Truck* Sptr);
+
 	Truck* GetNormalLoadingTruck();
+
 	Truck* GetVIPLoadingTruck();
+
 	Truck* GetSpecialLoadingTruck();
 
+	void HandleMaxW(int Day,int Hour);
 
-
-
-	void LoadVIPCargos();
-	void LoadSpecialCargos();
-	void LoadNormalCargos();
-
-	
 };
 

@@ -80,7 +80,7 @@ public:
 
 	void SetCargoType(char CT);
 
-
+	int CalcPrio();
 
 };
 

@@ -7,12 +7,16 @@ class SpecialTruck:public Truck
 {
 	static int TruckCapacity;
 	static int Speed;
-	static int CheckUpTime;
-	//PriorityQueue <Cargo*> CargosQueue;
+	static int CheckUpDuration;
 public:
 	SpecialTruck();
 	SpecialTruck(int DI);
+	static void SetStaticMembers(int TC, int S, int CUD);
+	void SetDeliveryInterval();
 	static int GetTruckCapacity();
-	static void SetProperties(int TC, int S);
+	int GetSpeed();
+	static int GetCheckUpDuration();
+	void SetEndOfCheckUp(Time EOCU);
+	bool IsFull();
 };
 

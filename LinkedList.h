@@ -223,7 +223,10 @@ public:
 	bool RemoveFirst(Cargo*& Data)
 	{
 		if (IsEmpty())
+		{
+			Data = nullptr;
 			return false;
+		}
 
 		Node<Cargo*>* NodeToBeDeleted = Head;
 		Data = NodeToBeDeleted->GetData();
