@@ -122,6 +122,7 @@ public:
 };
 
 
+
 //      class specializtion to specify a copy for function delete using id for cargos only
 template <>
 class LinkedList <Cargo*>

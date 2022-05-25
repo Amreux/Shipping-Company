@@ -121,7 +121,7 @@ public:
     }
 };
 
-//      class specializtion to specify a copy for function enqueue for cargos only
+//class specializtion to specify a copy for function enqueue for cargos only
 template<>
 class PriorityQueue <Cargo*>
 {

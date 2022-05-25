@@ -1,5 +1,5 @@
 #include "Truck.h"
-#include"Queue.h"
+#include "Queue.h"
 int Truck::J = 0;
 int Truck::TruckCount = 0;
 
@@ -8,6 +8,7 @@ Truck::Truck(int DI)
 	DeliveryInterval = DI;
 	TotalJourneys = 0;
 	EndOfCheckUp = 0;
+	TruckActiveTime = 0;
 }
 
 Truck::Truck()
@@ -17,12 +18,13 @@ Truck::Truck()
 	TotalJourneys = 0;
 	EndOfCheckUp = 0;
 	EmergencyFlag = false;
+	TruckActiveTime = 0;
 }
 
 void Truck::LoadCargo(Cargo* C)
 {
 	int Prio = C->CalcPrio();
-	CargosQueue.enqueue(C, Prio);
+	CargosQueue.enqueue(C,Prio);
 }
 
 void Truck::SetMovingTime(Time T)
@@ -102,34 +104,34 @@ void Truck::PrintTruckCargos()
 {
 	Cargo* Temp;
 	CargosQueue.Peek(Temp);
-	if (Temp)
-		switch (Temp->GetCT())
-		{
-		case 'N':
-		{
-			cout << '[';
-			CargosQueue.Print();
-			cout << ']';
-			cout << ' ';
-			break;
-		}
-		case 'S':
-		{
-			cout << '(';
-			CargosQueue.Print();
-			cout << ')';
-			cout << ' ';
-			break;
-		}
-		case 'V':
-		{
-			cout << '{';
-			CargosQueue.Print();
-			cout << '}';
-			cout << ' ';
-			break;
-		}
-		}
+	if(Temp)
+	switch (Temp->GetCT())
+	{
+	case 'N':
+	{
+		cout << '[';
+		CargosQueue.Print();
+		cout << ']';
+		cout << ' ';
+		break;
+	}
+	case 'S':
+	{
+		cout << '(';
+		CargosQueue.Print();
+		cout << ')';
+		cout << ' ';
+		break;
+	}
+	case 'V':
+	{
+		cout << '{';
+		CargosQueue.Print();
+		cout << '}';
+		cout << ' ';
+		break;
+	}
+	}
 }
 
 void Truck::PrintID()
@@ -161,5 +163,27 @@ void Truck::SetCWT()
 	}
 }
 
+int Truck::GetActiveTime()
+{
+	return TruckActiveTime;
+}
 
+void Truck::SetTDC(int tdc)
+{
+	TDC = tdc;
+}
 
+int Truck::GetTDC()
+{
+	return TDC;
+}
+
+void Truck::SetReturnH(int h)
+{
+	ReturningHours = h;
+}
+
+int Truck::GetReturnH()
+{
+	return ReturningHours;
+}

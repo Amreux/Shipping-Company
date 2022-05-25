@@ -3,14 +3,16 @@
 #include "Node.h"
 #include <iostream>
 #include "Cargo.h"
+#include"Truck.h"
 #include"NormalTruck.h"
-#include"VIPTruck.h"
 #include"SpecialTruck.h"
+#include"VIPTruck.h"
+
 using namespace std;
 
 
 template <class T>
-class Queue
+class Queue 
 {
 	Node<T>* Rear;
 	Node<T>* Front;
@@ -65,7 +67,7 @@ public:
 
 	bool IsEmpty()
 	{
-		if (!Front)
+		if(!Front)
 			return true;
 		return false;
 	}
@@ -188,7 +190,7 @@ public:
 				{
 				case  'N':
 					cout << " [";
-					cout << Temp->GetData()->GetID() << "]";
+					cout << Temp->GetData()->GetID() <<"]";
 					break;
 				case  'S':
 					cout << " (";
@@ -292,7 +294,7 @@ public:
 			Temp = Temp->GetNext();
 		}
 	}
-
+	
 };
 
 

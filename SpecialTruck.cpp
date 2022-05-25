@@ -40,6 +40,7 @@ void SpecialTruck::SetDeliveryInterval()
 		CargosQueue.enqueue(CTemp, CTemp->CalcPrio());
 	}
 	DeliveryInterval = 2.0 * FurthestDis / Speed + LoadHours;
+	ReturningHours = FurthestDis / Speed ; 
 }
 
 int SpecialTruck::GetTruckCapacity()

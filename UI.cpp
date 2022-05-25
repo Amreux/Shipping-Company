@@ -1,5 +1,4 @@
 #include "UI.h"
-#include<fstream>
 #include<iostream>
 #include"Time.h"
 #include"PreparationEvent.h"
@@ -8,153 +7,114 @@
 #include<Windows.h>
 
 using namespace std;
-void UI::GenerateOutputFile(Company& C)
+
+
+void UI::Display(Company& C, int Type, Time CurrentTime)
 {
-
-}
-
-
-void UI::Simulate(Company& C, int Type, string Input)
-{
-	int hour = 0;
-	int day = 1;
-
-	C.SetNormalLoadingTruck(nullptr);
-	C.SetSpecialLoadingTruck(nullptr);
-	C.SetVIPLoadingTruck(nullptr);
-
-	int NLT = -1, SLT = -1, VLT = -1;
-
-	C.LoadFile(Input);
-	Event* CurrentEvent = nullptr;
-	C.DequeueEvent(CurrentEvent);
-	while (true)
+	system("cls");
+	if (Type == 1 || Type == 2)
 	{
-		//      AT each hour the Function asks if there is an Event that should be excuted in this time
-		while (CurrentEvent && CurrentEvent->GetEventTime().day == day && CurrentEvent->GetEventTime().hour == hour)
-		{
-			CurrentEvent->Execute(C);
-			if (!C.DequeueEvent(CurrentEvent))
-				CurrentEvent = nullptr;
+		cout << "Current Time(Day:Hour) :" << CurrentTime.day << ":" << CurrentTime.hour << endl;
+		cout << endl;
+		cout << C.WaitingNormalCount() << "  Waiting Cargos: [";
+		C.PrintWNC();
+		cout << "] (";
+		C.PrintWSC();
+		cout << ") {";
+		C.PrintWVC();
+		cout << "}" << endl;
+		cout << "-------------------------------------------------------" << endl;
+		Truck* N;
+		Truck* S;
+		Truck* V;
+		N = C.GetNormalLoadingTruck();
+		S = C.GetSpecialLoadingTruck();
+		V = C.GetVIPLoadingTruck();
+		cout << C.GetLoadingTruckCount() << " Loading Trucks: ";
+		if (N)
+		{  
+			cout << N->GetTID();
+			if (N->IsEmpty())
+				cout << "[ ]";
+			else
+			N->PrintTruckCargos();
 		}
-		C.LoadCargos(NLT, SLT, VLT);
-
-
-
-
-		hour++;
-		if (hour == 24)
+		else
 		{
-			hour = 0;
-			day++;
+			cout << " [ ] ";
 		}
+		if (S)
+		{
+			cout << S->GetTID();
+			if (S->IsEmpty())
+				cout << "( )";
+			else
+			S->PrintTruckCargos();
+		}
+		else
+		{
+			cout << " ( ) ";
+		}
+		if (V)
+		{
+			cout << V->GetTID();
+			if (V->IsEmpty())
+				cout << "{ }";
+			else
+			V->PrintTruckCargos();
+		}
+		else
+		{
+			cout << " { } ";
+		}
+		cout << endl;
+		cout << "-------------------------------------------------------" << endl;
 
 
-		NLT--;
-		SLT--;
-		VLT--;
+		cout << C.GetEmptyTruckCount() << "  Empty Trucks: [";
+		C.PrintENT();
+		cout << "] (";
+		C.PrintEST();
+		cout << ") {";
+		C.PrintEVT();
+		cout << "}" << endl;
+		cout << "-------------------------------------------------------" << endl;
+
+		cout << C.GetMovingCargoCount() << " Moving Cargos: ";
+		C.PrintMovingTrucks();
+		cout << endl;
+		cout << "-------------------------------------------------------" << endl;
 
 
+		cout << C.GetCheckupCount() << " In-Checkup Trucks: [";
+		C.PrintNCT();
+		cout << "] (";
+		C.PrintSCT();
+		cout << ") {";
+		C.PrintVCT();
+		cout << "}" << endl;
+		cout << "-------------------------------------------------------" << endl;
 
 
+		cout << C.DeliveredCount() << "  Delivered Cargos:";
+		C.PrintDC();
+		cout << endl;
+		cout << "-------------------------------------------------------" << endl;
 
-
-
-
-
-
-
-
-
-
-
-
-
-		//C.AutoPromote(DeliveryPeriod);
-
-
-
-
+		if (Type == 1)
+			cin.get();
+		if (Type == 2)
+			Sleep(1000);
 	}
 }
-	//	/*Cargo Temp;
-	//	while (C.RemoveFirstWNC(Temp))
-	//	{
-	//		int PrepHours;
-	//		int AutoP = C.GetAutoPromotion();
-	//		Time PrepTime = Temp.GetPreparationTime();
-	//		PrepHours = PrepTime.day * 24 + PrepTime.hour;
-	//		if (DeliveryPeriod - PrepHours >= AutoP)
-	//		{
-	//			Temp.SetCargoType('V');
-	//			C.enqueueWVC(Temp);
-	//		}
-	//		else
-	//		{
-	//			C.insertFirstWNC(Temp);
-	//			break;
-	//		}
-	//	}*/
 
-
-	//	//system("cls");
-	//	//     Type1---> Interactive Mode 
-	//	//     Type2---> Step-By-STep Mode
-	//	if (Type == 1 || Type == 2)
-	//	{
-	//		cout << "Current Time(Day:Hour) :" << day << ":" << hour << endl;
-	//		Display(C);
-	//	}
-
-	//	hour++;
-	//	if (hour == 24)
-	//	{
-	//		hour = 0;
-	//		day++;
-	//	}
-
-	//	//       In Interactive Mode :Console waits for an Input from the User  
-	//	if (Type == 1)
-	//		cin.get();
-
-	//	//       In Step-By-STep Mode Mode :Function waits a minute then it clears the console screen  
-	//	if (Type == 2)
-	//		Sleep(1000);
-	//}
-
-	//system("cls");
-	//if (Type == 1 || Type == 2)
-	//{
-	//	//	cout << "Current Time(Day:Hour) :" << day << ":" << hour << endl;
-	//	//	Display(C);
-	//	//	cout << endl;
-	//	//	cout << "Simulation Finished" << endl;
-	//	//}
-	//	//else
-	//	//{
-	//	//	GenerateOutputFile(C);
-	//	//	cout << "Silent Mode " << endl;
-	//	//	cout << "Simulation Starts..." << endl;
-	//	//	cout << "Simulation ends, Output file created" << endl;
-	//	//}
-	//}
-
-//void UI::Display(Company& C)
-//{
-//	//cout << C.WaitingCount() << "  Waiting Cargos: [";
-//	//C.PrintWNC();
-//	//cout << "] (";
-//	//C.PrintWSC();
-//	//cout << ") {";
-//	//C.PrintWVC();
-//	//cout << "}" << endl;
-//	//cout << "-------------------------------------------------------" << endl;
-//
-//	//cout << C.DeliveredCount() << "  Delivered Cargos: [";
-//	//C.PrintDC();
-//	//cout << "] " << endl;
-//	///*C.PrintDSC();
-//	//cout << ") {";
-//	//C.PrintDVC();
-//	//cout << "}" << endl;*/
-//}
+void  UI::DisplayT3(Company& C,int Type,Time EndSimTime)
+{
+	if (Type == 3)
+	{
+		C.GenerateOutputFile(EndSimTime);
+		cout << "Silent Mode " << endl;
+		cout << "Simulation Starts..." << endl;
+		cout << "Simulation ends, Output file created" << endl;
+	}
+}

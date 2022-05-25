@@ -40,6 +40,7 @@ void VIPTruck::SetDeliveryInterval()
 		CargosQueue.enqueue(CTemp, CTemp->CalcPrio());
 	}
 	DeliveryInterval = 2.0 * FurthestDis / Speed + LoadHours;
+	ReturningHours = FurthestDis / Speed;
 }
 
 int VIPTruck::GetTruckCapacity()

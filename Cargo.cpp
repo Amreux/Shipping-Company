@@ -60,3 +60,32 @@ int Cargo::CalcPrio()
 {
 	return (1000 / DeliveryDistance);
 }
+
+void Cargo::SetCDT(Time Current)
+{
+	CDT = Current;
+}
+
+void Cargo::SetTID(int tid)
+{
+	TID = tid;
+}													
+void Cargo::SetWT(Time Wait)
+{
+	WT = Wait;
+}
+
+Time Cargo::GetCDT()
+{
+	return CDT;
+}
+
+Time Cargo::GetWT()
+{
+	return WT;
+}
+
+int Cargo::GetTID()
+{
+	return TID;
+}

@@ -1,6 +1,5 @@
 #pragma once
 #include "Cargo.h"
-#include"Queue.h"
 #include "PriorityQueue.h"
 
 class Truck
@@ -15,6 +14,9 @@ protected:
 	bool EmergencyFlag;
 	int TID;
 	static int TruckCount;
+	int TruckActiveTime;
+	int TDC;
+	int ReturningHours;
 public:
 	Truck(int DI);
 	Truck();
@@ -37,8 +39,14 @@ public:
 	virtual bool IsFull() = 0;
 	void SetEFlag(bool F);
 	bool GetEFlag();
+	int GetTID();
 	void PrintTruckCargos();
 	void PrintID();
 	int GetCargoCount();
 	void SetCWT();
+	int GetActiveTime();
+	void SetTDC(int tdc);
+	int GetTDC();
+	void SetReturnH(int h);
+	int GetReturnH();
 };
