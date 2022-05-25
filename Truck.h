@@ -47,6 +47,6 @@ public:
 	int GetActiveTime();
 	void SetTDC(int tdc);
 	int GetTDC();
-	void SetReturnH(int h);
-	int GetReturnH();
+	virtual void SetReturnH(int h);
+	virtual int GetReturnH();
 };

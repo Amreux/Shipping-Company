@@ -16,7 +16,7 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 	{
 		cout << "Current Time(Day:Hour) :" << CurrentTime.day << ":" << CurrentTime.hour << endl;
 		cout << endl;
-		cout << C.WaitingNormalCount() << "  Waiting Cargos: [";
+		cout << C.WaitingNormalCount()+ C.WaitingSpecialCount()+ C.WaitingVIPCount() << "  Waiting Cargos: [";
 		C.PrintWNC();
 		cout << "] (";
 		C.PrintWSC();
