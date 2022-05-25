@@ -104,34 +104,36 @@ void Truck::PrintTruckCargos()
 {
 	Cargo* Temp;
 	CargosQueue.Peek(Temp);
-	if(Temp)
-	switch (Temp->GetCT())
-	{
-	case 'N':
-	{
-		cout << '[';
-		CargosQueue.Print();
-		cout << ']';
-		cout << ' ';
-		break;
-	}
-	case 'S':
-	{
-		cout << '(';
-		CargosQueue.Print();
-		cout << ')';
-		cout << ' ';
-		break;
-	}
-	case 'V':
-	{
-		cout << '{';
-		CargosQueue.Print();
-		cout << '}';
-		cout << ' ';
-		break;
-	}
-	}
+	if (Temp)
+		switch (Temp->GetCT())
+		{
+		case 'N':
+		{
+			cout << '[';
+			CargosQueue.Print();
+			cout << ']';
+			cout << ' ';
+			break;
+		}
+		case 'S':
+		{
+			cout << '(';
+			CargosQueue.Print();
+			cout << ')';
+			cout << ' ';
+			break;
+		}
+		case 'V':
+		{
+			cout << '{';
+			CargosQueue.Print();
+			cout << '}';
+			cout << ' ';
+			break;
+		}
+		}
+	else
+		cout << " ";
 }
 
 void Truck::PrintID()

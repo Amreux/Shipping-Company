@@ -187,7 +187,7 @@ void Company::LoadFile( string Input)
 
 	//opening the input file to read from
 
-	ifstream InputFile("Input.txt");
+	ifstream InputFile(Input);
 
 
 	//checking whether the file is opened/found 
@@ -645,7 +645,7 @@ void Company::HandleMaxW(int &NLT,int& SLT ,Time CurrentTime)
 
 		}
 	}
-	if (WaitingSpecialCargos.Dequeue(SpecialCargo))
+	if (WaitingSpecialCargos.Peek(SpecialCargo))
 	{
 		PrepTime = SpecialCargo->GetPreparationTime();
 		PrepHours = PrepTime.day * 24 + PrepTime.hour;
@@ -755,8 +755,6 @@ void Company::Simulate(int Type, string InputFile)
 	int NLT = -1, SLT = -1, VLT = -1;
 
 	int NAP = 0;
-
-	//The truck needs time to come back//////////////
 
 	LoadFile(InputFile);
 	Event* CurrentEvent = nullptr;
