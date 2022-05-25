@@ -16,6 +16,7 @@ protected:
 	static int TruckCount;
 	int TruckActiveTime;
 	int TDC;
+	int ReturningHours;
 public:
 	Truck(int DI);
 	Truck();
@@ -46,4 +47,6 @@ public:
 	int GetActiveTime();
 	void SetTDC(int tdc);
 	int GetTDC();
+	void SetReturnH(int h);
+	int GetReturnH();
 };

@@ -42,6 +42,7 @@ void NormalTruck::SetDeliveryInterval()
 	}
 	DeliveryInterval = 2.0 * FurthestDis / Speed + LoadHours;
 	TruckActiveTime = FurthestDis / Speed + 2 * LoadHours;
+	ReturningHours = FurthestDis / Speed;
 }
 
 int NormalTruck::GetTruckCapacity()

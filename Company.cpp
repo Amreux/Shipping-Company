@@ -314,7 +314,7 @@ int Company::GetAutoPromotion()
 
 void Company::SetAutoPromotion(int AP)
 {
-	AutoPromotion = AP;
+	AutoPromotion = AP*24;   // from days to hours
 }
 
 void Company::AutoPromote(Time CurrentTime)
@@ -491,29 +491,33 @@ void Company::DeliverCargos(Time Current) //Needs Fixing
 	{
 		MovingTrucks.Dequeue(TempTruck);
 		TempQueue.Enqueue(TempTruck);
-		Cargo* TempCargo;
-		TempTruck->PeekCargosQueue(TempCargo);
-		Time MT = TempTruck->GetMovingTime();
-		int MTHours = MT.hour + MT.day * 24;
-		int CurrentHours = Current.hour + Current.day * 24;
-		int CDT = MTHours + TempCargo->GetDeliveryDistance() / TempTruck->GetSpeed() + TempCargo->GetLoadUnloadTime();
-		if (CurrentHours == CDT)
+		if (!TempTruck->IsEmpty())
 		{
-			Cargo* TempCargo2;
-			TempTruck->DequeueCargo(TempCargo2);
-			TempCargo2->SetCDT(Time(CDT % 24, CDT / 24));
-			TempCargo2->SetTID(TempTruck->GetTID());
-			DeliveredCargos.Enqueue(TempCargo2);
-			Time NewMT;
-			NewMT.day = (MTHours+ TempCargo->GetLoadUnloadTime()) / 24;
-			NewMT.hour = (MTHours + TempCargo->GetLoadUnloadTime()) % 24;
-			TempTruck->SetMovingTime(NewMT);
-			if (TempTruck->IsEmpty())
+			Cargo* TempCargo;
+			TempTruck->PeekCargosQueue(TempCargo);
+			Time MT = TempTruck->GetMovingTime();
+			int MTHours = MT.hour + MT.day * 24;
+			int CurrentHours = Current.hour + Current.day * 24;
+			int CDT = MTHours + TempCargo->GetDeliveryDistance() / TempTruck->GetSpeed() + TempCargo->GetLoadUnloadTime();
+			if (CurrentHours == CDT)
 			{
-				TempTruck->SetTotalJourneys(TempTruck->GetTotalJourneys() + 1);
+				Cargo* TempCargo2;
+				TempTruck->DequeueCargo(TempCargo2);
+				TempCargo2->SetCDT(Time(CDT % 24, CDT / 24));
+				TempCargo2->SetTID(TempTruck->GetTID());
+				DeliveredCargos.Enqueue(TempCargo2);
+				Time NewMT;
+				NewMT.day = (MTHours + TempCargo->GetLoadUnloadTime()) / 24;
+				NewMT.hour = (MTHours + TempCargo->GetLoadUnloadTime()) % 24;
+				TempTruck->SetMovingTime(NewMT);
+				if (TempTruck->IsEmpty())
+				{
+					TempTruck->SetTotalJourneys(TempTruck->GetTotalJourneys() + 1);
+				}
 			}
 		}
 	}
+
 	for (int i = 0; i < count; i++)
 	{
 		TempQueue.Dequeue(TempTruck);
@@ -527,14 +531,19 @@ void Company::MoveToAvail()
 	MovingTrucks.Peek(TempTruck);
 	while (TempTruck && TempTruck->IsEmpty())
 	{
-		MovingTrucks.Dequeue(TempTruck);
-		if (dynamic_cast<NormalTruck*>(TempTruck))
-			EmptyNormalTrucks.Enqueue((NormalTruck*)TempTruck);
-		if (dynamic_cast<SpecialTruck*>(TempTruck))
-			EmptySpecialTrucks.Enqueue((SpecialTruck*)TempTruck);
-		if (dynamic_cast<VIPTruck*>(TempTruck))
-			EmptyVIPTrucks.Enqueue((VIPTruck*)TempTruck);
-				MovingTrucks.Peek(TempTruck);
+		if (TempTruck->GetReturnH() == 0)
+		{
+			MovingTrucks.Dequeue(TempTruck);
+			if (dynamic_cast<NormalTruck*>(TempTruck))
+				EmptyNormalTrucks.Enqueue((NormalTruck*)TempTruck);
+			if (dynamic_cast<SpecialTruck*>(TempTruck))
+				EmptySpecialTrucks.Enqueue((SpecialTruck*)TempTruck);
+			if (dynamic_cast<VIPTruck*>(TempTruck))
+				EmptyVIPTrucks.Enqueue((VIPTruck*)TempTruck);
+			MovingTrucks.Peek(TempTruck);
+		}
+		else
+			break;
 	}
 }
 
@@ -544,7 +553,7 @@ void Company::MoveToCheckUp(Time Current) // checkup el awl fel sim
 	MovingTrucks.Peek(TempTruck);
 	while (TempTruck && TempTruck->IsEmpty())
 	{ 
-		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ() == 0)  ///////// tot in load
+		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ() == 0 && (TempTruck->GetReturnH() == 0))  ///////// tot in load
 		{
 			MovingTrucks.Dequeue(TempTruck);
 			TempTruck->SetEndOfCheckUp(Current);
@@ -654,6 +663,7 @@ void Company::HandleMaxW(int &NLT,int& SLT ,Time CurrentTime)
 	}
 			
 }
+
 int Company::GetLoadingTruckCount()
 {
 	int count = 0;
@@ -770,6 +780,7 @@ void Company::Simulate(int Type, string InputFile)
 		MoveToCheckUp(Time(hour, day));
 
 		MoveToAvail();
+		DecrementReturningHours();
 
 		MoveCheckUpToAvail(Time(hour, day));
 
@@ -899,5 +910,28 @@ void Company::GenerateOutputFile(Time EndSimTime)
 
 bool Company::AllIsDelivered()
 {
-	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty());
+	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty());
+}
+
+
+void Company::DecrementReturningHours()
+{
+	int count = MovingTrucks.GetCount();
+	Queue<Truck*> TempQueue;
+	Truck* TempTruck;
+	for (int i = 0; i < count; i++)
+	{
+		MovingTrucks.Dequeue(TempTruck);
+		TempQueue.Enqueue(TempTruck);
+		if (TempTruck->IsEmpty())
+		{
+			TempTruck->SetReturnH(TempTruck->GetReturnH() - 1);
+		}
+	}
+
+	for (int i = 0; i < count; i++)
+	{
+		TempQueue.Dequeue(TempTruck);
+		MovingTrucks.enqueue(TempTruck, TempTruck->CalcPrio());
+	}
 }

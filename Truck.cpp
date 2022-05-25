@@ -178,3 +178,12 @@ int Truck::GetTDC()
 	return TDC;
 }
 
+void Truck::SetReturnH(int h)
+{
+	ReturningHours = h;
+}
+
+int Truck::GetReturnH()
+{
+	return ReturningHours;
+}
