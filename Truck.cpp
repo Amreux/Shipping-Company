@@ -54,10 +54,24 @@ int Truck::GetDeliveryInterval()
 
 int Truck::CalcPrio()
 {
-	int MTHours = MovingTime.hour + MovingTime.day * 24;
-	int Prio = MTHours + DeliveryInterval;
-	return 1000 / Prio;
+		Cargo* TempCargo;
+		if(CargosQueue.Peek(TempCargo))
+		{
+		int CDT;
+		CDT = TempCargo->GetCDT().day * 24 + TempCargo->GetCDT().hour;
+		return 10000.0/CDT;
+	    }
+		else
+		{
+			return 10000.0/(MovingTime.day * 24 + MovingTime.hour + DeliveryInterval);
+		}
 }
+
+
+
+
+
+
 
 void Truck::SetTotalJourneys(int TJ)
 {

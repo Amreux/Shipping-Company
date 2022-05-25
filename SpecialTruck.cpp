@@ -66,3 +66,22 @@ bool SpecialTruck::IsFull()
 {
 	return (CargosQueue.GetCount() == TruckCapacity);
 }
+
+void SpecialTruck::SetCargosCDT()
+{
+	Queue<Cargo*> TempQueue;
+	Cargo* Temp;
+	int SumOfUnloadTimes = 0;
+	int CDTHrs = 0;
+	while (CargosQueue.Dequeue(Temp))
+	{
+		TempQueue.Enqueue(Temp);
+		SumOfUnloadTimes += Temp->GetLoadUnloadTime();
+		CDTHrs = MovingTime.day * 24 + MovingTime.hour + Temp->GetDeliveryDistance() / Speed + SumOfUnloadTimes;
+		Temp->SetCDT(Time(CDTHrs % 24, CDTHrs / 24));
+	}
+	while (TempQueue.Dequeue(Temp))
+	{
+		CargosQueue.enqueue(Temp, Temp->CalcPrio());
+	}
+}

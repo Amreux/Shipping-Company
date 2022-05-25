@@ -20,6 +20,7 @@ protected:
 public:
 	Truck(int DI);
 	Truck();
+
 	void LoadCargo(Cargo* C);
 	void SetMovingTime(Time T);
 	Time GetMovingTime();
@@ -49,4 +50,5 @@ public:
 	int GetTDC();
 	virtual void SetReturnH(int h);
 	virtual int GetReturnH();
+	virtual void SetCargosCDT()=0;
 };

@@ -58,7 +58,7 @@ void Cargo::SetCost(int C)
 
 int Cargo::CalcPrio()
 {
-	return (1000 / DeliveryDistance);
+	return (10000.0/DeliveryDistance);
 }
 
 void Cargo::SetCDT(Time Current)

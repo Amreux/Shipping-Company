@@ -104,15 +104,15 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 		if (Type == 1)
 			cin.get();
 		if (Type == 2)
-			Sleep(1000);
+			Sleep(0);
 	}
 }
 
 void  UI::DisplayT3(Company& C,int Type,Time EndSimTime)
 {
+		C.GenerateOutputFile(EndSimTime);
 	if (Type == 3)
 	{
-		C.GenerateOutputFile(EndSimTime);
 		cout << "Silent Mode " << endl;
 		cout << "Simulation Starts..." << endl;
 		cout << "Simulation ends, Output file created" << endl;

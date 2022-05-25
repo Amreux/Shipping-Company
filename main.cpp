@@ -17,11 +17,11 @@ int main()
 	//    Type 1---> Interactive Mode 
 	//    Type 2---> Step-By-STep Mode
 	//    Type 3---> SilentMode
-	cin >> Type;
+//	cin >> Type;
 	string FileName;
-	cin >> FileName;
-	cin.get();
-	C.Simulate(Type, FileName+".txt");
+	//cin >> FileName;
+	//cin.get();
+	C.Simulate(3, "Input.txt");
 	/*Interface.Simulate(C, Type,"");*/
 
 	//NormalTruck NT1(20);

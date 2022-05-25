@@ -328,7 +328,7 @@ void Company::AutoPromote(Time CurrentTime)
 		Time PrepTime = Temp->GetPreparationTime();
 		PrepHours = PrepTime.day * 24 + PrepTime.hour;
 		int CurrentTimeInHrs = CurrentTime.day * 24 + CurrentTime.hour;
-		if (CurrentTimeInHrs - PrepHours >= AutoP)
+		if (CurrentTimeInHrs - PrepHours >= AutoP*24)
 		{
 			NumberOfAutoPromotions++;
 			Temp->SetCargoType('V');
@@ -388,6 +388,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			VIPLoadingTruck->SetDeliveryInterval();
 			VIPLoadingTruck->SetMovingTime(CurrentTime);
 			VIPLoadingTruck->SetCWT();
+			VIPLoadingTruck->SetCargosCDT();
 			MovingTrucks.enqueue(VIPLoadingTruck, VIPLoadingTruck->CalcPrio());
 			VLT = -1;
 			VIPLoadingTruck = nullptr;
@@ -424,6 +425,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			SpecialLoadingTruck->SetDeliveryInterval();
 			SpecialLoadingTruck->SetMovingTime(CurrentTime);
 			SpecialLoadingTruck->SetCWT();
+			SpecialLoadingTruck->SetCargosCDT();
 			MovingTrucks.enqueue(SpecialLoadingTruck, SpecialLoadingTruck->CalcPrio());
 			SLT = -1;
 			SpecialLoadingTruck = nullptr;
@@ -448,7 +450,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			NLT = NC->GetLoadUnloadTime();
 			WaitingNormalCargos.InsertFirst(NC);
 		}
-		else if(!EmptyVIPTrucks.IsEmpty() && (WaitingNormalCount() >= VIPTruck::GetTruckCapacity()))
+		else if (!EmptyVIPTrucks.IsEmpty() && (WaitingNormalCount() >= VIPTruck::GetTruckCapacity()))
 		{
 			VIPTruck* VT;
 			EmptyVIPTrucks.Dequeue(VT);
@@ -470,6 +472,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			NormalLoadingTruck->SetDeliveryInterval();
 			NormalLoadingTruck->SetMovingTime(CurrentTime);
 			NormalLoadingTruck->SetCWT();
+			NormalLoadingTruck->SetCargosCDT();
 			MovingTrucks.enqueue(NormalLoadingTruck, NormalLoadingTruck->CalcPrio());
 			NLT = -1;
 			NormalLoadingTruck = nullptr;
@@ -484,10 +487,10 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 
 void Company::DeliverCargos(Time Current) //Needs Fixing
 {
-	int count = MovingTrucks.GetCount();
-	Queue<Truck*> TempQueue;
 	Truck* TempTruck;
-	for (int i = 0; i < count; i++)
+	Queue<Truck*> TempQueue;
+	int count = MovingTrucks.GetCount();
+	for(int i=0;i<count;i++)
 	{
 		MovingTrucks.Dequeue(TempTruck);
 		TempQueue.Enqueue(TempTruck);
@@ -495,32 +498,23 @@ void Company::DeliverCargos(Time Current) //Needs Fixing
 		{
 			Cargo* TempCargo;
 			TempTruck->PeekCargosQueue(TempCargo);
-			Time MT = TempTruck->GetMovingTime();
-			int MTHours = MT.hour + MT.day * 24;
-			int CurrentHours = Current.hour + Current.day * 24;
-			int CDT = MTHours + TempCargo->GetDeliveryDistance() / TempTruck->GetSpeed() + TempCargo->GetLoadUnloadTime();
+			int CDT = TempCargo->GetCDT().day * 24 + TempCargo->GetCDT().hour;
+			int CurrentHours = Current.day * 24 + Current.hour;
 			if (CurrentHours == CDT)
 			{
-				Cargo* TempCargo2; 
-				TempTruck->DequeueCargo(TempCargo2);
-				TempCargo2->SetCDT(Time(CDT % 24, CDT / 24));
-				TempCargo2->SetTID(TempTruck->GetTID());
-				DeliveredCargos.Enqueue(TempCargo2);
-				Time NewMT;
-				NewMT.day = (MTHours + TempCargo->GetLoadUnloadTime()) / 24;
-				NewMT.hour = (MTHours + TempCargo->GetLoadUnloadTime()) % 24;
-				TempTruck->SetMovingTime(NewMT);
+				TempTruck->DequeueCargo(TempCargo);
+				TempCargo->SetTID(TempTruck->GetTID());
+				DeliveredCargos.Enqueue(TempCargo);
 				if (TempTruck->IsEmpty())
 				{
 					TempTruck->SetTotalJourneys(TempTruck->GetTotalJourneys() + 1);
 				}
 			}
+
 		}
 	}
-
-	for (int i = 0; i < count; i++)
+	while (TempQueue.Dequeue(TempTruck))
 	{
-		TempQueue.Dequeue(TempTruck);
 		MovingTrucks.enqueue(TempTruck, TempTruck->CalcPrio());
 	}
 }
@@ -772,7 +766,6 @@ void Company::Simulate(int Type, string InputFile)
 			LoadCargos(NLT, SLT, VLT, Time(hour, day));
 
 			AutoPromote(Time(hour, day));
-
 		}
 		DeliverCargos(Time(hour, day));
 		MoveToCheckUp(Time(hour, day));
@@ -800,12 +793,14 @@ void Company::AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT)
 		hour = 0;
 		day++;
 	}
-	NLT--;
-	SLT--;
-	VLT--;
+	if (hour >= 5 && hour <= 23)
+	{
+		NLT--;
+		SLT--;
+		VLT--;
+	}
 
 }
-
 void Company::GenerateOutputFile(Time EndSimTime)
 {
 
@@ -908,7 +903,7 @@ void Company::GenerateOutputFile(Time EndSimTime)
 
 bool Company::AllIsDelivered()
 {
-	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty());
+	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty()&&WaitingVIPCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty());
 }
 
 

@@ -18,5 +18,6 @@ public:
 	static int GetCheckUpDuration();
 	void SetEndOfCheckUp(Time EOCU);
 	bool IsFull();
+	void SetCargosCDT();
 };
 
