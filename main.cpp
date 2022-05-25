@@ -13,7 +13,6 @@ int main()
 	UI Interface;
 	Company C;
 	int Type;
-	
 	C.Simulate(1, "Input.txt");
 	//int Type;
 	//    Type1---> Interactive Mode 
@@ -56,4 +55,6 @@ int main()
 	//C.MoveCheckUpToAvail(T4);
 	//C.MoveCheckUpToAvail(T5);
 	
+
+
 }

@@ -501,7 +501,7 @@ void Company::DeliverCargos(Time Current) //Needs Fixing
 			int CDT = MTHours + TempCargo->GetDeliveryDistance() / TempTruck->GetSpeed() + TempCargo->GetLoadUnloadTime();
 			if (CurrentHours == CDT)
 			{
-				Cargo* TempCargo2;
+				Cargo* TempCargo2; 
 				TempTruck->DequeueCargo(TempCargo2);
 				TempCargo2->SetCDT(Time(CDT % 24, CDT / 24));
 				TempCargo2->SetTID(TempTruck->GetTID());
