@@ -4,6 +4,7 @@ class Company;
 
 class Event
 {
+protected:
 	Time EventTime;
 public:
 	//      CONSTRUCTORS

@@ -514,14 +514,17 @@ void Company::DeliverCargos(Time Current)
 			TempTruck->PeekCargosQueue(TempCargo);
 			int CDT = TempCargo->GetCDT().day * 24 + TempCargo->GetCDT().hour;
 			int CurrentHours = Current.day * 24 + Current.hour;
-			if (CurrentHours == CDT)
+			while (CurrentHours == CDT)
 			{
 				TempTruck->DequeueCargo(TempCargo);
 				TempCargo->SetTID(TempTruck->GetTID());
 				DeliveredCargos.Enqueue(TempCargo);
-				if (TempTruck->IsEmpty())
+				if(TempTruck->PeekCargosQueue(TempCargo))
+				  CDT = TempCargo->GetCDT().day * 24 + TempCargo->GetCDT().hour;
+				else 
 				{
 					TempTruck->SetTotalJourneys(TempTruck->GetTotalJourneys() + 1);
+					break;
 				}
 			}
 		}
@@ -965,7 +968,7 @@ void Company::DeliveryFailure(Truck* MT)
 		float Probability = (float)rand() / RAND_MAX;
 		Cargo* c;
 		Cargo* FirstCargo;
-		if (Probability <= 0.01) 
+		if (Probability <= -0.01) 
 		{
 			MT->PeekCargosQueue(FirstCargo);
 			while (MT->DequeueCargo(c))

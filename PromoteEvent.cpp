@@ -20,8 +20,8 @@ bool PromoteEvent::Execute(Company& Comp)
 		CargoToBePromoted->SetCost(CargoToBePromoted->GetCost() + ExtraCost);
 		
 		//adding the cargo into the VIP list
-
-		Comp.enqueueWVC(CargoToBePromoted, CargoToBePromoted->CalcPrio());
+		int Priority = 10000 * ((CargoToBePromoted->GetCost()) / (CargoToBePromoted->GetDeliveryDistance() * (EventTime.day * 24.0 + EventTime.hour)));
+		Comp.enqueueWVC(CargoToBePromoted,Priority);
 
 		return true;
 	}

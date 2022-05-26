@@ -21,7 +21,7 @@ int main()
 	string FileName;
 	//cin >> FileName;
 	//cin.get();
-	C.Simulate(1, "MaxW.txt");
+	C.Simulate(2, "LoadingRules.txt");
 	/*Interface.Simulate(C, Type,"");*/
 
 	//NormalTruck NT1(20);
