@@ -34,38 +34,21 @@ Cargo* Company::RemoveWNC(int id)
 	return WaitingNormalCargos.Delete(id);
 }
 
-
 void Company::AddEvent(Event* E)
 {
 	if (E)
 		EventsList.Enqueue(E);
 }
 
-//void Company::EnqueueMSC(Cargo* SC)
-//{
-//	MovingSpecialCargos.enqueue(SC);
-//}
-//
-//void Company::EnqueueMNC(Cargo* NC)
-//{
-//	MovingNormalCargos.enqueue(NC);
-//}
-//
-//void Company::EnqueueMVC(Cargo* VC)
-//{
-//	MovingVIPCargos.enqueue(VC);
-//}
-
 void Company::EnqueueDC(Cargo* SC)
 {
 	DeliveredCargos.Enqueue(SC);
 }
 
-void Company::EnqueueMT(Truck* MT) //////////
+void Company::EnqueueMT(Truck* MT) 
 {
 	MovingTrucks.enqueue(MT);
 }
-
 
 bool Company::DequeueEvent(Event*& E)
 {
@@ -107,30 +90,10 @@ Truck* Company::GetSpecialLoadingTruck()
 	return SpecialLoadingTruck;
 }
 
-//bool Company::DequeueMSC(Cargo*& SC)
-//{
-//	return MovingSpecialCargos.Dequeue(SC);
-//}
-//
-//bool Company::DequeueMVC(Cargo*& VC)
-//{
-//	return MovingVIPCargos.Dequeue(VC);
-//}
-//
-//bool Company::DequeueMNC(Cargo*& NC)
-//{
-//	return MovingNormalCargos.Dequeue(NC);
-//}
-
 bool Company::RemoveFirstWNC(Cargo*& NC)
 {
 	return WaitingNormalCargos.RemoveFirst(NC);
 }
-
-//bool Company::AllIsDelivered()
-//{
-//	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && WaitingVIPCargos.IsEmpty()) && (MovingNormalCargos.IsEmpty() && MovingSpecialCargos.IsEmpty() && MovingVIPCargos.IsEmpty());
-//}
 
 void Company::PrintWNC()
 {
@@ -144,18 +107,7 @@ void Company::PrintWVC()
 {
 	WaitingVIPCargos.Print();
 }
-//void Company::PrintMNC()
-//{
-//	MovingNormalCargos.Print();
-//}
-//void Company::PrintMSC()
-//{
-//	MovingSpecialCargos.Print();
-//}
-//void Company::PrintMVC()
-//{
-//	MovingVIPCargos.Print();
-//}
+
 void Company::PrintDC()
 {
 	DeliveredCargos.SpecialPrint();
@@ -176,13 +128,14 @@ int Company::WaitingVIPCount()
 	return WaitingVIPCargos.GetCount();
 }
 
-//int Company::MovingCount()
-//{
-//	return MovingNormalCargos.GetCount() + MovingSpecialCargos.GetCount() + MovingVIPCargos.GetCount();
-//}
 int Company::DeliveredCount()
 {
 	return DeliveredCargos.GetCount() ;
+}
+
+int Company::GetWaitingIndex(int ID)
+{
+	return WaitingNormalCargos.GetPosition(ID);
 }
 
 void Company::LoadFile( string Input)
@@ -208,14 +161,21 @@ void Company::LoadFile( string Input)
 	int CN, CS, CV;
 	int AP,No_Events;
 
+	// reading number of each type trucks and their properties
+
 	InputFile >> NumN >> NumS >> NumVIP;
 	InputFile >> NSpeed >> SpSpeed >> VIPSpeed;
 	InputFile >> NCap >> SCap >> VIPCap;
 	InputFile >> j >> CN >> CS >> CV;
 	Truck::SetJ(j);
+
+	// setting static members of trucks
+
 	NormalTruck::SetStaticMembers(NCap, NSpeed, CN);
 	SpecialTruck::SetStaticMembers(SCap, SpSpeed, CS);
 	VIPTruck::SetStaticMembers(VIPCap, VIPSpeed, CV);
+
+	// enqueuing trucks into the empty trucks queues
 
 	for (int i = 0; i < NumN; i++)
 	{
@@ -235,13 +195,12 @@ void Company::LoadFile( string Input)
 		EmptyVIPTrucks.Enqueue(NVIP);
 	}
 
-	//reading the number of events from input file
+	// Reading the auto promotion and the maximum wait constants and number of events
 
 	InputFile >> AP >> MaxW >> No_Events;
 
 	SetAutoPromotion(AP);
 
-	//variables for diffrent events
 	char EventType, CargoType;
 	Time T;
 	int ID, Distance, LoadTime, Cost, ExtraCost;
@@ -251,7 +210,7 @@ void Company::LoadFile( string Input)
 	{
 		InputFile >> EventType;
 
-		//switch case to check wich EVENT will be executed
+		//switch case to check which EVENT will be executed
 
 		switch (EventType)
 		{
@@ -320,10 +279,13 @@ void Company::SetAutoPromotion(int AP)
 {
 	AutoPromotion = AP*24;   // from days to hours
 }
+
 void Company::AutoPromote(Time CurrentTime)
 {
 	Cargo* Temp;
+	// first, if there is a normal loading truck we will not promote any cargo
 	if(!NormalLoadingTruck)
+	// remove first until no one hits the AP
 	while (RemoveFirstWNC(Temp))
 	{
 		int PrepHours;
@@ -557,13 +519,13 @@ void Company::MoveToAvail()
 	}
 }
 
-void Company::MoveToCheckUp(Time Current) // checkup el awl fel sim
+void Company::MoveToCheckUp(Time Current) 
 {
 	Truck* TempTruck;
 	MovingTrucks.Peek(TempTruck);
 	while (TempTruck && TempTruck->IsEmpty())
 	{ 
-		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ() == 0 && (TempTruck->GetReturnH() <= 0))  ///////// tot in load
+		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ() == 0 && (TempTruck->GetReturnH() <= 0))  
 		{
 			MovingTrucks.Dequeue(TempTruck);
 			TempTruck->SetEndOfCheckUp(Current);
@@ -655,7 +617,6 @@ void Company::HandleMaxW(int &NLT,int& SLT ,Time CurrentTime)
 					NormalLoadingTruck->SetEFlag(true);
 					NLT = NormCargo->GetLoadUnloadTime();
 				}
-
 		}
 	}
 	if (WaitingSpecialCargos.Peek(SpecialCargo))
@@ -674,7 +635,6 @@ void Company::HandleMaxW(int &NLT,int& SLT ,Time CurrentTime)
 				}
 		}
 	}
-			
 }
 
 int Company::GetLoadingTruckCount()
@@ -687,56 +647,70 @@ int Company::GetLoadingTruckCount()
 	if (VIPLoadingTruck)
 		count++;
 	return count;
-
 }
+
 void Company::PrintENT()
 {
 	EmptyNormalTrucks.Print();
 }
+
 void Company::PrintEST()
 {
 	EmptySpecialTrucks.Print();
 }
+
 void Company::PrintEVT() 
 {
 	EmptyVIPTrucks.Print();
 }
+
 int Company::GetEmptyTruckCount()
 {
 	return EmptyNormalTrucks.GetCount() + EmptySpecialTrucks.GetCount() + EmptyVIPTrucks.GetCount();
 }
+
 void Company::PrintMovingTrucks()
 {
 	Queue<Truck*> Temp;
 	Truck* TruckToBePrinted;
 	int Prio;
+
+	//dequeueing trucks
 	while (MovingTrucks.Dequeue(TruckToBePrinted))
 	{
 		TruckToBePrinted->PrintID();
 		TruckToBePrinted->PrintTruckCargos();
 		Temp.Enqueue(TruckToBePrinted);
 	}
+
+	//then enqueueing them again with their prio
 	while (Temp.Dequeue(TruckToBePrinted))
 	{
 		MovingTrucks.enqueue(TruckToBePrinted, TruckToBePrinted->CalcPrio());
 	}
 }
+
 int Company::GetMovingCargoCount()
 {
 	Queue<Truck*> Temp;
 	Truck* TruckTemp;
 	int SUM=0;
+
+	//dequeueing trucks
 	while (MovingTrucks.Dequeue(TruckTemp))
 	{
 		SUM += TruckTemp->GetCargoCount();
 		Temp.Enqueue(TruckTemp);
 	}
+
+	//then enqueueing them again with their prio
 	while (Temp.Dequeue(TruckTemp))
 	{
 		MovingTrucks.enqueue(TruckTemp, TruckTemp->CalcPrio());
 	}
 	return SUM;
 }
+
 int Company::GetCheckupCount()
 {
 	return NormalCheckUpTrucks.GetCount() + SpecialCheckUpTrucks.GetCount() + VIPCheckUpTrucks.GetCount();
@@ -746,10 +720,12 @@ void Company::PrintNCT()
 {
 	NormalCheckUpTrucks.Print();
 }
+
 void Company::PrintSCT()
 {
 	SpecialCheckUpTrucks.Print();
 }
+
 void Company::PrintVCT()
 {
 	VIPCheckUpTrucks.Print();
@@ -779,30 +755,25 @@ void Company::Simulate(int Type, string InputFile)
 
 		if (hour >= 5 && hour <= 23)
 		{
-
-			//HandleMaxW(NLT, SLT, Time(hour, day));
 			LoadCargos(NLT, SLT, VLT, Time(hour, day));
 			AutoPromote(Time(hour, day));
 		}
+
 		DeliverCargos(Time(hour, day));
 		MoveToCheckUp(Time(hour, day));
 		MoveToAvail();
 		DecrementReturningHours();
-
 		MoveCheckUpToAvail(Time(hour, day));
 
 		Interface.Display(*this, Type, Time(hour, day));
 
 		AdvanceSimTime(hour,day, NLT, SLT, VLT);
-
-
 	} 
 	Interface.DisplayEndText(*this, Type, Time(hour,day));
 }
 
 void Company::AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT)
 {
-
 	hour++;
 	if (hour == 24)
 	{
@@ -815,12 +786,10 @@ void Company::AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT)
 		SLT--;
 		VLT--;
 	}
-
 }
+
 void Company::GenerateOutputFile(Time EndSimTime)
 {
-
-
 	ofstream OutputFile("Output.txt");
 
 	//checking whether the file is opened/found 
@@ -838,6 +807,7 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	int NumOfDeliveredCargos = DeliveredCargos.GetCount();
 	Cargo* DeliveredCargo;
 	
+	//displaying the properties of the cargos
 	for (int i = 0; i < NumOfDeliveredCargos; i++)
 	{
 		DeliveredCargos.Dequeue(DeliveredCargo);
@@ -858,6 +828,8 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	}
 	OutputFile << "…………………………………………………………………………" << endl;
 
+	//displaying Number of delivered cargos and cargo average wait and auto promoted cargos %
+
 	OutputFile << "Cargos: " << NumOfDeliveredCargos << " [N: " << NumNC << ", S: " << NumSC << ", V: " << NumVC << "]" << endl;
 
 	if (NumOfDeliveredCargos != 0)
@@ -870,8 +842,10 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	else
 		OutputFile << "Auto-promoted Cargos: 0%" << endl;
 
+	//displaying total number of trucks
 	OutputFile << "Trucks: " << EmptyNormalTrucks.GetCount() + EmptySpecialTrucks.GetCount() + EmptyVIPTrucks.GetCount() << " [N: " << EmptyNormalTrucks.GetCount();
 	OutputFile << ",S: " << EmptySpecialTrucks.GetCount() << ", V: " << EmptyVIPTrucks.GetCount() << "]" << endl;
+
 
 	NormalTruck* TempNTruck;
 	SpecialTruck* TempSTruck;
@@ -886,6 +860,7 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	EndSimTime.hour = EndSimTime.hour - 1;
 	float TruckUtilization = 0;
 
+	//calculating statistics of the trucks
 	for (int i = 0; i < NumNT; i++)
 	{
 		EmptyNormalTrucks.Dequeue(TempNTruck);
@@ -917,6 +892,8 @@ void Company::GenerateOutputFile(Time EndSimTime)
 		if (!(TDC == 0 || TotalJourneys == 0))
 			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TempVTruck->GetActiveTime() / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
 	}
+
+	//diplaying trucks statistics
 	if ((NumNT + NumST + NumVT) != 0)
 	{
 		OutputFile << "Avg Active time = " << (100 * TotalActiveHours / ((EndSimTime.day * 24 - 24 + EndSimTime.hour) * (NumNT + NumST + NumVT))) << "%" << endl;
@@ -926,23 +903,24 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	{
 		OutputFile << "Avg Active time = 0%" << endl;
 		OutputFile << "Avg utilization = 0%" << endl;
-	}
-	
-		
+	}		
 }
 
 bool Company::AllIsDelivered()
 {
+	//checking if there are waiting VIP cargos that will never be loaded due to capacity
 	bool CheckDelivered = (WaitingVIPCargos.GetCount() < (NormalTruck::GetTruckCapacity())) && (WaitingVIPCargos.GetCount() < (SpecialTruck::GetTruckCapacity())) && (WaitingVIPCargos.GetCount() < (VIPTruck::GetTruckCapacity()));
+	
 	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty()&& CheckDelivered&& !NormalLoadingTruck && !SpecialLoadingTruck&&!VIPLoadingTruck);
 }
-
 
 void Company::DecrementReturningHours()
 {
 	int count = MovingTrucks.GetCount();
 	Queue<Truck*> TempQueue;
 	Truck* TempTruck;
+
+	//dequeueing moving trucks
 	for (int i = 0; i < count; i++)
 	{
 		MovingTrucks.Dequeue(TempTruck);
@@ -953,6 +931,7 @@ void Company::DecrementReturningHours()
 		}
 	}
 
+	//then enqueueing them back with their prio
 	for (int i = 0; i < count; i++)
 	{
 		TempQueue.Dequeue(TempTruck);
@@ -962,8 +941,10 @@ void Company::DecrementReturningHours()
 
 void Company::DeliveryFailure(Truck* MT)
 {
+	// first check if there are cargos in this truck
 	if (!MT->IsEmpty())
 	{
+		//generating random number
 		srand(rand()+pow((time(0)), 2));
 		float Probability = (float)rand() / RAND_MAX;
 		Cargo* c;
@@ -973,12 +954,14 @@ void Company::DeliveryFailure(Truck* MT)
 			MT->PeekCargosQueue(FirstCargo);
 			while (MT->DequeueCargo(c))
 			{
+				//returning cargos back to the waiting lists
 				if (c->GetCT() == 'N')
 					WaitingNormalCargos.insert(c);
 				else if (c->GetCT() == 'S')
 					WaitingSpecialCargos.Enqueue(c);
 				else
 					WaitingVIPCargos.enqueue(c);
+				//decrementing the total number of cargos that the truck had delivered
 				MT->SetTDC(MT->GetTDC() - 1);
 			}
 			MT->SetDeliveryFailed(true);

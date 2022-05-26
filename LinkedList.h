@@ -84,7 +84,7 @@ public:
 		}
 	}
 
-	
+
 
 	bool RemoveFirst(T& Data)
 	{
@@ -194,6 +194,22 @@ public:
 			temp = temp->GetNext();
 		}
 		return nullptr;
+	}
+
+	int GetPosition(int ID)
+	{
+		Node<Cargo*>* temp = Head;
+		int i = 0;
+		while (temp)
+		{
+			i++;
+			if (temp->GetData()->GetID() == ID)
+			{
+				return i;
+			}
+			temp = temp->GetNext();
+		}
+		return -1;
 	}
 
 	bool RemoveFirst(Cargo*& Data)

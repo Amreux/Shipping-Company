@@ -38,6 +38,8 @@ class Company
 	Truck* VIPLoadingTruck;
 
 public:
+
+	void Simulate(int Type, string InputFile);
 	//      CONSTRUCTORS
 	
 	Company();
@@ -47,8 +49,6 @@ public:
 	//      ENQUEUING/INSERTING FUNCTIONS
 	
 	// function to enqueue a cargo into Waiting Special Queue
-
-	void Simulate(int Type, string InputFile);
 	
 	void enqueueWSC(Cargo* SC);
 
@@ -68,38 +68,11 @@ public:
 
 	void AddEvent(Event* E);
 
-
-	// function to enqueue a cargo into Moving Special Queue
-
-	void EnqueueMSC(Cargo* SC);
-
-
-	// function to enqueue a cargo into Moving Normal Queue
-
-	void EnqueueMNC(Cargo* NC);
-
-
-	// function to enqueue a cargo into Moving VIP Queue
-
-
-	void EnqueueMVC(Cargo* VC);
-
-
-	// function to enqueue a cargo into Delivered Special queue
+	// function to enqueue a cargo into Delivered queue
 
 	void EnqueueDC(Cargo* SC);
 
-
-	//// function to enqueue a cargo into Delivered Normal Queue
-
-
-	//void EnqueueDNC(Cargo NC);
-
-
-	//// function to enqueue a cargo into Delivered VIP Queue
-
-
-	//void EnqueueDVC(Cargo VC);
+	// function to enqueue moving truck int moving trucks queue
 	
 	void EnqueueMT(Truck* MT);
 
@@ -112,50 +85,23 @@ public:
 
 	// function to remove a cargo from Waiting Normal List according to ID
 
-
 	Cargo* RemoveWNC(int id);
-	
-	
+		
 	// function to Dequeue a cargo from Waiting VIP Cargos
 
-	
 	bool DequeueWVC(Cargo*& VC);
 
 	// function to Dequeue a cargo from Waiting Special Cargos
 
-
 	bool DequeueWSC(Cargo*& SC);
 
-
-	// function to Dequeue a cargo from Events Queue
-
+	// function to Dequeue an event from Events Queue
 
 	bool DequeueEvent(Event*& E);
 
-
-	// function to Dequeue a cargo from Moving VIP Cargos
-
-
-	//bool DequeueMVC(Cargo*& VC);
-
-
-	// function to Dequeue a cargo from Moving Special Cargos
-
-
-	//bool DequeueMSC(Cargo*& SC);
-
-
-	// function to Dequeue a cargo from Waiting VIP Cargos
-
-
-	bool DequeueMNC(Cargo*& NC);
-
-
 	// function to Remove First cargo from Waiting Normal Cargos List
 
-
 	bool RemoveFirstWNC(Cargo*& NC);
-
 
 	//-----------------------------------------------------//
 
@@ -163,70 +109,49 @@ public:
 	//      PRINTING OF QUEUES/LISTS FUNCTIONS  BY CALLING  PRINT FUNCTIONG IN QUEUES
 
 
-
 	// function to print Waiting Normal Cargos List
-
 
 	void PrintWNC();
 
-
-
 	// function to print Waiting Speical Cargos Queue
-
 
 	void PrintWSC();
 
-
-	// function to print Waiting Moving Cargos
-
+	// function to print Waiting VIP Cargos
 
 	void PrintWVC();
 
-
-
-	// function to print Moving Normal Cargos Queue
-
-
-	void PrintMNC();
-
-
-
-	// function to print Moving Special Cargos Queue
-
-
-	void PrintMSC();
-
-
-
-	// function to print Moving VIP Cargos Queue
-
-
-	void PrintMVC(); 
-
-
-	// function to print Delivered Normal Cargos Queue
-
-
+	// function to print Delivered Cargos Queue
 
 	void PrintDC();
 
+	//function to print empty normal trucks
 
+	void PrintENT();
 
-	//// function to print Delivered Special Cargos Queue
+	//function to print empty special trucks
 
+	void PrintEST();
 
+	//function to print empty VIP trucks
 
-	//void PrintDSC();
+	void PrintEVT();
 
+	//function to print moving trucks
 
+	void PrintMovingTrucks();
 
-	//// function to print Delivered VIP Cargos Queue
+	//function to print normal checkup trucks
 
+	void PrintNCT();
 
+	//function to print special checkup trucks
 
-	//void PrintDVC();
+	void PrintSCT();
 
+	//function to print VIP checkup trucks
 
+	void PrintVCT();
 
 	//-----------------------------------------------------//
 
@@ -244,89 +169,116 @@ public:
 
 	//function to return count of all Waiting Cargos
 
-
 	int WaitingNormalCount();
 	int WaitingSpecialCount();
 	int WaitingVIPCount();
-
 	
-	//function to return count of all Moving Cargos
+	//function to get the number of loading trucks 
 
-	
-	int MovingCount();
+	int GetLoadingTruckCount();
 
+	//function to get number of empty trucks 
+
+	int GetEmptyTruckCount();
+
+	//function to get number of moving cargos
+
+	int GetMovingCargoCount();
+
+	//function to get number of incheckup trucks
+
+	int GetCheckupCount();
 
 	//function to return count of all Delivered Cargos
 
-
 	int DeliveredCount();
 
+	//function to get the waiting index
 
-	//function to check whether all CARGOS are delivered or not
-
-	//bool AllIsDelivered();
-
+	int GetWaitingIndex(int ID);
 
 	//function to Get AutoPromotion
 
 	int GetAutoPromotion();
 
 	//function to Set AutoPromotion
+
 	void SetAutoPromotion(int AP);
 
 	//function to Autopromote
+
 	void AutoPromote(Time CurrentTime);
 
-	//-----------------------------------------------------//
-
-
+	//function to load cargos
 
 	void LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime);
 	
+	//function to Deliver cargos
+
 	void DeliverCargos(Time Current);
+
+	// function to move a truck from moving to avail
 
 	void MoveToAvail();
 
+	// function to move a truck from moving to checkup
+
 	void MoveToCheckUp(Time Current);
+
+	//function to move from checkup to avail
 
 	void MoveCheckUpToAvail(Time Current);
 
-	void enmoving(Truck* t)  // testing
-	{
-		MovingTrucks.enqueue(t);
-	}
+	//fuction to set the normal loading truck
 
 	void SetNormalLoadingTruck(Truck* Nptr);
 	
-	void SetVIPLoadingTruck(Truck* Vptr);
+	//fuction to set the special loading truck
 
 	void SetSpecialLoadingTruck(Truck* Sptr);
 
+	//fuction to set the VIP loading truck
+
+	void SetVIPLoadingTruck(Truck* Vptr);
+
+	//fuction to get the normal loading truck
+
 	Truck* GetNormalLoadingTruck();
 
-	Truck* GetVIPLoadingTruck();
+	//function to get the special loading truck
 
 	Truck* GetSpecialLoadingTruck();
 
+	//fuction to get the VIP loading truck
+
+	Truck* GetVIPLoadingTruck();
+
+	// fuction to handle the maxw rule
+
 	void HandleMaxW(int& NLT, int& SLT, Time CurrentTime);
+
+	//funtion to execute events
 
 	void ExecuteEvents(Event*& CurrentEvent,Time CurrentTime);
 
-	int GetLoadingTruckCount();
-	int GetEmptyTruckCount();
-	void PrintENT();
-	void PrintEST();
-	void PrintEVT();
-	void PrintMovingTrucks();
-	int GetMovingCargoCount();
-	int GetCheckupCount();
-	void PrintNCT();
-	void PrintSCT();
-	void PrintVCT();
+	//function to increment the counters in the simulation function
+
 	void AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT);
+
+	//function to generate the output file
+
 	void GenerateOutputFile(Time EndSimTime);
+
+	//function to check that all cargos is delivered 
+
 	bool AllIsDelivered();
+
+	//function to decrement returning hours
+
 	void DecrementReturningHours();
+
+	//function to handle the delivery failure
+
 	void DeliveryFailure(Truck* MT);
 };
 
