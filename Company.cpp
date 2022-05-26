@@ -368,6 +368,55 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			VLT = VC->GetLoadUnloadTime();
 		}
 	}
+
+	if (SLT == 0)
+	{
+		Cargo* SC;
+		WaitingSpecialCargos.Dequeue(SC);
+		SpecialLoadingTruck->LoadCargo(SC);
+		if (SpecialLoadingTruck->IsFull() || SpecialLoadingTruck->GetEFlag())
+		{
+			SpecialLoadingTruck->SetTDC(SpecialLoadingTruck->GetCargoCount() + SpecialLoadingTruck->GetTDC());
+			SpecialLoadingTruck->SetDeliveryInterval();
+			SpecialLoadingTruck->SetMovingTime(CurrentTime);
+			SpecialLoadingTruck->SetCWT();
+			SpecialLoadingTruck->SetCargosCDT();
+			MovingTrucks.enqueue(SpecialLoadingTruck, SpecialLoadingTruck->CalcPrio());
+			SLT = -1;
+			SpecialLoadingTruck = nullptr;
+		}
+		else if (WaitingSpecialCargos.Peek(SC))
+		{
+			SLT = SC->GetLoadUnloadTime();
+		}
+	}
+
+	if (NLT == 0)
+	{
+		Cargo* NC;
+		WaitingNormalCargos.RemoveFirst(NC);
+		NormalLoadingTruck->LoadCargo(NC);
+		if (NormalLoadingTruck->IsFull() || NormalLoadingTruck->GetEFlag())
+		{
+			NormalLoadingTruck->SetTDC(NormalLoadingTruck->GetCargoCount() + NormalLoadingTruck->GetTDC());
+			NormalLoadingTruck->SetDeliveryInterval();
+			NormalLoadingTruck->SetMovingTime(CurrentTime);
+			NormalLoadingTruck->SetCWT();
+			NormalLoadingTruck->SetCargosCDT();
+			MovingTrucks.enqueue(NormalLoadingTruck, NormalLoadingTruck->CalcPrio());
+			NLT = -1;
+			NormalLoadingTruck = nullptr;
+		}
+		else if (WaitingNormalCargos.RemoveFirst(NC))
+		{
+			NLT = NC->GetLoadUnloadTime();
+			WaitingNormalCargos.InsertFirst(NC);
+		}
+	}
+	//-----------------------------------------------------------------------//
+	HandleMaxW(NLT, SLT, CurrentTime);
+
+
 	if (!VIPLoadingTruck)
 	{
 		if (!EmptyVIPTrucks.IsEmpty() && (WaitingVIPCount() >= VIPTruck::GetTruckCapacity()))
@@ -404,27 +453,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 
 	// ------------------------------------------- //
 
-	if (SLT == 0)
-	{
-		Cargo* SC;
-		WaitingSpecialCargos.Dequeue(SC);
-		SpecialLoadingTruck->LoadCargo(SC);
-		if (SpecialLoadingTruck->IsFull() || SpecialLoadingTruck->GetEFlag())
-		{
-			SpecialLoadingTruck->SetTDC(SpecialLoadingTruck->GetCargoCount() + SpecialLoadingTruck->GetTDC());
-			SpecialLoadingTruck->SetDeliveryInterval();
-			SpecialLoadingTruck->SetMovingTime(CurrentTime);
-			SpecialLoadingTruck->SetCWT();
-			SpecialLoadingTruck->SetCargosCDT();
-			MovingTrucks.enqueue(SpecialLoadingTruck, SpecialLoadingTruck->CalcPrio());
-			SLT = -1;
-			SpecialLoadingTruck = nullptr;
-		}
-		else if (WaitingSpecialCargos.Peek(SC))
-		{
-			SLT = SC->GetLoadUnloadTime();
-		}
-	}
+	
 
 	if (!SpecialLoadingTruck)
 	{
@@ -442,28 +471,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 
 	// -------------------------------------------------- //
 
-	if (NLT == 0)
-	{
-		Cargo* NC;
-		WaitingNormalCargos.RemoveFirst(NC);
-		NormalLoadingTruck->LoadCargo(NC);
-		if (NormalLoadingTruck->IsFull() || NormalLoadingTruck->GetEFlag())
-		{
-			NormalLoadingTruck->SetTDC(NormalLoadingTruck->GetCargoCount() + NormalLoadingTruck->GetTDC());
-			NormalLoadingTruck->SetDeliveryInterval();
-			NormalLoadingTruck->SetMovingTime(CurrentTime);
-			NormalLoadingTruck->SetCWT();
-			NormalLoadingTruck->SetCargosCDT();
-			MovingTrucks.enqueue(NormalLoadingTruck, NormalLoadingTruck->CalcPrio());
-			NLT = -1;
-			NormalLoadingTruck = nullptr;
-		}
-		else if (WaitingNormalCargos.RemoveFirst(NC))
-		{
-			NLT = NC->GetLoadUnloadTime();
-			WaitingNormalCargos.InsertFirst(NC);
-		}
-	}
+	
 	if (!NormalLoadingTruck)
 	{
 		if (!EmptyNormalTrucks.IsEmpty() && (WaitingNormalCount() >= NormalTruck::GetTruckCapacity()))
@@ -769,7 +777,7 @@ void Company::Simulate(int Type, string InputFile)
 		if (hour >= 5 && hour <= 23)
 		{
 
-			HandleMaxW(NLT, SLT, Time(hour, day));
+			//HandleMaxW(NLT, SLT, Time(hour, day));
 			LoadCargos(NLT, SLT, VLT, Time(hour, day));
 			AutoPromote(Time(hour, day));
 		}
@@ -848,8 +856,16 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	OutputFile << "…………………………………………………………………………" << endl;
 
 	OutputFile << "Cargos: " << NumOfDeliveredCargos << " [N: " << NumNC << ", S: " << NumSC << ", V: " << NumVC << "]" << endl;
-	OutputFile << "Cargo Avg Wait = " << (TotalWaitHours / NumOfDeliveredCargos) / 24 << ":" << (TotalWaitHours / NumOfDeliveredCargos) % 24 << endl;
-	OutputFile << "Auto-promoted Cargos: " << 100 * NumberOfAutoPromotions / (NumberOfAutoPromotions + NumNC) << "%" << endl;
+
+	if (NumOfDeliveredCargos != 0)
+		OutputFile << "Cargo Avg Wait = " << (TotalWaitHours / NumOfDeliveredCargos) / 24 << ":" << (TotalWaitHours / NumOfDeliveredCargos) % 24 << endl;
+	else
+		OutputFile << "Cargo Avg Wait = Und" << endl;
+	
+	if(NumNC!=0|| NumberOfAutoPromotions!=0)
+		OutputFile << "Auto-promoted Cargos: " << 100 * NumberOfAutoPromotions / (NumberOfAutoPromotions + NumNC) << "%" << endl;
+	else
+		OutputFile << "Auto-promoted Cargos: 0%" << endl;
 
 	OutputFile << "Trucks: " << EmptyNormalTrucks.GetCount() + EmptySpecialTrucks.GetCount() + EmptyVIPTrucks.GetCount() << " [N: " << EmptyNormalTrucks.GetCount();
 	OutputFile << ",S: " << EmptySpecialTrucks.GetCount() << ", V: " << EmptyVIPTrucks.GetCount() << "]" << endl;
@@ -915,7 +931,7 @@ void Company::GenerateOutputFile(Time EndSimTime)
 bool Company::AllIsDelivered()
 {
 	bool CheckDelivered = (WaitingVIPCargos.GetCount() < (NormalTruck::GetTruckCapacity())) && (WaitingVIPCargos.GetCount() < (SpecialTruck::GetTruckCapacity())) && (WaitingVIPCargos.GetCount() < (VIPTruck::GetTruckCapacity()));
-	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty()&& CheckDelivered);
+	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty()&& CheckDelivered&& !NormalLoadingTruck && !SpecialLoadingTruck&&!VIPLoadingTruck);
 }
 
 
@@ -945,12 +961,11 @@ void Company::DeliveryFailure(Truck* MT)
 {
 	if (!MT->IsEmpty())
 	{
-		//Sleep(1000);
 		srand(rand()+pow((time(0)), 2));
 		float Probability = (float)rand() / RAND_MAX;
 		Cargo* c;
 		Cargo* FirstCargo;
-		if (Probability <= 0.01) // 0.01
+		if (Probability <= 0.01) 
 		{
 			MT->PeekCargosQueue(FirstCargo);
 			while (MT->DequeueCargo(c))
