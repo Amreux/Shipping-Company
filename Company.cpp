@@ -316,7 +316,6 @@ void Company::SetAutoPromotion(int AP)
 {
 	AutoPromotion = AP*24;   // from days to hours
 }
-
 void Company::AutoPromote(Time CurrentTime)
 {
 	Cargo* Temp;
@@ -344,6 +343,27 @@ void Company::AutoPromote(Time CurrentTime)
 
 void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 {
+	if (VLT == 0)
+	{
+		Cargo* VC;
+		WaitingVIPCargos.Dequeue(VC);
+		VIPLoadingTruck->LoadCargo(VC);
+		if (VIPLoadingTruck->IsFull())
+		{
+			VIPLoadingTruck->SetTDC(VIPLoadingTruck->GetCargoCount() + VIPLoadingTruck->GetTDC());
+			VIPLoadingTruck->SetDeliveryInterval();
+			VIPLoadingTruck->SetMovingTime(CurrentTime);
+			VIPLoadingTruck->SetCWT();
+			VIPLoadingTruck->SetCargosCDT();
+			MovingTrucks.enqueue(VIPLoadingTruck, VIPLoadingTruck->CalcPrio());
+			VLT = -1;
+			VIPLoadingTruck = nullptr;
+		}
+		else if (WaitingVIPCargos.Peek(VC))
+		{
+			VLT = VC->GetLoadUnloadTime();
+		}
+	}
 	if (!VIPLoadingTruck)
 	{
 		if (!EmptyVIPTrucks.IsEmpty() && (WaitingVIPCount() >= VIPTruck::GetTruckCapacity()))
@@ -376,43 +396,9 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			VLT = VC->GetLoadUnloadTime();
 		}
 	}
-
-	if (VLT == 0)
-	{
-		Cargo* VC;
-		WaitingVIPCargos.Dequeue(VC);
-		VIPLoadingTruck->LoadCargo(VC);
-		if (VIPLoadingTruck->IsFull())
-		{
-			VIPLoadingTruck->SetTDC(VIPLoadingTruck->GetCargoCount() + VIPLoadingTruck->GetTDC());
-			VIPLoadingTruck->SetDeliveryInterval();
-			VIPLoadingTruck->SetMovingTime(CurrentTime);
-			VIPLoadingTruck->SetCWT();
-			VIPLoadingTruck->SetCargosCDT();
-			MovingTrucks.enqueue(VIPLoadingTruck, VIPLoadingTruck->CalcPrio());
-			VLT = -1;
-			VIPLoadingTruck = nullptr;
-		}
-		else if (WaitingVIPCargos.Peek(VC))
-		{
-			VLT = VC->GetLoadUnloadTime();
-		}
-	}
+	
 
 	// ------------------------------------------- //
-
-	if (!SpecialLoadingTruck)
-	{
-		if (!EmptySpecialTrucks.IsEmpty() && (WaitingSpecialCount() >= SpecialTruck::GetTruckCapacity()))
-		{
-			SpecialTruck* ST;
-			EmptySpecialTrucks.Dequeue(ST);
-			SpecialLoadingTruck = ST;
-			Cargo* SC;
-			WaitingSpecialCargos.Peek(SC);
-			SLT = SC->GetLoadUnloadTime();
-		}
-	}
 
 	if (SLT == 0)
 	{
@@ -430,14 +416,50 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			SLT = -1;
 			SpecialLoadingTruck = nullptr;
 		}
-		else if (WaitingSpecialCargos.Peek(SC))    
+		else if (WaitingSpecialCargos.Peek(SC))
 		{
 			SLT = SC->GetLoadUnloadTime();
 		}
 	}
 
+	if (!SpecialLoadingTruck)
+	{
+		if (!EmptySpecialTrucks.IsEmpty() && (WaitingSpecialCount() >= SpecialTruck::GetTruckCapacity()))
+		{
+			SpecialTruck* ST;
+			EmptySpecialTrucks.Dequeue(ST);
+			SpecialLoadingTruck = ST;
+			Cargo* SC;
+			WaitingSpecialCargos.Peek(SC);
+			SLT = SC->GetLoadUnloadTime();
+		}
+	}
+	
+
 	// -------------------------------------------------- //
 
+	if (NLT == 0)
+	{
+		Cargo* NC;
+		WaitingNormalCargos.RemoveFirst(NC);
+		NormalLoadingTruck->LoadCargo(NC);
+		if (NormalLoadingTruck->IsFull() || NormalLoadingTruck->GetEFlag())
+		{
+			NormalLoadingTruck->SetTDC(NormalLoadingTruck->GetCargoCount() + NormalLoadingTruck->GetTDC());
+			NormalLoadingTruck->SetDeliveryInterval();
+			NormalLoadingTruck->SetMovingTime(CurrentTime);
+			NormalLoadingTruck->SetCWT();
+			NormalLoadingTruck->SetCargosCDT();
+			MovingTrucks.enqueue(NormalLoadingTruck, NormalLoadingTruck->CalcPrio());
+			NLT = -1;
+			NormalLoadingTruck = nullptr;
+		}
+		else if (WaitingNormalCargos.RemoveFirst(NC))
+		{
+			NLT = NC->GetLoadUnloadTime();
+			WaitingNormalCargos.InsertFirst(NC);
+		}
+	}
 	if (!NormalLoadingTruck)
 	{
 		if (!EmptyNormalTrucks.IsEmpty() && (WaitingNormalCount() >= NormalTruck::GetTruckCapacity()))
@@ -461,28 +483,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 			WaitingNormalCargos.InsertFirst(NC);
 		}
 	}
-	if (NLT == 0)
-	{
-		Cargo* NC;
-		WaitingNormalCargos.RemoveFirst(NC);
-		NormalLoadingTruck->LoadCargo(NC);
-		if (NormalLoadingTruck->IsFull() || NormalLoadingTruck->GetEFlag())
-		{
-			NormalLoadingTruck->SetTDC(NormalLoadingTruck->GetCargoCount() + NormalLoadingTruck->GetTDC());
-			NormalLoadingTruck->SetDeliveryInterval();
-			NormalLoadingTruck->SetMovingTime(CurrentTime);
-			NormalLoadingTruck->SetCWT();
-			NormalLoadingTruck->SetCargosCDT();
-			MovingTrucks.enqueue(NormalLoadingTruck, NormalLoadingTruck->CalcPrio());
-			NLT = -1;
-			NormalLoadingTruck = nullptr;
-		}
-		else if (WaitingNormalCargos.RemoveFirst(NC))    
-		{
-			NLT = NC->GetLoadUnloadTime();
-			WaitingNormalCargos.InsertFirst(NC);
-		}
-	}
+	
 }
 
 void Company::DeliverCargos(Time Current) //Needs Fixing
@@ -510,7 +511,6 @@ void Company::DeliverCargos(Time Current) //Needs Fixing
 					TempTruck->SetTotalJourneys(TempTruck->GetTotalJourneys() + 1);
 				}
 			}
-
 		}
 	}
 	while (TempQueue.Dequeue(TempTruck))
@@ -762,14 +762,11 @@ void Company::Simulate(int Type, string InputFile)
 		{
 
 			HandleMaxW(NLT, SLT, Time(hour, day));
-
 			LoadCargos(NLT, SLT, VLT, Time(hour, day));
-
 			AutoPromote(Time(hour, day));
 		}
 		DeliverCargos(Time(hour, day));
 		MoveToCheckUp(Time(hour, day));
-
 		MoveToAvail();
 		DecrementReturningHours();
 
@@ -781,7 +778,7 @@ void Company::Simulate(int Type, string InputFile)
 
 
 	} 
-	Interface.DisplayT3(*this, Type, Time(hour,day));
+	Interface.DisplayEndText(*this, Type, Time(hour,day));
 }
 
 void Company::AdvanceSimTime(int& hour, int& day, int& NLT, int& SLT, int& VLT)
@@ -859,8 +856,9 @@ void Company::GenerateOutputFile(Time EndSimTime)
 	int TDC;
 	int TotalJourneys;
 	int TruckCap=NormalTruck::GetTruckCapacity();
-
+	EndSimTime.hour = EndSimTime.hour - 1;
 	float TruckUtilization = 0;
+
 	for (int i = 0; i < NumNT; i++)
 	{
 		EmptyNormalTrucks.Dequeue(TempNTruck);
@@ -868,7 +866,7 @@ void Company::GenerateOutputFile(Time EndSimTime)
 		TDC = TempNTruck->GetTDC();
 		TotalJourneys = TempNTruck->GetTotalJourneys();
 		if(!(TDC==0|| TotalJourneys==0))
-			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TotalActiveHours / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
+			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TempNTruck->GetActiveTime() / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
 	}
 
 	TruckCap = SpecialTruck::GetTruckCapacity();
@@ -879,10 +877,10 @@ void Company::GenerateOutputFile(Time EndSimTime)
 		TDC = TempSTruck->GetTDC();
 		TotalJourneys = TempSTruck->GetTotalJourneys();
 		if (!(TDC == 0 || TotalJourneys == 0))
-			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TotalActiveHours / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
+			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TempSTruck->GetActiveTime() / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
 	}
-
 	TruckCap = VIPTruck::GetTruckCapacity();
+
 	for (int i = 0; i < NumVT; i++)
 	{
 		EmptyVIPTrucks.Dequeue(TempVTruck);
@@ -890,15 +888,20 @@ void Company::GenerateOutputFile(Time EndSimTime)
 		TDC = TempVTruck->GetTDC();
 		TotalJourneys = TempVTruck->GetTotalJourneys();
 		if (!(TDC == 0 || TotalJourneys == 0))
-			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TotalActiveHours / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
+			TruckUtilization += TDC / float(TruckCap * TotalJourneys) * (TempVTruck->GetActiveTime() / float(EndSimTime.day * 24 - 24 + EndSimTime.hour));
 	}
-
-	OutputFile << "Avg Active time = " << (100*TotalActiveHours / (EndSimTime.day * 24 -24 + EndSimTime.hour)) << "%" << endl;
-
-	if ((NumNT + NumST + NumVT) == 0)
-		OutputFile << "Avg utilization = 0%" << endl;
+	if ((NumNT + NumST + NumVT) != 0)
+	{
+		OutputFile << "Avg Active time = " << (100 * TotalActiveHours / ((EndSimTime.day * 24 - 24 + EndSimTime.hour) * (NumNT + NumST + NumVT))) << "%" << endl;
+		OutputFile << "Avg utilization = " << int(100 * TruckUtilization / (NumNT + NumST + NumVT)) << "%" << endl;
+	}
 	else
-		OutputFile << "Avg utilization = "<< int(100* TruckUtilization /(NumNT + NumST + NumVT)) <<"%" << endl;
+	{
+		OutputFile << "Avg Active time = 0%" << endl;
+		OutputFile << "Avg utilization = 0%" << endl;
+	}
+	
+		
 }
 
 bool Company::AllIsDelivered()

@@ -35,7 +35,7 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 		{  
 			cout << N->GetTID();
 			if (N->IsEmpty())
-				cout << "[ ]";
+				cout << "[ ] ";
 			else
 			N->PrintTruckCargos();
 		}
@@ -47,7 +47,7 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 		{
 			cout << S->GetTID();
 			if (S->IsEmpty())
-				cout << "( )";
+				cout << "( ) ";
 			else
 			S->PrintTruckCargos();
 		}
@@ -59,7 +59,7 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 		{
 			cout << V->GetTID();
 			if (V->IsEmpty())
-				cout << "{ }";
+				cout << "{ } ";
 			else
 			V->PrintTruckCargos();
 		}
@@ -108,13 +108,18 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 	}
 }
 
-void  UI::DisplayT3(Company& C,int Type,Time EndSimTime)
+void  UI::DisplayEndText(Company& C,int Type,Time EndSimTime)
 {
+	cout << endl;
 		C.GenerateOutputFile(EndSimTime);
 	if (Type == 3)
 	{
 		cout << "Silent Mode " << endl;
 		cout << "Simulation Starts..." << endl;
 		cout << "Simulation ends, Output file created" << endl;
+	}
+	else
+	{
+		cout << "End Of Simulation ";
 	}
 }
