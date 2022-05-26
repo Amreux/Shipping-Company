@@ -41,7 +41,7 @@ void NormalTruck::SetDeliveryInterval()
 		CargosQueue.enqueue(CTemp, CTemp->CalcPrio());
 	}
 	DeliveryInterval = 2.0 * FurthestDis / Speed + LoadHours;
-	TruckActiveTime = FurthestDis / Speed + 2 * LoadHours;
+	TruckActiveTime += FurthestDis / Speed + 2 * LoadHours;
 	ReturningHours = FurthestDis / Speed;
 }
 

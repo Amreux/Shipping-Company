@@ -10,7 +10,6 @@ Truck::Truck(int DI)
 	EndOfCheckUp = 0;
 	TruckActiveTime = 0;
 }
-
 Truck::Truck()
 {
 	TID = ++TruckCount;
@@ -147,7 +146,7 @@ void Truck::PrintTruckCargos()
 		}
 		}
 	else
-		cout << " ";
+		cout << "E ";
 }
 
 void Truck::PrintID()
