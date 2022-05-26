@@ -9,6 +9,7 @@ Truck::Truck(int DI)
 	TotalJourneys = 0;
 	EndOfCheckUp = 0;
 	TruckActiveTime = 0;
+	DeliveryFailed = false;
 }
 Truck::Truck()
 {
@@ -18,6 +19,7 @@ Truck::Truck()
 	EndOfCheckUp = 0;
 	EmergencyFlag = false;
 	TruckActiveTime = 0;
+	DeliveryFailed = false;
 }
 
 void Truck::LoadCargo(Cargo* C)
@@ -62,13 +64,11 @@ int Truck::CalcPrio()
 	    }
 		else
 		{
+			if (DeliveryFailed)
+				return 10000.0 / (MovingTime.day * 24 + MovingTime.hour);  // DeliveryInterval=0
 			return 10000.0/(MovingTime.day * 24 + MovingTime.hour + DeliveryInterval);
 		}
 }
-
-
-
-
 
 
 
@@ -195,10 +195,20 @@ int Truck::GetTDC()
 
 void Truck::SetReturnH(int h)
 {
+
 	ReturningHours = h;
 }
 
 int Truck::GetReturnH()
 {
 	return ReturningHours;
+}
+
+bool Truck::GetDeliveryFailed()
+{
+	return DeliveryFailed;
+}
+void Truck::SetDeliveryFailed(bool b)
+{
+	DeliveryFailed = b;
 }

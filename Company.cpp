@@ -1,5 +1,8 @@
 #include "Company.h"
 #include <iomanip>
+#include <time.h>
+#include<cmath>
+#include<windows.h>
 
 Company::Company()
 {
@@ -308,6 +311,7 @@ void Company::LoadFile( string Input)
 }
 
 int Company::GetAutoPromotion()
+
 {
 	return AutoPromotion;
 }
@@ -486,7 +490,7 @@ void Company::LoadCargos(int& NLT, int& SLT, int& VLT,Time CurrentTime)
 	
 }
 
-void Company::DeliverCargos(Time Current) //Needs Fixing
+void Company::DeliverCargos(Time Current) 
 {
 	Truck* TempTruck;
 	Queue<Truck*> TempQueue;
@@ -494,6 +498,7 @@ void Company::DeliverCargos(Time Current) //Needs Fixing
 	for(int i=0;i<count;i++)
 	{
 		MovingTrucks.Dequeue(TempTruck);
+		DeliveryFailure(TempTruck);
 		TempQueue.Enqueue(TempTruck);
 		if (!TempTruck->IsEmpty())
 		{
@@ -525,7 +530,7 @@ void Company::MoveToAvail()
 	MovingTrucks.Peek(TempTruck);
 	while (TempTruck && TempTruck->IsEmpty())
 	{
-		if (TempTruck->GetReturnH() == 0)
+		if (TempTruck->GetReturnH() <= 0)
 		{
 			MovingTrucks.Dequeue(TempTruck);
 			if (dynamic_cast<NormalTruck*>(TempTruck))
@@ -547,7 +552,7 @@ void Company::MoveToCheckUp(Time Current) // checkup el awl fel sim
 	MovingTrucks.Peek(TempTruck);
 	while (TempTruck && TempTruck->IsEmpty())
 	{ 
-		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ() == 0 && (TempTruck->GetReturnH() == 0))  ///////// tot in load
+		if (TempTruck->GetTotalJourneys() % TempTruck->GetJ() == 0 && (TempTruck->GetReturnH() <= 0))  ///////// tot in load
 		{
 			MovingTrucks.Dequeue(TempTruck);
 			TempTruck->SetEndOfCheckUp(Current);
@@ -572,6 +577,7 @@ void Company::MoveCheckUpToAvail(Time Current)
 	while (TempTruck1 && (CurrentHours == TempTruck1->GetEndOfCheckUp()))
 	{
 		NormalCheckUpTrucks.Dequeue(TempTruck1);
+		TempTruck1->SetDeliveryFailed(false);
 		EmptyNormalTrucks.Enqueue(TempTruck1);
 		NormalCheckUpTrucks.Peek(TempTruck1);
 	}
@@ -581,6 +587,7 @@ void Company::MoveCheckUpToAvail(Time Current)
 	while (TempTruck2 && (CurrentHours == TempTruck2->GetEndOfCheckUp()))
 	{
 		SpecialCheckUpTrucks.Dequeue(TempTruck2);
+		TempTruck2->SetDeliveryFailed(false);
 		EmptySpecialTrucks.Enqueue(TempTruck2);
 		SpecialCheckUpTrucks.Peek(TempTruck2);
 	}
@@ -590,6 +597,7 @@ void Company::MoveCheckUpToAvail(Time Current)
 	while (TempTruck3 && (CurrentHours == TempTruck3->GetEndOfCheckUp()))
 	{
 		VIPCheckUpTrucks.Dequeue(TempTruck3);
+		TempTruck3->SetDeliveryFailed(false);
 		EmptyVIPTrucks.Enqueue(TempTruck3);
 		VIPCheckUpTrucks.Peek(TempTruck3);
 	}
@@ -906,7 +914,8 @@ void Company::GenerateOutputFile(Time EndSimTime)
 
 bool Company::AllIsDelivered()
 {
-	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty()&&WaitingVIPCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty());
+	bool CheckDelivered = (WaitingVIPCargos.GetCount() < (NormalTruck::GetTruckCapacity())) && (WaitingVIPCargos.GetCount() < (SpecialTruck::GetTruckCapacity())) && (WaitingVIPCargos.GetCount() < (VIPTruck::GetTruckCapacity()));
+	return (WaitingNormalCargos.IsEmpty() && WaitingSpecialCargos.IsEmpty() && MovingTrucks.IsEmpty() && NormalCheckUpTrucks.IsEmpty() && SpecialCheckUpTrucks.IsEmpty() && VIPCheckUpTrucks.IsEmpty()&& CheckDelivered);
 }
 
 
@@ -929,5 +938,33 @@ void Company::DecrementReturningHours()
 	{
 		TempQueue.Dequeue(TempTruck);
 		MovingTrucks.enqueue(TempTruck, TempTruck->CalcPrio());
+	}
+}
+
+void Company::DeliveryFailure(Truck* MT)
+{
+	if (!MT->IsEmpty())
+	{
+		//Sleep(1000);
+		srand(rand()+pow((time(0)), 2));
+		float Probability = (float)rand() / RAND_MAX;
+		Cargo* c;
+		Cargo* FirstCargo;
+		if (Probability <= 0.01) // 0.01
+		{
+			MT->PeekCargosQueue(FirstCargo);
+			while (MT->DequeueCargo(c))
+			{
+				if (c->GetCT() == 'N')
+					WaitingNormalCargos.insert(c);
+				else if (c->GetCT() == 'S')
+					WaitingSpecialCargos.Enqueue(c);
+				else
+					WaitingVIPCargos.enqueue(c);
+				MT->SetTDC(MT->GetTDC() - 1);
+			}
+			MT->SetDeliveryFailed(true);
+			MT->SetReturnH(0);
+		}
 	}
 }

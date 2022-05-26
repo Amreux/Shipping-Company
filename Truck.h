@@ -17,6 +17,8 @@ protected:
 	int TruckActiveTime;
 	int TDC;
 	int ReturningHours;
+	bool DeliveryFailed;
+
 public:
 	Truck(int DI);
 	Truck();
@@ -51,4 +53,6 @@ public:
 	virtual void SetReturnH(int h);
 	virtual int GetReturnH();
 	virtual void SetCargosCDT()=0;
+	bool GetDeliveryFailed();
+	void SetDeliveryFailed(bool b);
 };

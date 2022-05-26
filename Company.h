@@ -327,5 +327,6 @@ public:
 	void GenerateOutputFile(Time EndSimTime);
 	bool AllIsDelivered();
 	void DecrementReturningHours();
+	void DeliveryFailure(Truck* MT);
 };
 
