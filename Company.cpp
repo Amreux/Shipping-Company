@@ -328,7 +328,7 @@ void Company::AutoPromote(Time CurrentTime)
 		Time PrepTime = Temp->GetPreparationTime();
 		PrepHours = PrepTime.day * 24 + PrepTime.hour;
 		int CurrentTimeInHrs = CurrentTime.day * 24 + CurrentTime.hour;
-		if (CurrentTimeInHrs - PrepHours >= AutoP*24)
+		if (CurrentTimeInHrs - PrepHours >= AutoP)
 		{
 			NumberOfAutoPromotions++;
 			Temp->SetCargoType('V');
