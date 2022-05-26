@@ -1,6 +1,8 @@
 #pragma once
 #include"Company.h"
 #include<string.h>
+
+//Class Responsible for The Interface
 class UI
 {
 public:

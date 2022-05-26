@@ -38,8 +38,9 @@ class Company
 	Truck* VIPLoadingTruck;
 
 public:
-
+	//The Funcion Responsible for The Simulation
 	void Simulate(int Type, string InputFile);
+
 	//      CONSTRUCTORS
 	
 	Company();

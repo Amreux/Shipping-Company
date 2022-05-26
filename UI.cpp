@@ -9,9 +9,10 @@
 using namespace std;
 
 
+//---------------------------------------------Function to Display The Interface with  Different Types-----------------------------------------------------------// 
 void UI::Display(Company& C, int Type, Time CurrentTime)
 {
-	system("cls");
+	system("cls");    //Clears the console after every hour in the simulation
 	if (Type == 1 || Type == 2)
 	{
 		cout << "Current Time(Day:Hour) :" << CurrentTime.day << ":" << CurrentTime.hour << endl;
@@ -70,7 +71,6 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 		cout << endl;
 		cout << "-------------------------------------------------------" << endl;
 
-
 		cout << C.GetEmptyTruckCount() << "  Empty Trucks: [";
 		C.PrintENT();
 		cout << "] (";
@@ -104,9 +104,12 @@ void UI::Display(Company& C, int Type, Time CurrentTime)
 		if (Type == 1)
 			cin.get();
 		if (Type == 2)
-			Sleep(0);
+			Sleep(1000);
 	}
 }
+//-------------------------------------------------------------End of The Display Function------------------------------------------------------------------//
+
+//-----------------------------------------------------Function to Display The Ending Text----------------------------------------------------------------//
 
 void  UI::DisplayEndText(Company& C,int Type,Time EndSimTime)
 {
@@ -123,3 +126,4 @@ void  UI::DisplayEndText(Company& C,int Type,Time EndSimTime)
 		cout << "End Of Simulation ";
 	}
 }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------//
