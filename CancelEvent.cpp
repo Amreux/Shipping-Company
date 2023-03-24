@@ -6,7 +6,7 @@ using namespace std;
 bool CancelEvent::Execute(Company& Comp)
 {
 	//removing the cargo from waiting normal by ID list if found
-	bool Check = true;
+	bool  Check = true;
 	if (Comp.GetNormalLoadingTruck())
 	{
 		int Index = Comp.GetWaitingIndex(ID);
